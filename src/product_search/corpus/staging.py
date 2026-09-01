@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import shutil
-import tempfile
+import uuid
 from dataclasses import dataclass
 from hashlib import sha256
 from pathlib import Path
@@ -11,6 +11,10 @@ from product_search.corpus.xlsx_reader import ParsedProduct
 
 class CorpusStagingError(RuntimeError):
     """Не удалось подготовить полный набор файлов для новой версии корпуса."""
+
+
+class CorpusStagingCleanupError(CorpusStagingError):
+    """Staging не удалось удалить после ошибки записи."""
 
 
 @dataclass(frozen=True)
@@ -29,10 +33,15 @@ class CorpusStage:
     products: tuple[StagedProduct, ...]
 
 
-def stage_products(products: list[ParsedProduct], data_dir: Path) -> CorpusStage:
+def stage_products(
+    products: list[ParsedProduct], data_dir: Path, operation_id: str | None = None
+) -> CorpusStage:
     staging_root = data_dir / "staging"
     staging_root.mkdir(parents=True, exist_ok=True)
-    stage_directory = Path(tempfile.mkdtemp(prefix="corpus-", dir=staging_root))
+    stage_directory = staging_root / (operation_id or uuid.uuid4().hex)
+    if stage_directory.exists():
+        raise CorpusStagingError("Для операции уже существует staging-каталог.")
+    stage_directory.mkdir()
     staged_products: list[StagedProduct] = []
     try:
         for product in products:
@@ -49,13 +58,19 @@ def stage_products(products: list[ParsedProduct], data_dir: Path) -> CorpusStage
                 )
             )
     except OSError as error:
-        shutil.rmtree(stage_directory, ignore_errors=True)
+        try:
+            shutil.rmtree(stage_directory)
+        except OSError as cleanup_error:
+            raise CorpusStagingCleanupError(
+                "Не удалось удалить неполный staging-каталог."
+            ) from cleanup_error
         raise CorpusStagingError("Не удалось записать все изображения в staging.") from error
     return CorpusStage(stage_directory, tuple(staged_products))
 
 
 def discard_stage(stage: CorpusStage) -> None:
-    shutil.rmtree(stage.directory, ignore_errors=True)
+    if stage.directory.exists():
+        shutil.rmtree(stage.directory)
 
 
 def _write_image(path: Path, content: bytes) -> None:

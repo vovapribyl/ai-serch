@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 from product_search.core.settings import Settings
 from product_search.corpus.import_service import import_snapshot
+from product_search.infrastructure.corpus_repository import ImportBootstrapError
 from product_search.corpus.xlsx_reader import PRODUCT_NOVELTIES_LAYOUT, SYNTHETIC_LAYOUT
 from product_search.infrastructure.database import create_database_engine
 
@@ -26,16 +26,18 @@ def main() -> None:
         if arguments.layout == "product-novelties"
         else SYNTHETIC_LAYOUT
     )
-    result = import_snapshot(
-        arguments.xlsx,
-        arguments.snapshot,
-        settings.data_dir,
-        create_database_engine(settings.database_url),
-        layout=layout,
-    )
-    print(f"corpus_replaced={result.corpus_replaced}; report={result.report_path}")
-    report = json.loads(result.report_path.read_text(encoding="utf-8"))
-    if not result.corpus_replaced or report["critical_error"] is not None:
+    try:
+        result = import_snapshot(
+            arguments.xlsx, arguments.snapshot, settings.data_dir,
+            create_database_engine(settings.database_url), layout=layout,
+        )
+    except ImportBootstrapError:
+        print("Импорт не начат: журнал операций недоступен.")
+        raise SystemExit(4)
+    print(f"operation_id={result.operation_id}; corpus_replaced={result.corpus_replaced}; report={result.report_path}")
+    if result.finalization_pending:
+        raise SystemExit(3)
+    if not result.corpus_replaced:
         raise SystemExit(2)
 
 

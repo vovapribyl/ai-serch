@@ -41,6 +41,9 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+markers = [
+  "integration: requires an explicitly configured local PostgreSQL database",
+]
 
 [tool.ruff]
 line-length = 100

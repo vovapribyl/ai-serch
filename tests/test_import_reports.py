@@ -4,6 +4,8 @@ import json
 import os
 from datetime import UTC, datetime
 
+import pytest
+
 from product_search.corpus.reports import ImportReport, cleanup_expired_reports, write_report
 from product_search.corpus.rules import RejectionReason
 
@@ -63,3 +65,15 @@ def test_keeps_reports_newer_than_ninety_days(tmp_path) -> None:
     assert deleted == 1
     assert not old.exists()
     assert recent.exists()
+
+
+def test_failed_report_replace_removes_temporary_file(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(
+        "product_search.corpus.reports.os.replace",
+        lambda source, target: (_ for _ in ()).throw(OSError("replace failed")),
+    )
+
+    with pytest.raises(OSError):
+        write_report(ImportReport("failed", 0, {}, (), False), tmp_path, "operation")
+
+    assert not (tmp_path / "reports" / "operation.tmp").exists()

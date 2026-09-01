@@ -38,17 +38,32 @@ class ImportReport:
         }
 
 
-def write_report(report: ImportReport, data_dir: Path, *, now: datetime | None = None) -> Path:
-    created_at = now or datetime.now(tz=UTC)
+def write_report(
+    report: ImportReport,
+    data_dir: Path,
+    operation_id: str | None = None,
+    *,
+    now: datetime | None = None,
+) -> Path:
+    del now
+    return write_report_payload(report.as_json(), data_dir, operation_id or uuid.uuid4().hex)
+
+
+def write_report_payload(payload: dict[str, object], data_dir: Path, operation_id: str) -> Path:
     reports_dir = data_dir / "reports"
     reports_dir.mkdir(parents=True, exist_ok=True)
-    report_path = reports_dir / f"{created_at:%Y%m%dT%H%M%SZ}-{uuid.uuid4().hex}.json"
-    temporary_path = report_path.with_suffix(".tmp")
-    temporary_path.write_text(
-        json.dumps(report.as_json(), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    os.replace(temporary_path, report_path)
+    report_path = reports_dir / f"{operation_id}.json"
+    temporary_path = reports_dir / f"{operation_id}.tmp"
+    try:
+        temporary_path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        os.replace(temporary_path, report_path)
+    except OSError:
+        if temporary_path.exists():
+            temporary_path.unlink()
+        raise
     return report_path
 
 
