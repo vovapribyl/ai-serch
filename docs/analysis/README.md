@@ -1,62 +1,40 @@
 # Навигация по аналитическим артефактам
 
-> [Текущий контекст](current-context.md) · [Статус проекта](../project-status.md) · [Корневой README](../../README.md)
+> [Текущий контекст](current-context.md) · [Governance](governance.md) · [Статус проекта](../project-status.md)
 
-## Быстрый маршрут
+## Выборочное чтение
 
-| Если нужно | Читать |
+| Задача | Читать |
 |---|---|
-| Продолжить работу с последней точки | [`current-context.md`](current-context.md) |
-| Проверить принятое решение, источник или открытый пробел | [`ART-00`](00-source-and-decision-register.md), прежде всего §3, §6–§8 |
-| Проверить цели, пользователей и границы продукта | [`ART-01`](01-vision-and-scope.md) |
-| Проверить роли, границы ответственности и термины | [`ART-02`](02-stakeholders-and-glossary.md) |
-| Понять, как документ проходил независимую проверку | [`reviews/`](reviews/) |
-| Обратиться к раннему AS-IS или технической гипотезе | Сначала проверить статус источника в `ART-00`; затем выборочно читать [`discovery`](../discovery/2026-08-17-as-is-and-prototype-scope.md), [`project-plan`](../project-plan.md) или [`architecture`](../architecture.md) |
+| Продолжить аналитический пакет | [`current-context.md`](current-context.md) |
+| Проверить режим работы или модель | [`governance.md`](governance.md) |
+| Проверить состав конкретного `ART-*` или перенести чужое содержание | [`artifact-contracts.md`](artifact-contracts.md) |
+| Найти источник `SRC-*` или ограничение данных | [`registers/sources.md`](registers/sources.md) |
+| Найти решение `DEC-*` или legacy `FACT-*` | [`registers/decisions.md`](registers/decisions.md) |
+| Найти `GAP-*` или статус пакета | [`registers/gaps-and-package.md`](registers/gaps-and-package.md) |
+| Проверить историю `ART-00` | [`registers/history.md`](registers/history.md) |
+| Найти план-контракт или review | [`reviews/README.md`](reviews/README.md) |
 
-Минимальный набор для новой сессии — настоящий индекс и `current-context.md`. Полные `ART-00`/`ART-01` следует открывать только в той части, которая нужна текущей задаче.
+Корневой [`ART-00`](00-source-and-decision-register.md) — короткий индекс пакета. Полное чтение всех компонентов не требуется.
 
 ## Реестр артефактов
 
-| ID | Артефакт | Файл | Текущий статус |
-|---|---|---|---|
-| `ART-00` | Реестр источников и решений | [`00-source-and-decision-register.md`](00-source-and-decision-register.md) | v1.1, `APPROVED_BY_OWNER` |
-| `ART-01` | Vision & Scope | [`01-vision-and-scope.md`](01-vision-and-scope.md) | v0.6, `APPROVED_BY_OWNER` |
-| `ART-02` | Стейкхолдеры и глоссарий | [`02-stakeholders-and-glossary.md`](02-stakeholders-and-glossary.md) | v0.3, `APPROVED_BY_OWNER` |
-| `ART-03` | AS-IS | [`03-as-is.md`](03-as-is.md) | v0.2, `APPROVED_BY_OWNER`; переработка по `DEC-036` прошла независимое review `PASS`, `0/0/0` |
-| `ART-04` | TO-BE | ещё не создан | `NOT_STARTED` |
-| `ART-05` | Бизнес-требования и бизнес-правила | ещё не создан | `NOT_STARTED` |
-| `ART-06` | Пользовательские сценарии и функциональные требования | ещё не создан | `NOT_STARTED` |
-| `ART-07` | Требования к данным | ещё не создан | `NOT_STARTED` |
-| `ART-08` | Нефункциональные требования | ещё не создан | `NOT_STARTED` |
-| `ART-09` | Критерии приёмки и матрица трассировки | ещё не создан | `NOT_STARTED` |
-| `ART-10` | Итоговый реестр рисков, допущений и открытых вопросов | ещё не создан | `NOT_STARTED` |
+| ID | Артефакт | Статус |
+|---|---|---|
+| `ART-00` | [Источники и решения](00-source-and-decision-register.md) | v2.4 `APPROVED_BY_OWNER` (`SRC-051`) |
+| `ART-01` | [Vision & Scope](01-vision-and-scope.md) | v1.1 `APPROVED_BY_OWNER`; `SRC-043`; review `PASS`, 0/0/0 |
+| `ART-02` | [Стейкхолдеры и глоссарий](02-stakeholders-and-glossary.md) | v0.7 `APPROVED_BY_OWNER`; `SRC-043`; review `PASS`, 0/0/0 |
+| `ART-03` | [AS-IS](03-as-is.md) | v0.3 `APPROVED_BY_OWNER` |
+| `ART-04` | [TO-BE](04-to-be.md) | v0.7 `APPROVED_BY_OWNER`; `SRC-043`; review `PASS`, 0/0/0 |
+| `ART-05` | [Бизнес-правила](05-business-rules.md) | v0.4 `APPROVED_BY_OWNER`; `SRC-043`; review `PASS`, 0/0/0 |
+| `ART-06` | [Пользовательские сценарии и функциональные требования](06-user-scenarios-and-functional-requirements.md) | v0.7 `APPROVED_BY_OWNER` (`SRC-051`) |
+| `ART-07` | [Требования к данным](07-data-requirements.md) | v0.5 `APPROVED_BY_OWNER` (`SRC-051`) |
+| `ART-08` | [Нефункциональные требования MVP](08-non-functional-requirements.md) | v0.4 `APPROVED_BY_OWNER` (`SRC-051`) |
+| `ART-09` | [Критерии приёмки и компактная трассировка](09-acceptance-criteria-and-traceability.md) | v0.4 `APPROVED_BY_OWNER` (`SRC-051`) |
+| `ART-10` | [Активные риски, допущения и открытые вопросы](10-risks-assumptions-and-open-questions.md) | v0.4 `APPROVED_BY_OWNER` (`SRC-051`) |
 
-Статусы и порядок нормативно ведутся в `ART-00`, §8. Эта таблица — навигационное представление и должна обновляться после закрытия каждого gate.
+## Исторические документы
 
-## Проверки и происхождение решений
+`docs/discovery/*`, `docs/project-plan.md`, `docs/architecture.md` и корневой `README.md` созданы до утверждённого аналитического пакета. Они не являются нормативными и открываются только для конкретной исторической или технической гипотезы.
 
-- [`ART-00`: независимая проверка](reviews/00-source-and-decision-register-review-v0.2.md)
-- [`ART-00` v1.1: проверка политики человекоориентированной трассировки](reviews/00-traceability-policy-amendment-v1.1-review.md) — итог `PASS`, `0/0/0`
-- [`ART-00` v1.1: ревью схемы «исполнитель + ревьюер»](reviews/00-executor-reviewer-process-amendment-v1.1-review.md) — `PASS_WITH_MINOR`, единственный `Minor` исправлен исполнителем
-- [`ART-01`: основная независимая проверка](reviews/01-vision-and-scope-review-v0.2.md)
-- [`ART-01`: проверка поправки ролей и классификации](reviews/01-vision-and-scope-amendment-v0.5-review.md)
-- [`ART-02`: независимая проверка и целевая проверка редакции](reviews/02-stakeholders-and-glossary-review-v0.1.md)
-- [`ART-03`: независимая проверка v0.1 и повторный review](reviews/03-as-is-review-v0.1.md) — первоначальные 2 `Major` и 3 `Minor` закрыты; итог `PASS`, `0/0/0`
-- [`ART-03` v0.2: проверка переработки трассировки](reviews/03-as-is-v0.2-review.md) — итог `PASS`, `0/0/0`; редакция утверждена владельцем
-
-Отчёты критика являются журналом quality gate, но не заменяют утверждённую версию самого артефакта. Новый, сложный или содержательно изменяемый артефакт проходит полный маршрут проверки, а мелкая ясная правка — облегчённый; критерии определены в `ART-00` (`DEC-035`) и [контексте](current-context.md#5-согласованный-процесс-создания-и-проверки-артефактов).
-
-Для новых и содержательно перерабатываемых документов применяется человекоориентированная трассировка из `ART-00` v1.1 (`DEC-036`): по умолчанию используются только `ART-*`, `DEC-*`, `SRC-*` и значимые междокументные `GAP-*`; локальные строки и элементы документа не получают ID без самостоятельного жизненного цикла. Эта поправка прошла независимую проверку `PASS`.
-
-Полный маршрут использует только исполнителя и независимого read-only ревьюера (`DEC-037`); отдельный агент-планировщик не применяется. Поправка прошла отдельное ревью, единственный `Minor` исправлен исполнителем; редакция `ART-00` v1.1 утверждена владельцем.
-
-## Статусы остальных документов
-
-| Документ | Роль |
-|---|---|
-| [`docs/project-status.md`](../project-status.md) | Короткий статус для человека; не хранит полный набор решений |
-| [`docs/discovery/2026-08-17-as-is-and-prototype-scope.md`](../discovery/2026-08-17-as-is-and-prototype-scope.md) | Исторический discovery-снимок; содержит заменённые положения |
-| [`docs/project-plan.md`](../project-plan.md) | Ранний план и источник гипотез; не является текущим планом аналитического пакета |
-| [`docs/architecture.md`](../architecture.md) | Техническая гипотеза; не является принятым архитектурным решением |
-| [`docs/decisions/README.md`](../decisions/README.md) | Шаблон будущих ADR; принятых ADR пока нет |
-| [`docs/artifacts/Разработка новинок - На рассм-е.csv`](../artifacts/Разработка%20новинок%20-%20На%20рассм-е.csv) | Ограниченный исходный артефакт; правила использования и контрольная сумма — в `ART-00` |
+Ограниченный CSV не является стартовым контекстом. Его статус и правила использования находятся в [реестре источников](registers/sources.md).
