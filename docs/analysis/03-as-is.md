@@ -1,6 +1,6 @@
 # AS-IS: текущее рассмотрение товарных предложений
 
-> [Индекс анализа](README.md) · [Текущий контекст](current-context.md) · [ART-00](00-source-and-decision-register.md) · [ART-01](01-vision-and-scope.md) · [ART-02](02-stakeholders-and-glossary.md) · [План-контракт v0.2](reviews/03-as-is-v0.2-plan-contract.md)
+> [Индекс анализа](README.md) · [Текущий контекст](current-context.md) · [ART-00](00-source-and-decision-register.md) · [ART-01](01-vision-and-scope.md) · [ART-02](02-stakeholders-and-glossary.md)
 
 | Поле | Значение |
 |---|---|
@@ -133,9 +133,9 @@ flowchart LR
 | Локальные ссылки, Markdown-таблицы, Mermaid и действующие `SRC-*`/`DEC-*`/`GAP-*` проверены | `PASSED` | Нужна независимая read-only проверка перед передачей владельцу |
 | Ограниченные данные, полный идентификатор Google Sheets, сырые URL, товарные, персональные и коммерческие значения не опубликованы | `PASSED` | До решения владельца данных действует `RESTRICTED_PENDING_CLASSIFICATION` |
 
-Независимая read-only проверка v0.2 завершилась `PASS` (`0 Critical / 0 Major / 0 Minor`); отчёт — [review v0.2](reviews/03-as-is-v0.2-review.md). Замечаний для обработки нет. 2026-08-18 владелец явно утвердил v0.2 (`SRC-028`); статус переведён в `APPROVED_BY_OWNER`.
+Независимая read-only проверка v0.2 завершилась `PASS` (`0 Critical / 0 Major / 0 Minor`); исторический отчёт — Git locator `b6a2142`. Замечаний для обработки нет. 2026-08-18 владелец явно утвердил v0.2 (`SRC-028`); статус переведён в `APPROVED_BY_OWNER`.
 
-Независимое review поправки v0.3 — `PASS` (`0 Critical / 0 Major / 0 Minor`): [отчёт](reviews/role-and-lifecycle-amendment-v0.1-review.md). Редакция утверждена владельцем (`SRC-035`).
+Независимое review поправки v0.3 — `PASS` (`0 Critical / 0 Major / 0 Minor`); исторический отчёт — Git locator `b6a2142`. Редакция утверждена владельцем (`SRC-035`).
 
 ## 10. История версии
 

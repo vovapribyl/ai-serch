@@ -1,6 +1,6 @@
 # TO-BE: целевой процесс рассмотрения товарного предложения
 
-> [Индекс анализа](README.md) · [Текущий контекст](current-context.md) · [ART-00](00-source-and-decision-register.md) · [ART-01](01-vision-and-scope.md) · [ART-02](02-stakeholders-and-glossary.md) · [ART-03](03-as-is.md) · [План текущей поправки](reviews/mvp-check-only-and-sheets-boundary-v0.1-plan-contract.md)
+> [Индекс анализа](README.md) · [Текущий контекст](current-context.md) · [ART-00](00-source-and-decision-register.md) · [ART-01](01-vision-and-scope.md) · [ART-02](02-stakeholders-and-glossary.md) · [ART-03](03-as-is.md)
 
 | Поле | Значение |
 |---|---|
@@ -109,11 +109,11 @@ flowchart TD
 | Автоматические переходы, обмен с Google Sheets и автоматическое разрешение конфликта отсутствуют; `GAP-006` сохранён | `PASSED` | Данные обмена требуют отдельной разработки MVP 1.1 |
 | Проверены локальные ссылки, Markdown-таблицы, Mermaid, действующие `DEC-*`/`GAP-*` и отсутствие новых небазовых ID | `PASSED` | Независимое review текущего пакета требует исправлений и повторной проверки |
 
-Независимая read-only проверка v0.1 завершилась `PASS` (`0 Critical / 0 Major / 0 Minor`); отчёт — [review v0.1](reviews/04-to-be-v0.1-review.md). Решения `DEC-038`–`DEC-040` получены после этой проверки, поэтому v0.2 требует нового независимого review и явного owner gate.
+Независимая read-only проверка v0.1 завершилась `PASS` (`0 Critical / 0 Major / 0 Minor`); исторический отчёт — Git locator `b6a2142`. Решения `DEC-038`–`DEC-040` получены после этой проверки, поэтому v0.2 требует нового независимого review и явного owner gate.
 
-Независимая read-only проверка v0.2 завершилась `PASS` (`0 Critical / 0 Major / 0 Minor`); отчёт — [review v0.2](reviews/04-to-be-v0.2-review.md). Критик подтвердил разделение двух сценариев в Mermaid, сохранение `GAP-006`, отсутствие технических решений и новых локальных ID. Редакция ожидает явного утверждения владельца.
+Независимая read-only проверка v0.2 завершилась `PASS` (`0 Critical / 0 Major / 0 Minor`); исторический отчёт — Git locator `b6a2142`. Критик подтвердил разделение двух сценариев в Mermaid, сохранение `GAP-006`, отсутствие технических решений и новых локальных ID. Редакция ожидает явного утверждения владельца.
 
-Независимое review поправки v0.3 — `PASS` (`0 Critical / 0 Major / 0 Minor`): [отчёт](reviews/role-and-lifecycle-amendment-v0.1-review.md). Редакция утверждена владельцем (`SRC-035`).
+Независимое review поправки v0.3 — `PASS` (`0 Critical / 0 Major / 0 Minor`); исторический отчёт — Git locator `b6a2142`. Редакция утверждена владельцем (`SRC-035`).
 
 Для v0.5 авторская самопроверка завершена. Первичное независимое review общего пакета `ART-00` v1.7 / `ART-04` v0.5 / `ART-06` v0.2 выявило 2 `Major` и 3 `Minor`; после исправлений повторное review завершилось `PASS`, 0/0/0. Исторические отчёты выше относятся к предыдущим версиям и не закрывают текущий gate.
 

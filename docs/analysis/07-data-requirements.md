@@ -1,6 +1,6 @@
 # Требования к данным
 
-> [Индекс анализа](README.md) · [Контракт `ART-07`](artifact-contracts.md#art-07--требования-к-данным) · [План текущей редакции](reviews/07-data-requirements-v0.2-plan-contract.md)
+> [Индекс анализа](README.md) · [Контракт `ART-07`](artifact-contracts.md#art-07--требования-к-данным)
 
 | Поле | Значение |
 |---|---|

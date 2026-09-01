@@ -1,6 +1,6 @@
 # Пользовательские сценарии и функциональные требования
 
-> [Текущий контекст](current-context.md) · [Индекс анализа](README.md) · [Контракт `ART-06`](artifact-contracts.md#art-06--пользовательские-сценарии-и-функциональные-требования) · [Бизнес-правила](05-business-rules.md) · [TO-BE](04-to-be.md) · [План текущей поправки](reviews/mvp-check-only-and-sheets-boundary-v0.1-plan-contract.md)
+> [Текущий контекст](current-context.md) · [Индекс анализа](README.md) · [Контракт `ART-06`](artifact-contracts.md#art-06--пользовательские-сценарии-и-функциональные-требования) · [Бизнес-правила](05-business-rules.md) · [TO-BE](04-to-be.md)
 
 | Поле | Значение |
 |---|---|
