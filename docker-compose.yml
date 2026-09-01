@@ -1,0 +1,19 @@
+services:
+  database:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ${MVP_POSTGRES_DB:?MVP_POSTGRES_DB is required}
+      POSTGRES_USER: ${MVP_POSTGRES_USER:?MVP_POSTGRES_USER is required}
+      POSTGRES_PASSWORD: ${MVP_POSTGRES_PASSWORD:?MVP_POSTGRES_PASSWORD is required}
+    ports:
+      - "127.0.0.1:${MVP_POSTGRES_PORT:?MVP_POSTGRES_PORT is required}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  postgres_data:

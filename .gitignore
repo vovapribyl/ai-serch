@@ -1,2 +1,15 @@
 .DS_Store
 docs/artifacts/*.csv
+.env
+.venv/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+data/
+runtime/
+artifacts/
+models/
+reports/
+*.sqlite3
