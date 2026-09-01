@@ -21,17 +21,17 @@
 
 | ID | Артефакт | Статус |
 |---|---|---|
-| `ART-00` | [Источники и решения](00-source-and-decision-register.md) | v2.4 `APPROVED_BY_OWNER` (`SRC-051`) |
+| `ART-00` | [Источники и решения](00-source-and-decision-register.md) | v2.5 `APPROVED_BY_OWNER` (`SRC-053`); final review `PASS`, 0/0/0 |
 | `ART-01` | [Vision & Scope](01-vision-and-scope.md) | v1.1 `APPROVED_BY_OWNER`; `SRC-043`; review `PASS`, 0/0/0 |
 | `ART-02` | [Стейкхолдеры и глоссарий](02-stakeholders-and-glossary.md) | v0.7 `APPROVED_BY_OWNER`; `SRC-043`; review `PASS`, 0/0/0 |
 | `ART-03` | [AS-IS](03-as-is.md) | v0.3 `APPROVED_BY_OWNER` |
 | `ART-04` | [TO-BE](04-to-be.md) | v0.7 `APPROVED_BY_OWNER`; `SRC-043`; review `PASS`, 0/0/0 |
 | `ART-05` | [Бизнес-правила](05-business-rules.md) | v0.4 `APPROVED_BY_OWNER`; `SRC-043`; review `PASS`, 0/0/0 |
-| `ART-06` | [Пользовательские сценарии и функциональные требования](06-user-scenarios-and-functional-requirements.md) | v0.7 `APPROVED_BY_OWNER` (`SRC-051`) |
-| `ART-07` | [Требования к данным](07-data-requirements.md) | v0.5 `APPROVED_BY_OWNER` (`SRC-051`) |
-| `ART-08` | [Нефункциональные требования MVP](08-non-functional-requirements.md) | v0.4 `APPROVED_BY_OWNER` (`SRC-051`) |
-| `ART-09` | [Критерии приёмки и компактная трассировка](09-acceptance-criteria-and-traceability.md) | v0.4 `APPROVED_BY_OWNER` (`SRC-051`) |
-| `ART-10` | [Активные риски, допущения и открытые вопросы](10-risks-assumptions-and-open-questions.md) | v0.4 `APPROVED_BY_OWNER` (`SRC-051`) |
+| `ART-06` | [Пользовательские сценарии и функциональные требования](06-user-scenarios-and-functional-requirements.md) | v0.8 `APPROVED_BY_OWNER` (`SRC-053`); final review `PASS`, 0/0/0 |
+| `ART-07` | [Требования к данным](07-data-requirements.md) | v0.6 `APPROVED_BY_OWNER` (`SRC-053`); final review `PASS`, 0/0/0 |
+| `ART-08` | [Нефункциональные требования MVP](08-non-functional-requirements.md) | v0.5 `APPROVED_BY_OWNER` (`SRC-053`); final review `PASS`, 0/0/0 |
+| `ART-09` | [Критерии приёмки и компактная трассировка](09-acceptance-criteria-and-traceability.md) | v0.5 `APPROVED_BY_OWNER` (`SRC-053`); final review `PASS`, 0/0/0 |
+| `ART-10` | [Активные риски, допущения и открытые вопросы](10-risks-assumptions-and-open-questions.md) | v0.5 `APPROVED_BY_OWNER` (`SRC-053`); final review `PASS`, 0/0/0 |
 
 ## Исторические документы
 

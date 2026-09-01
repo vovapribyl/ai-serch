@@ -6,7 +6,10 @@
 
 ## Текущая процессная редакция
 
-- [Gate 1 локального MVP: независимое review](gate-1-v0.1-review.md) — `PASS`, 0/0/0; owner gate ожидается
+- [План-контракт: завершение Gate 2](gate-2-completion-plan-v0.1-plan-contract.md)
+- [План: однократная загрузка рабочего корпуса MVP](one-time-corpus-load-v0.1-plan-contract.md)
+- [Review: однократная загрузка рабочего корпуса MVP](one-time-corpus-load-v0.1-review.md) — final `PASS`, 0/0/0 (первично `REWORK`, 0/3/2; повторно 0/1/0)
+- [Gate 1 локального MVP: независимое review](gate-1-v0.1-review.md) — `PASS`, 0/0/0; `APPROVED_BY_OWNER`
 - [План реализации локального MVP v0.1: план-контракт](mvp-implementation-plan-v0.1-plan-contract.md)
 - [План реализации локального MVP v0.1: независимое review](mvp-implementation-plan-v0.1-review.md) — итоговое `PASS`, 0/0/0 (первично `FAIL`, 0/4/1)
 - [Единый quality gate облегчённого пакета `ART-08`–`ART-10` v0.1](08-10-lean-package-v0.1-quality-gate.md) — историческая проверка: повторно 0/0/2, оба Minor исправлены; новые редакции v0.2 открыты решениями `DEC-056`
