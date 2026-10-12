@@ -1,0 +1,42 @@
+@startuml
+' Проект последовательности; интерфейсы — порты ядра.
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam sequenceArrowColor #78909C
+skinparam participantBackgroundColor white
+skinparam participantBorderColor #90A4AE
+skinparam maxMessageSize 60
+hide footbox
+title Поиск через порты и адаптеры — проект
+actor "Пользователь / Web-адаптер" as Web
+participant "Ядро поиска\nNailSearchService" as Search
+participant "Каталог\nNailCatalogPort" as Catalog
+participant "Единая подготовка фото\nNailImageProcessor" as Processor #E8F0FE
+participant "Кодирование\nNailEmbeddingPort" as Embedding
+Web -> Search : execute_many(SearchRequest)\nпосле проверки доступа и двух runtime identities
+Search -> Catalog : read_ready(representation_id)
+Catalog --> Search : Plain DTO закреплённой версии
+Search -> Search : Проверить identity, readiness и непустоту
+Search -> Processor : process(PhotoInput, ProcessingProfile) для каждого фото
+ref over Processor
+Выделение через NailLocalizationPort:
+см. nail-search-localization.puml
+end ref
+Processor --> Search : ProcessedPhoto или typed error
+alt Есть OK-фото и нет технической ошибки
+    Search -> Embedding : encode для каждой из трёх моделей
+    Embedding --> Search : Plain векторы, тот же порядок crops
+    Search -> Catalog : iter_photo_groups закреплённой версии
+    Catalog --> Search : Plain группы фото/регионов/векторов
+    Search -> Search : Чистый matcher; лучшая пара ракурсов; top-10
+    Search --> Web : NailSearchExecution; staged commit сессии
+else Нет результата для нового поиска
+    Search --> Web : Все NO_NAILS: NEED_MORE_PHOTOS;\ntechnical error: отдельный отказ
+end
+note over Web,Embedding
+I исполняется отдельным HTTP-сервисом; другие порты — в backend.
+BUSY/profile mismatch/index empty отклоняются до ML;
+отказ сохраняет прошлую выдачу, без stale finalize.
+Query/admission locks и shared device lease — снаружи ядра.
+end note
+@enduml

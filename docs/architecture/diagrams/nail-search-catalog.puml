@@ -1,0 +1,43 @@
+@startuml
+' Только проект разрешённой подготовки; publish — отдельное действие.
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam sequenceArrowColor #78909C
+skinparam participantBackgroundColor white
+skinparam participantBorderColor #90A4AE
+skinparam maxMessageSize 60
+hide footbox
+title Подготовка каталога через порты — проект
+actor "Исполнитель / CLI-адаптер" as CLI
+participant "Ядро подготовки каталога\nNailCatalogBuildService" as Build
+participant "Единая подготовка фото\nNailImageProcessor" as Processor #E8F0FE
+participant "Кодирование\nNailEmbeddingPort" as Embedding
+participant "Файлы и производные" as Images
+participant "Хранилище\nNailCatalogPort" as Catalog
+CLI -> Build : build(BuildRequest) после отдельного разрешения\nи проверки runtime/inventory
+Build -> Build : Проверить принадлежность фото и fingerprints
+Build -> Catalog : begin_build(BuildIdentity)
+Catalog --> Build : BUILDING, недоступная поиску
+loop Каждое разрешённое фото
+    Build -> Processor : process(PhotoInput, ProcessingProfile)
+    ref over Processor
+Candidate I через HTTP-адаптер и отдельный сервис
+end ref
+    Processor --> Build : OK / NO_NAILS / typed error
+    Build -> Embedding : encode трёх моделей только для OK
+    Embedding --> Build : Полный набор векторов / typed error
+    Build -> Images : write_derivatives(build_id, ProcessedPhoto) только для OK
+    Images --> Build : Opaque ArtifactRef производных
+    Build -> Catalog : write_photo_outcome с регионами, refs и векторами
+end
+Build -> Catalog : read_build_summary(id)
+Catalog --> Build : Покрытие, terminal outcomes, полнота и ошибки
+Build -> Build : Проверить readiness, включая минимум одно OK-фото
+Build --> CLI : Coverage report; готовность / отказ, без активации
+note over CLI,Catalog
+publish — отдельный разрешённый вызов ядра через порт.
+Адаптер повторно проверяет readiness и меняет pointer атомарно.
+Ошибка не публикует build; старые corpus/evidence сохраняются.
+Images — NailImageStorePort с внешним файловым адаптером.
+end note
+@enduml

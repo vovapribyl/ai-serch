@@ -1,0 +1,2 @@
+# Test-only target overlay; installation requires the owner's separate permission.
+pgvector==0.5.0 --hash=sha256:fedc9800894e6da2be51358d7b7c574bf34f247ca741a5a09513622135f5964f

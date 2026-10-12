@@ -1,0 +1,87 @@
+{
+  "repository": "https://github.com/ciembor/agent-rules-books",
+  "commit": "893a88a6fce3a80c565bf39ac65021b43a8b2990",
+  "commit_date": "2026-09-10T11:21:37Z",
+  "retrieved_on": "2026-10-04",
+  "license": "MIT",
+  "files": [
+    {
+      "path": "LICENSE",
+      "upstream_path": "LICENSE",
+      "bytes": 1076,
+      "sha256": "c21def7bbce1900717a361a06af67399903d31bd3a695757fff534d6698d1bdb"
+    },
+    {
+      "path": "references/upstream/docs/USAGE.md",
+      "upstream_path": "docs/USAGE.md",
+      "bytes": 13404,
+      "sha256": "b7b53e0f509dbbefbdfd31b051aab5af12f8a24a3c2b6c7a64c7cc071e8ea145"
+    },
+    {
+      "path": "references/upstream/docs/compatibility/a-philosophy-of-software-design/clean-code.md",
+      "upstream_path": "docs/compatibility/a-philosophy-of-software-design/clean-code.md",
+      "bytes": 4324,
+      "sha256": "3996152bbf4c4ef087050444c0521d598bb1fcd31b17a540c1c6880edb7f6706"
+    },
+    {
+      "path": "references/upstream/a-philosophy-of-software-design/a-philosophy-of-software-design.mini.md",
+      "upstream_path": "a-philosophy-of-software-design/a-philosophy-of-software-design.mini.md",
+      "bytes": 5774,
+      "sha256": "ad8d9bd764179c0d2fea95f2bee3e25d443589a12fec84bfead52bdd94b4645a"
+    },
+    {
+      "path": "references/upstream/a-philosophy-of-software-design/a-philosophy-of-software-design.md",
+      "upstream_path": "a-philosophy-of-software-design/a-philosophy-of-software-design.md",
+      "bytes": 13561,
+      "sha256": "b521814b9d050d0d12594e13aa291029148a971b6f7d5a5ac3e74219de6c8563"
+    },
+    {
+      "path": "references/upstream/clean-architecture/clean-architecture.mini.md",
+      "upstream_path": "clean-architecture/clean-architecture.mini.md",
+      "bytes": 5486,
+      "sha256": "fbead04fa4479bc0d23b8df92e1d04f555e85b9e27994a60209eb311bf342e63"
+    },
+    {
+      "path": "references/upstream/clean-architecture/clean-architecture.md",
+      "upstream_path": "clean-architecture/clean-architecture.md",
+      "bytes": 17782,
+      "sha256": "1f0366be1720989c63df6da8f15f12e78f8786f6e712eeb16cf3690b4dab6cc4"
+    },
+    {
+      "path": "references/upstream/clean-code/clean-code.mini.md",
+      "upstream_path": "clean-code/clean-code.mini.md",
+      "bytes": 3804,
+      "sha256": "a2cd7e30a03376037e441056a5615e7a15c396642daf16f7875a0f5139b65e67"
+    },
+    {
+      "path": "references/upstream/clean-code/clean-code.md",
+      "upstream_path": "clean-code/clean-code.md",
+      "bytes": 13851,
+      "sha256": "0ec945c383144e2eeb52bdd18cc87668bff73c13421e17cc6e4ba3fc5905965e"
+    },
+    {
+      "path": "references/upstream/domain-driven-design/domain-driven-design.mini.md",
+      "upstream_path": "domain-driven-design/domain-driven-design.mini.md",
+      "bytes": 5683,
+      "sha256": "ed6febaa19d3b8c59a67ce61ee6e950e472743f0aa6655a6fed5d6d1d1e8691a"
+    },
+    {
+      "path": "references/upstream/domain-driven-design/domain-driven-design.md",
+      "upstream_path": "domain-driven-design/domain-driven-design.md",
+      "bytes": 42424,
+      "sha256": "de806ceb828df4408e452361ab587d81f213443ad057017b1f6bed2334d5aaa6"
+    },
+    {
+      "path": "references/upstream/implementing-domain-driven-design/implementing-domain-driven-design.mini.md",
+      "upstream_path": "implementing-domain-driven-design/implementing-domain-driven-design.mini.md",
+      "bytes": 7333,
+      "sha256": "9c1a6bd647823e514320840a32cf06ab26b04ec03656d63820e75db959858249"
+    },
+    {
+      "path": "references/upstream/implementing-domain-driven-design/implementing-domain-driven-design.md",
+      "upstream_path": "implementing-domain-driven-design/implementing-domain-driven-design.md",
+      "bytes": 12848,
+      "sha256": "cd2c1d404f60720cebca17fcffed9d68d94b1eef4a13bed63a4f59f01db005ad"
+    }
+  ]
+}

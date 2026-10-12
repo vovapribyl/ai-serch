@@ -1,0 +1,42 @@
+@startuml
+' Проект HTTP-подключения; runtime NOT_RUN.
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam sequenceArrowColor #78909C
+skinparam participantBackgroundColor white
+skinparam participantBorderColor #90A4AE
+skinparam maxMessageSize 60
+hide footbox
+title Candidate I через HTTP-адаптер — проект
+participant "Ядро подготовки\nNailImageProcessor" as Core
+participant "HTTP-клиент\nHttpNailLocalizationAdapter" as Client #E8F0FE
+participant "Отдельный HTTP-сервис I" as Service
+participant "Existing Candidate I\nLangSAMAdapter" as I
+Core -> Client : localize(RgbImage, profile) через NailLocalizationPort
+Client -> Client : Кодировать RGB в PNG; metadata/identity
+Client -> Service : POST /v1/localizations, multipart
+Service -> Service : Admission/validate PNG, checksum и actual profile
+Service -> I : localize(image, frozen_config) под device lease
+I --> Service : LocalizationResult
+Service -> Service : normalize_result и JSON/PNG-маски
+alt SUCCESS, все области корректны
+    Service --> Client : 200 OK, непустой regions
+    Client -> Client : Strict schema, identity и mask decode
+    Client --> Core : NailLocalization(OK, plain regions)
+    Core -> Core : Проверить masks и сформировать crops
+else Нет успешных областей
+    alt Только DETECTOR_NO_MATCH
+        Service --> Client : 200 NO_NAILS, regions=[]
+        Client --> Core : NailLocalization(NO_NAILS)
+    else Технический отказ
+        Service --> Client : Problem Details 4xx/5xx
+        Client --> Core : NailProcessingError, не NO_NAILS
+    end
+end
+note over Client,Service
+Timeout — не отмена native inference и не retry.
+Backend не держит device lease при ожидании HTTP.
+Service удерживает её до actual completion/exit.
+Поздний ответ не публикует отменённый run.
+end note
+@enduml
