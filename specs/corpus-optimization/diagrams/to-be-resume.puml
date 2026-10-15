@@ -1,0 +1,27 @@
+@startuml
+title TO-BE · Остановка и продолжение
+hide footbox
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam sequenceArrowColor #65758B
+skinparam sequenceLifeLineBorderColor #C9D3DF
+skinparam sequenceParticipantBorderColor #C9D3DF
+skinparam sequenceParticipantBackgroundColor white
+participant "Владелец" as owner
+participant "Управляющий\nпроцесс" as control
+participant "Worker DINOv2" as worker
+participant "Задания\nи прогресс" as store
+participant "Контроль\nресурсов" as guard
+control -> worker : Запустить стадию DINOv2
+worker -> store : Закреплять checkpoints завершённых стадий фото
+guard -> control : Критическое давление / неизвестное или устаревшее наблюдение: STOP
+control -> worker : Остановить свои процессы; проверить выход
+control -> store : Зафиксировать STOP; публикацию не начинать
+owner -> control : Отдельно разрешить продолжение
+control -> store : Проверить SHA, профиль и checkpoints
+store --> control : Готовые и незавершённые результаты
+control -> worker : Выполнить только незавершённую часть
+worker -> store : Закрепить завершённые результаты
+worker --> control : Стадия завершена; затем SigLIP2
+note over owner, guard : Hard STOP: новое разрешение и пакет; ошибки фото повторяются только вручную.
+@enduml

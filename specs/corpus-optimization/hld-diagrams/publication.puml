@@ -1,0 +1,25 @@
+@startuml
+title HLD · Публикация через снимок каталога
+hide footbox
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam sequenceArrowColor #65758B
+skinparam sequenceLifeLineBorderColor #C9D3DF
+skinparam sequenceParticipantBorderColor #C9D3DF
+skinparam sequenceParticipantBackgroundColor white
+participant "Контроллер" as control
+participant "Файлы\nрезультатов" as files
+participant "PostgreSQL\nСостояние / каталог" as db
+participant "Чтение\nдля поиска" as read
+control -> files : Проверить полные совместимые результаты
+files --> control : Проверенные результаты
+control -> db : Проверить готовность всей редакции товара
+db --> control : Все фото завершены; есть готовое
+control -> db : Подготовить редакцию и снимок состава
+db --> control : Неактивный снимок готов
+control -> db : Транзакция: проверить владельца и указатель; активировать и записать публикацию
+db --> control : Commit подтверждён
+read -> db : После допуска SEARCH закрепить активный снимок
+db --> read : Один снимок для всего запроса
+note over control, read : До commit прежний каталог активен; повтор редакции не создаёт дубликат.
+@enduml

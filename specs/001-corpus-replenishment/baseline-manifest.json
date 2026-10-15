@@ -1,0 +1,1141 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "status": "PROPOSED_PENDING_OWNER_APPROVAL",
+  "source_root": "/Users/v.pribylovskiy/.codex/worktrees/corpus-optimization/Ai",
+  "source_head": "ba495046c80d25190a1745cb9f63384d00a42dd4",
+  "target_root": "/Users/v.pribylovskiy/Documents/ChatGPT/Ai",
+  "target_head": "b38f07ee4e465efdce02eae6d3a89ba9c7658cf0",
+  "target_branch": "codex/upload-optimiz",
+  "scope": "Code/test/schema hashes only; no models/corpus/DB execution; PROPOSE_ADD is not transfer authorization before B0 approval; MERGE_REVIEW_REQUIRED is not whole-file overwrite permission.",
+  "files": [
+    {
+      "path": "experiments/nail_localization/config.py",
+      "source_sha256": "9a3a1ec66d56ab20891f664bcfb7b57ca2cd50966bafdcf057369831ed223fef",
+      "target_sha256": null,
+      "bytes": 8453,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of services/candidate_i/bootstrap.py",
+        "import dependency of services/candidate_i/binding.py",
+        "import dependency of tests/test_candidate_i_binding.py",
+        "import dependency of experiments/nail_localization/langsam_adapter.py",
+        "import dependency of experiments/nail_localization/roi_localizer.py",
+        "import dependency of tests/nail_localization/test_langsam_adapter_contract.py"
+      ]
+    },
+    {
+      "path": "experiments/nail_localization/contracts.py",
+      "source_sha256": "ba5efba3ab807fa2deec8c6c80bc84516103468363cf01aeb85105de9050b469",
+      "target_sha256": null,
+      "bytes": 2872,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of experiments/nail_localization/langsam_adapter.py",
+        "import dependency of experiments/nail_localization/roi_localizer.py"
+      ]
+    },
+    {
+      "path": "experiments/nail_localization/langsam_adapter.py",
+      "source_sha256": "055247c20669ebd679a9f65cd92a1d70b055e91d8fbbb4ca1c7d83253bf20084",
+      "target_sha256": null,
+      "bytes": 10714,
+      "source_git_state": " M",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of services/candidate_i/binding.py",
+        "import dependency of tests/nail_localization/test_langsam_adapter_contract.py"
+      ]
+    },
+    {
+      "path": "experiments/nail_localization/roi.py",
+      "source_sha256": "0534970657b6b25231c02709b7938f3bebcf69d047c52342e035e05bc69df8bb",
+      "target_sha256": null,
+      "bytes": 5385,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of experiments/nail_localization/roi_localizer.py"
+      ]
+    },
+    {
+      "path": "experiments/nail_localization/roi_localizer.py",
+      "source_sha256": "01d1462de3938ff369b82a58cdd9591646a1cfc48a0db5ec36c60cd0f401641e",
+      "target_sha256": null,
+      "bytes": 4078,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of services/candidate_i/binding.py"
+      ]
+    },
+    {
+      "path": "migrations/versions/0001_initial_empty_schema.py",
+      "source_sha256": "b280f02ecf2527e90b0e2dc3ff0ce776b3abee3741f7330bf2d1cd74d71cccd6",
+      "target_sha256": "b280f02ecf2527e90b0e2dc3ff0ce776b3abee3741f7330bf2d1cd74d71cccd6",
+      "bytes": 384,
+      "source_git_state": "tracked-clean",
+      "action": "KEEP_IDENTICAL",
+      "reasons": [
+        "complete migration chain reference"
+      ]
+    },
+    {
+      "path": "migrations/versions/0002_corpus_versions.py",
+      "source_sha256": "59352940b8da10afab1ce02f1e4c5d9c4e6b5e3524e5a77f20c9937838c40fab",
+      "target_sha256": "59352940b8da10afab1ce02f1e4c5d9c4e6b5e3524e5a77f20c9937838c40fab",
+      "bytes": 1355,
+      "source_git_state": "tracked-clean",
+      "action": "KEEP_IDENTICAL",
+      "reasons": [
+        "complete migration chain reference"
+      ]
+    },
+    {
+      "path": "migrations/versions/0003_import_safety.py",
+      "source_sha256": "50b732fd5abd1c7e4b80c447c9866209c34fe1f60a2e219f41812d158fc477f6",
+      "target_sha256": "50b732fd5abd1c7e4b80c447c9866209c34fe1f60a2e219f41812d158fc477f6",
+      "bytes": 1431,
+      "source_git_state": "tracked-clean",
+      "action": "KEEP_IDENTICAL",
+      "reasons": [
+        "complete migration chain reference"
+      ]
+    },
+    {
+      "path": "migrations/versions/0004_import_operations.py",
+      "source_sha256": "42b249cd8ee7f9ff54cb6bbb0136160224255ff538fd6dfb089564ecec80660e",
+      "target_sha256": "42b249cd8ee7f9ff54cb6bbb0136160224255ff538fd6dfb089564ecec80660e",
+      "bytes": 1351,
+      "source_git_state": "tracked-clean",
+      "action": "KEEP_IDENTICAL",
+      "reasons": [
+        "complete migration chain reference"
+      ]
+    },
+    {
+      "path": "migrations/versions/0005_gate3_search.py",
+      "source_sha256": "951362a39b38cc08d6b8fa5b4fec2507c65881a08ee606188a9daa260c1d554c",
+      "target_sha256": null,
+      "bytes": 4455,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "complete migration chain reference"
+      ]
+    },
+    {
+      "path": "migrations/versions/0006_gate4_result_axes.py",
+      "source_sha256": "cf58f1c47f5620338ca444ff9a2183025fd09e726134faa677bbdc331e724771",
+      "target_sha256": null,
+      "bytes": 680,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "complete migration chain reference"
+      ]
+    },
+    {
+      "path": "migrations/versions/0007_gate4_candidate_annotations.py",
+      "source_sha256": "4ecfde71551a478f11174911cc1fdc153a8d7210aceae10dde37488b1ddda0c4",
+      "target_sha256": null,
+      "bytes": 1868,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "complete migration chain reference"
+      ]
+    },
+    {
+      "path": "migrations/versions/0008_gate4_multiphoto_v3.py",
+      "source_sha256": "7526f896bc053d50ee3cbafea2cba860bedda364db77b61e2b69409b646aacbf",
+      "target_sha256": null,
+      "bytes": 1788,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "complete migration chain reference"
+      ]
+    },
+    {
+      "path": "migrations/versions/nail_search_v1.py",
+      "source_sha256": "deda08bc0d9faa94f4e7af6d5d937656c9e41911448bb07cbc03caafa0e96310",
+      "target_sha256": null,
+      "bytes": 14801,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "complete migration chain reference"
+      ]
+    },
+    {
+      "path": "pyproject.toml",
+      "source_sha256": "1db1cc7ab85faf7c6b8e400e127556fd483345b36000eca3eba1c4d007c4c6f4",
+      "target_sha256": "6fdf260b5ccaff3d68079611ad1773eb533e03c1cb97bf418bf1fe2a35d5946a",
+      "bytes": 1276,
+      "source_git_state": " M",
+      "action": "REFERENCE_ONLY",
+      "reasons": [
+        "dependency reference only; no install/change"
+      ]
+    },
+    {
+      "path": "scripts/run_nail_build.py",
+      "source_sha256": "4f28b51695634c26c82bca41cbd7e41a14b399acbdec18355d015c1494277002",
+      "target_sha256": null,
+      "bytes": 7027,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of tests/test_nail_build_composition.py"
+      ]
+    },
+    {
+      "path": "scripts/run_nail_native_build.py",
+      "source_sha256": "d50e9ead3ec33266e5e81e4bb36eefb1bb74b6e11e671a96d9de3045c629e771",
+      "target_sha256": null,
+      "bytes": 15982,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of tests/test_nail_native_job.py",
+        "imported submodule of tests/test_nail_build_preparation.py"
+      ]
+    },
+    {
+      "path": "services/candidate_i/__init__.py",
+      "source_sha256": "03c5ffbc395323ec80dd0c01ee10ea4240bedfacadbb9f50de98cc79722b61fa",
+      "target_sha256": null,
+      "bytes": 70,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "existing HTTP I contract implementation"
+      ]
+    },
+    {
+      "path": "services/candidate_i/app.py",
+      "source_sha256": "399711e02c16cc56486ad90399675559487f139bf8a0ef1f3d7c7973bd2419eb",
+      "target_sha256": null,
+      "bytes": 7413,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "existing HTTP I contract implementation",
+        "import dependency of services/candidate_i/bootstrap.py",
+        "import dependency of tests/test_candidate_i_http_service.py",
+        "import dependency of tests/test_candidate_i_readiness.py",
+        "import dependency of tests/support/nail_build_fake_worker.py"
+      ]
+    },
+    {
+      "path": "services/candidate_i/binding.py",
+      "source_sha256": "b01ac1f0c81ce3727448da6417ce99ee86b6af63dd1ea99636f175ae53a42999",
+      "target_sha256": null,
+      "bytes": 3739,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "existing HTTP I contract implementation",
+        "import dependency of services/candidate_i/bootstrap.py",
+        "import dependency of tests/test_candidate_i_binding.py"
+      ]
+    },
+    {
+      "path": "services/candidate_i/bootstrap.py",
+      "source_sha256": "4590a151dbb47cc95507bbca833166e296a49611785d7d88822f3a336a875ca3",
+      "target_sha256": null,
+      "bytes": 4584,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "existing HTTP I contract implementation",
+        "import dependency of services/candidate_i/health_entry.py",
+        "import dependency of tests/test_candidate_i_bootstrap.py",
+        "import dependency of scripts/run_nail_native_build.py",
+        "import dependency of tests/support/candidate_i_runtime_probe.py"
+      ]
+    },
+    {
+      "path": "services/candidate_i/health_entry.py",
+      "source_sha256": "1a2afbd706abc42f8a71eb011b74e66ed56eb58b3122fa4113dc2fa706906398",
+      "target_sha256": null,
+      "bytes": 1998,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "existing HTTP I contract implementation",
+        "import dependency of tests/test_nail_native_bindings.py"
+      ]
+    },
+    {
+      "path": "services/candidate_i/readiness.py",
+      "source_sha256": "e33465b02c350c2b49881baf30cb256319408bc33d8807a7de626d75092e9bc0",
+      "target_sha256": null,
+      "bytes": 3414,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "existing HTTP I contract implementation",
+        "import dependency of services/candidate_i/bootstrap.py",
+        "import dependency of tests/test_candidate_i_readiness.py"
+      ]
+    },
+    {
+      "path": "services/candidate_i/requirements.lock",
+      "source_sha256": "013ba67fcd8688b2b4ec4ecd86bb802e8a3ac3b8b2d9bc016af984c178f5e93b",
+      "target_sha256": null,
+      "bytes": 172505,
+      "source_git_state": "??",
+      "action": "REFERENCE_ONLY",
+      "reasons": [
+        "dependency reference only; no install/change"
+      ]
+    },
+    {
+      "path": "services/candidate_i/settings.py",
+      "source_sha256": "901e1171b38c9760e332767424a9bd9e28d3bfd4c7461636e6b4bfcac21fd69b",
+      "target_sha256": null,
+      "bytes": 651,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "existing HTTP I contract implementation",
+        "import dependency of services/candidate_i/bootstrap.py",
+        "import dependency of tests/test_nail_runtime.py",
+        "import dependency of tests/test_candidate_i_http_service.py",
+        "import dependency of tests/test_candidate_i_readiness.py",
+        "import dependency of tests/support/nail_build_fake_worker.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_build_composition.py",
+      "source_sha256": "63a6ba47adaaed5f2294a92073b4b37a403a24eec025c65afcd7b0c1e4b6448e",
+      "target_sha256": null,
+      "bytes": 18331,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_job.py",
+        "import dependency of tests/test_nail_build_composition.py",
+        "import dependency of tests/test_nail_native_job.py",
+        "import dependency of scripts/run_nail_build.py",
+        "import dependency of scripts/run_nail_native_build.py",
+        "import dependency of tests/support/nail_build_fake_worker.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_build_runner.py",
+      "source_sha256": "d1c30236178c977f409904bdb77e0ac06e8d9d17872ffe79787dd1b1aa8eb5ae",
+      "target_sha256": null,
+      "bytes": 16700,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of src/product_search/infrastructure/nail_input_preparation.py",
+        "import dependency of src/product_search/infrastructure/nail_native_job.py",
+        "import dependency of src/product_search/infrastructure/nail_build_composition.py",
+        "import dependency of tests/test_nail_build_composition.py",
+        "import dependency of tests/test_nail_native_job.py",
+        "import dependency of tests/test_nail_build_preparation.py",
+        "import dependency of tests/test_nail_native_bindings.py",
+        "import dependency of tests/test_nail_catalog_build.py",
+        "import dependency of tests/test_nail_input_preparation.py",
+        "import dependency of scripts/run_nail_build.py",
+        "import dependency of scripts/run_nail_native_build.py",
+        "import dependency of tests/support/nail_build_fake_worker.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_image_store.py",
+      "source_sha256": "0ebed071d258936c9c815d8f9d16d1764ac04f72621dd869edcc5d0404427cb6",
+      "target_sha256": null,
+      "bytes": 18060,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of tests/test_nail_service.py",
+        "import dependency of tests/test_nail_image_store.py",
+        "import dependency of tests/support/nail_build_fake_worker.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_input_preparation.py",
+      "source_sha256": "cde2ac9a967327f55b91ed9951ae84b6ba5d0742466fd1a971e4c00c0ac8fdf8",
+      "target_sha256": null,
+      "bytes": 3936,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of tests/test_nail_input_preparation.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_ml_adapters.py",
+      "source_sha256": "d3495629d2ab3fa10daeadb6e26dea651ac3e7f37c651710d61631b8d6f28ad2",
+      "target_sha256": null,
+      "bytes": 10539,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of src/product_search/infrastructure/nail_build_composition.py",
+        "import dependency of tests/test_nail_build_preparation.py",
+        "import dependency of tests/test_nail_service.py",
+        "import dependency of tests/test_nail_embedding_adapter.py",
+        "import dependency of tests/test_nail_native_bindings.py",
+        "import dependency of tests/test_candidate_i_http_loopback.py",
+        "import dependency of tests/test_candidate_i_http_adapter.py",
+        "import dependency of tests/support/candidate_i_runtime_probe.py",
+        "import dependency of tests/support/nail_build_fake_worker.py",
+        "import dependency of tests/support/candidate_i_scenario_probe.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_native_bindings.py",
+      "source_sha256": "6f20923a4ba5cdc33e4f228f97cd32723437d68f9c6dbfd611fcb066a380949a",
+      "target_sha256": null,
+      "bytes": 8482,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of tests/test_nail_native_bindings.py",
+        "import dependency of scripts/run_nail_native_build.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_native_job.py",
+      "source_sha256": "559d4fa7aaa867877d669aa515ecaaf0aa74a38bf88aec59d956bb96eb18d61f",
+      "target_sha256": null,
+      "bytes": 10661,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of tests/test_nail_native_job.py",
+        "import dependency of scripts/run_nail_native_build.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_query_runner.py",
+      "source_sha256": "b0fdddd242bbb0b1137fb708e091ecc08c9b67cb56eed4c2b7dbf1d578e731cc",
+      "target_sha256": null,
+      "bytes": 6645,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of tests/test_nail_query_runner.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_repository.py",
+      "source_sha256": "a3cbcd1273a4eb20f998ca3819ffb53a1f3767eb2d8b1cc5b930a6bb6c3028ba",
+      "target_sha256": null,
+      "bytes": 15441,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of tests/test_nail_native_bindings.py",
+        "import dependency of tests/test_nail_repository.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_runtime.py",
+      "source_sha256": "0c5812e9539f2e6bf93c75d076ac0f904a2a70f3161dbe30c0f893d044343157",
+      "target_sha256": null,
+      "bytes": 2385,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of src/product_search/infrastructure/nail_image_store.py",
+        "import dependency of src/product_search/infrastructure/nail_native_job.py",
+        "import dependency of src/product_search/infrastructure/nail_build_composition.py",
+        "import dependency of src/product_search/infrastructure/nail_query_runner.py",
+        "import dependency of services/candidate_i/settings.py",
+        "import dependency of services/candidate_i/app.py",
+        "import dependency of tests/test_nail_native_job.py",
+        "import dependency of tests/test_nail_runtime.py",
+        "import dependency of tests/test_candidate_i_http_service.py",
+        "import dependency of scripts/run_nail_build.py",
+        "import dependency of scripts/run_nail_native_build.py",
+        "import dependency of tests/support/candidate_i_runtime_probe.py",
+        "import dependency of tests/support/nail_build_fake_worker.py"
+      ]
+    },
+    {
+      "path": "src/product_search/infrastructure/nail_wire.py",
+      "source_sha256": "5e4b39bfd527eacfae450a4dc11782ea90c05e3a3e0579ba0d7d0f00389edb1b",
+      "target_sha256": null,
+      "bytes": 10969,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail adapters baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of src/product_search/infrastructure/nail_ml_adapters.py",
+        "import dependency of src/product_search/infrastructure/nail_build_runner.py",
+        "import dependency of services/candidate_i/bootstrap.py",
+        "import dependency of services/candidate_i/settings.py",
+        "import dependency of services/candidate_i/app.py",
+        "import dependency of tests/test_nail_runtime.py",
+        "import dependency of tests/test_candidate_i_http_loopback.py",
+        "import dependency of tests/test_candidate_i_http_service.py",
+        "import dependency of tests/test_candidate_i_readiness.py",
+        "import dependency of tests/test_candidate_i_http_adapter.py",
+        "import dependency of tests/support/candidate_i_runtime_probe.py",
+        "import dependency of tests/support/nail_build_fake_worker.py"
+      ]
+    },
+    {
+      "path": "src/product_search/main.py",
+      "source_sha256": "71f065e5c4d9782c8f69e430e8efa919a4d87d9d5abefef9fafe4f7b25322302",
+      "target_sha256": "a8186988988edeb3940298dc58fa2170b667853b7f15da32be4d1ce5cee9b727",
+      "bytes": 4985,
+      "source_git_state": " M",
+      "action": "MERGE_REVIEW_REQUIRED",
+      "reasons": [
+        "integration reference; do not copy unrelated Web/evaluation changes"
+      ]
+    },
+    {
+      "path": "src/product_search/search/model_manifest.py",
+      "source_sha256": "8287a5d614a4ebafc70e07936856e5d2bd6b649370bd64c7404b156aadf58526",
+      "target_sha256": null,
+      "bytes": 2971,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of src/product_search/infrastructure/nail_native_job.py",
+        "import dependency of tests/test_nail_image_only.py",
+        "import dependency of tests/support/candidate_i_runtime_probe.py",
+        "import dependency of tests/support/candidate_i_scenario_probe.py",
+        "import dependency of src/product_search/search/openclip_provider.py"
+      ]
+    },
+    {
+      "path": "src/product_search/search/nail_catalog_build.py",
+      "source_sha256": "bf8dae41b22a41cf4bef8a6a48169ac29653fdc7bf15cc70feea6d93b642640d",
+      "target_sha256": null,
+      "bytes": 5933,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail core baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of src/product_search/infrastructure/nail_build_composition.py",
+        "import dependency of tests/test_nail_catalog_build.py"
+      ]
+    },
+    {
+      "path": "src/product_search/search/nail_contracts.py",
+      "source_sha256": "142b3558b91c0f9ae59eca4358681e15725d6f005321c7efdc498710447140b7",
+      "target_sha256": null,
+      "bytes": 23197,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail core baseline",
+        "import dependency of src/product_search/search/nail_matching.py",
+        "import dependency of src/product_search/search/nail_catalog_build.py",
+        "import dependency of src/product_search/search/nail_service.py",
+        "import dependency of src/product_search/search/nail_ports.py",
+        "import dependency of src/product_search/search/nail_image_processor.py",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of src/product_search/infrastructure/nail_ml_adapters.py",
+        "import dependency of src/product_search/infrastructure/nail_image_store.py",
+        "import dependency of src/product_search/infrastructure/nail_repository.py",
+        "import dependency of src/product_search/infrastructure/nail_build_composition.py",
+        "import dependency of src/product_search/infrastructure/nail_wire.py",
+        "import dependency of src/product_search/infrastructure/nail_query_runner.py",
+        "import dependency of src/product_search/infrastructure/nail_build_runner.py",
+        "import dependency of services/candidate_i/bootstrap.py",
+        "import dependency of services/candidate_i/settings.py",
+        "import dependency of services/candidate_i/app.py",
+        "import dependency of services/candidate_i/binding.py",
+        "import dependency of tests/test_nail_build_composition.py",
+        "import dependency of tests/test_nail_contracts.py",
+        "import dependency of tests/test_nail_runtime.py",
+        "import dependency of tests/test_nail_matching.py",
+        "import dependency of tests/test_nail_build_preparation.py",
+        "import dependency of tests/test_nail_query_runner.py",
+        "import dependency of tests/test_nail_service.py",
+        "import dependency of tests/test_nail_image_processor.py",
+        "import dependency of tests/test_nail_embedding_adapter.py",
+        "import dependency of tests/test_nail_native_bindings.py",
+        "import dependency of tests/test_nail_image_store.py",
+        "import dependency of tests/test_nail_catalog_build.py",
+        "import dependency of tests/test_nail_repository.py",
+        "import dependency of tests/test_candidate_i_binding.py",
+        "import dependency of tests/test_candidate_i_bootstrap.py",
+        "import dependency of tests/test_candidate_i_http_loopback.py",
+        "import dependency of tests/test_candidate_i_http_service.py",
+        "import dependency of tests/test_candidate_i_http_adapter.py",
+        "import dependency of scripts/run_nail_native_build.py",
+        "import dependency of tests/support/candidate_i_runtime_probe.py",
+        "import dependency of tests/support/nail_build_fake_worker.py",
+        "import dependency of tests/support/candidate_i_scenario_probe.py"
+      ]
+    },
+    {
+      "path": "src/product_search/search/nail_image_processor.py",
+      "source_sha256": "a64e8f1914fe4592e4f27999dfdf9b92f943fd48746a4a489a0138d93a29491a",
+      "target_sha256": null,
+      "bytes": 2426,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail core baseline",
+        "import dependency of src/product_search/search/nail_catalog_build.py",
+        "import dependency of src/product_search/search/nail_service.py",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of src/product_search/infrastructure/nail_build_composition.py",
+        "import dependency of tests/test_nail_service.py",
+        "import dependency of tests/test_nail_image_processor.py",
+        "import dependency of tests/support/candidate_i_runtime_probe.py",
+        "import dependency of tests/support/candidate_i_scenario_probe.py"
+      ]
+    },
+    {
+      "path": "src/product_search/search/nail_matching.py",
+      "source_sha256": "62f18a3cb034eafcfde656d71dd7c243d705fcd9ea60bf3d72411d0e18349c48",
+      "target_sha256": null,
+      "bytes": 4495,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail core baseline",
+        "import dependency of src/product_search/search/nail_service.py",
+        "import dependency of src/product_search/infrastructure/nail_repository.py",
+        "import dependency of tests/test_nail_matching.py"
+      ]
+    },
+    {
+      "path": "src/product_search/search/nail_ports.py",
+      "source_sha256": "f5a42e2829433a95c3ed85b74b1a0d5d54c332d3c454c450f0e53831d245d6ad",
+      "target_sha256": null,
+      "bytes": 2278,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail core baseline",
+        "import dependency of src/product_search/search/nail_catalog_build.py",
+        "import dependency of src/product_search/search/nail_service.py",
+        "import dependency of src/product_search/search/nail_image_processor.py"
+      ]
+    },
+    {
+      "path": "src/product_search/search/nail_service.py",
+      "source_sha256": "48a6b2f52970bb98ccc914c501f38938ab7bf8243e1a544d2a027b441f9fba3a",
+      "target_sha256": null,
+      "bytes": 4570,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "nail core baseline",
+        "import dependency of src/product_search/infrastructure/nail_native_bindings.py",
+        "import dependency of tests/test_nail_service.py"
+      ]
+    },
+    {
+      "path": "src/product_search/search/openclip_provider.py",
+      "source_sha256": "5c9c84a38ec3d6ae88c0895adc16a83e1677d862fce4c582bf7ea798a20e7642",
+      "target_sha256": null,
+      "bytes": 1952,
+      "source_git_state": " M",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of tests/support/candidate_i_runtime_probe.py",
+        "import dependency of tests/support/candidate_i_scenario_probe.py"
+      ]
+    },
+    {
+      "path": "src/product_search/search/providers.py",
+      "source_sha256": "46d452a3b3e10b9ed258f21b6960615c2ef5050edf7adc5526bd463676c6dee0",
+      "target_sha256": null,
+      "bytes": 1285,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of src/product_search/search/openclip_provider.py",
+        "import dependency of src/product_search/search/transformers_provider.py"
+      ]
+    },
+    {
+      "path": "src/product_search/search/transformers_provider.py",
+      "source_sha256": "b4fe4a4799700b7e8af0c8dd5ab29bda59711fb0c63c4e069ebab73515e62841",
+      "target_sha256": null,
+      "bytes": 1800,
+      "source_git_state": " M",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of tests/support/candidate_i_runtime_probe.py",
+        "import dependency of tests/support/candidate_i_scenario_probe.py"
+      ]
+    },
+    {
+      "path": "src/product_search/web/app.py",
+      "source_sha256": "963ed8d1415dd0653bea8f3a972dc27543dab66dc7143a7d8fa4f040a56ef70f",
+      "target_sha256": "e1a0d433c5a4e90c42cd1124e7dbb0ed2e86be5b4189a55d6d486cd79b59e489",
+      "bytes": 42184,
+      "source_git_state": " M",
+      "action": "MERGE_REVIEW_REQUIRED",
+      "reasons": [
+        "integration reference; do not copy unrelated Web/evaluation changes"
+      ]
+    },
+    {
+      "path": "tests/nail_localization/test_langsam_adapter_contract.py",
+      "source_sha256": "fe23b68916c7b2b9d2ac27ab2e69e45c42abf15653e89c06b0862bdcc2c71b3a",
+      "target_sha256": null,
+      "bytes": 10600,
+      "source_git_state": "tracked-clean",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of tests/test_candidate_i_bootstrap.py"
+      ]
+    },
+    {
+      "path": "tests/support/candidate_i_probe_watchdog.py",
+      "source_sha256": "6f89e87d766b91d0a614603525ec800da7fb6d44e5f741b8be5a427d4eff9ab4",
+      "target_sha256": null,
+      "bytes": 3864,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of tests/test_nail_build_composition.py",
+        "import dependency of tests/test_nail_native_job.py",
+        "import dependency of scripts/run_nail_build.py",
+        "import dependency of scripts/run_nail_native_build.py"
+      ]
+    },
+    {
+      "path": "tests/support/candidate_i_resource_metrics.py",
+      "source_sha256": "f333f2d8d564bd8dc6deab0182fc4fd45b0b8c6d89a3008ab03895da51449970",
+      "target_sha256": null,
+      "bytes": 791,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of tests/test_candidate_i_resource_metrics.py",
+        "import dependency of tests/support/candidate_i_runtime_probe.py"
+      ]
+    },
+    {
+      "path": "tests/support/candidate_i_runtime_probe.py",
+      "source_sha256": "4ee608fb4c59678c734108b35b011e7e329a16459915fd318957ce2221a625b6",
+      "target_sha256": null,
+      "bytes": 24433,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "imported submodule of tests/test_candidate_i_resource_metrics.py",
+        "import dependency of tests/support/candidate_i_probe_watchdog.py"
+      ]
+    },
+    {
+      "path": "tests/support/candidate_i_scenario_probe.py",
+      "source_sha256": "ba51d079953e5dcf1aad9ed7f0586c262f0e80d84732e8786af3f7008974229b",
+      "target_sha256": null,
+      "bytes": 3630,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of tests/support/candidate_i_runtime_probe.py"
+      ]
+    },
+    {
+      "path": "tests/support/nail_build_fake_worker.py",
+      "source_sha256": "8308a6c46db1ffde9b5d8f9d8553b6fb27ab60e7a98aa816b2351d95ca0d0ea5",
+      "target_sha256": null,
+      "bytes": 10453,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of scripts/run_nail_build.py"
+      ]
+    },
+    {
+      "path": "tests/support/nail_db.py",
+      "source_sha256": "8a77385792f1589d1074c02e26931e9cd67c82a62a5188afbfcd2af3cc932a68",
+      "target_sha256": null,
+      "bytes": 4866,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "import dependency of tests/test_nail_migration_integration.py",
+        "import dependency of tests/test_nail_repository.py"
+      ]
+    },
+    {
+      "path": "tests/test_candidate_i_binding.py",
+      "source_sha256": "3ad3c4ebb69e3fb56032347607652bb763fffcb1ff75e4f23f2a6de458f818f7",
+      "target_sha256": null,
+      "bytes": 8659,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_candidate_i_bootstrap.py",
+      "source_sha256": "8bfc5f1671a5ce2b19dc9c780f195d6b7efc1e4d615b24db831b8ccd41fdae3f",
+      "target_sha256": null,
+      "bytes": 5139,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_candidate_i_http_adapter.py",
+      "source_sha256": "3457ce6e17fdd4247c4ef38395564f439c2e6d9e12a63aa36a37dff941b48772",
+      "target_sha256": null,
+      "bytes": 11585,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_candidate_i_http_loopback.py",
+      "source_sha256": "e69cb3d04edfcbc39eee28a77d9b72363bed21110297191f40cc082a845da0ee",
+      "target_sha256": null,
+      "bytes": 2833,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_candidate_i_http_service.py",
+      "source_sha256": "168ddaed148556eecbb9ed6e8b38339ee5ca6a1d0aa11047f29453777670f94b",
+      "target_sha256": null,
+      "bytes": 12142,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately",
+        "import dependency of tests/test_nail_runtime.py"
+      ]
+    },
+    {
+      "path": "tests/test_candidate_i_readiness.py",
+      "source_sha256": "bc7ec2d57ecd74bd1e05e58a70d2aa513e4ae08729df8e28e24bee2824ba03d5",
+      "target_sha256": null,
+      "bytes": 3834,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_candidate_i_resource_metrics.py",
+      "source_sha256": "9227e8cceecdd174a6ead8577d89e3c6faf96076b6a2d6ab5dd218cd89e5aa22",
+      "target_sha256": null,
+      "bytes": 3288,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_build_composition.py",
+      "source_sha256": "1f83f09c21a266cb80f515ae3b5c5ed6ec0fa7f1c995a0117161da4503ce7e58",
+      "target_sha256": null,
+      "bytes": 16830,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_build_preparation.py",
+      "source_sha256": "f1618e363fb63712b64ff7270034eb55000d162e8dc1d54e5642da8c3c60eadb",
+      "target_sha256": null,
+      "bytes": 12255,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately",
+        "import dependency of tests/test_nail_build_composition.py"
+      ]
+    },
+    {
+      "path": "tests/test_nail_catalog_build.py",
+      "source_sha256": "9bd37e6215befb7fc79c952b7c0394f32b2d743ae63690bf2bf569e57ff9eaea",
+      "target_sha256": null,
+      "bytes": 9524,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately",
+        "import dependency of tests/test_nail_build_composition.py"
+      ]
+    },
+    {
+      "path": "tests/test_nail_contracts.py",
+      "source_sha256": "27e55ce8e91ec4de2a95dfa4add75601a508bdbffa8737ce5a0be2e114faa306",
+      "target_sha256": null,
+      "bytes": 6250,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_dependency_boundaries.py",
+      "source_sha256": "56bc464a141fc117c53401dc977e1a5c9328f75fba6b093abda81e25b060812f",
+      "target_sha256": null,
+      "bytes": 1553,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_embedding_adapter.py",
+      "source_sha256": "bed3ead47f11bf29141fb8b696e33ca6a323b4dfde37c1f86ee07571eeaf54ab",
+      "target_sha256": null,
+      "bytes": 2335,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_image_only.py",
+      "source_sha256": "0c18b0dd9c530ea18f1c2b7a978131a99e854b90e08fda58d4f473e5a5eb50da",
+      "target_sha256": null,
+      "bytes": 4078,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_image_processor.py",
+      "source_sha256": "0d614561a5073cd26e3c86915043997723e870d561f91ebb316fd8a18756aab7",
+      "target_sha256": null,
+      "bytes": 2948,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_image_store.py",
+      "source_sha256": "f42092dc49d767f25577ff6026d815240a1616032f1e6b569f87edb1a6b67d88",
+      "target_sha256": null,
+      "bytes": 9759,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_input_preparation.py",
+      "source_sha256": "68e57aca0dc513920986728742999f353c136f5addf5a41ecd4c2b6b8bb73ad4",
+      "target_sha256": null,
+      "bytes": 3740,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_matching.py",
+      "source_sha256": "0f8dc9df20f30efad2aacc26e91ee7b59d18c441c0a39a6d20272bc9ac7e34c3",
+      "target_sha256": null,
+      "bytes": 4458,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_migration_integration.py",
+      "source_sha256": "f970e4eecfc4c9cf4da5bb88c90993533768b9c61c0979c415560d3e752a522b",
+      "target_sha256": null,
+      "bytes": 15120,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_native_bindings.py",
+      "source_sha256": "f1b7617de13c413469cdf1c1421d2909941fdfe2fb3cdfaf747eaf8c9e46fe47",
+      "target_sha256": null,
+      "bytes": 9944,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_native_job.py",
+      "source_sha256": "48794b51ebfded6d7d664f19c6367014dca82a3f690e59429fa5b096512db321",
+      "target_sha256": null,
+      "bytes": 12370,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_query_runner.py",
+      "source_sha256": "2f0525dc2f13ea037ac01be71701d6b1c4900d134672ae7f51492ac6e08f08e7",
+      "target_sha256": null,
+      "bytes": 4301,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_repository.py",
+      "source_sha256": "e0a6cb9003ed6727748b5bce749fd3c0646333832beaac4b47c27e8ff11b6978",
+      "target_sha256": null,
+      "bytes": 9001,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_runtime.py",
+      "source_sha256": "dbc687e7d24fb6b8ecd6ec82fbaee51ac672a889fe61a2ac89de5cacda2d922b",
+      "target_sha256": null,
+      "bytes": 4182,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    },
+    {
+      "path": "tests/test_nail_service.py",
+      "source_sha256": "28f1fb9793795be626a4ab0c9e0309124965a2576cb333573e07e78fc713dfb1",
+      "target_sha256": null,
+      "bytes": 10030,
+      "source_git_state": "??",
+      "action": "PROPOSE_ADD",
+      "reasons": [
+        "selected source test; execution safety reviewed separately"
+      ]
+    }
+  ],
+  "unresolved_local_imports": [],
+  "external_import_roots": [
+    "PIL",
+    "__future__",
+    "alembic",
+    "argparse",
+    "ast",
+    "asyncio",
+    "base64",
+    "binascii",
+    "collections",
+    "concurrent",
+    "contextlib",
+    "copy",
+    "dataclasses",
+    "email",
+    "fastapi",
+    "fcntl",
+    "gc",
+    "hashlib",
+    "http",
+    "httpx",
+    "importlib",
+    "io",
+    "itertools",
+    "json",
+    "math",
+    "open_clip",
+    "os",
+    "pathlib",
+    "pgvector",
+    "platform",
+    "psycopg",
+    "pytest",
+    "random",
+    "re",
+    "secrets",
+    "shutil",
+    "signal",
+    "socket",
+    "sqlalchemy",
+    "starlette",
+    "stat",
+    "struct",
+    "subprocess",
+    "sys",
+    "tempfile",
+    "threading",
+    "time",
+    "torch",
+    "transformers",
+    "types",
+    "typing",
+    "urllib",
+    "uuid",
+    "uvicorn",
+    "weakref",
+    "zlib"
+  ],
+  "excluded_test_paths": [
+    "test_candidate_i_control_fallback.py",
+    "test_candidate_i_probe_guards.py",
+    "test_candidate_i_probe_watchdog.py",
+    "test_candidate_i_real_smoke.py",
+    "test_candidate_i_scenario_probe.py",
+    "test_nail_composition.py",
+    "test_nail_evidence.py",
+    "test_nail_manual20.py",
+    "test_nail_real_providers.py",
+    "test_nail_ui.py",
+    "test_nail_web.py"
+  ],
+  "limits": [
+    "AST closure resolves static and literal dynamic imports only; arbitrary runtime imports/fixture file references require test preflight.",
+    "Migration files are source candidates only; chain must be validated before any test-DB operation; no working-DB operation authorized."
+  ]
+}

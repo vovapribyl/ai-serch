@@ -12,6 +12,11 @@
 | Нормативные входы | `ART-01` v1.1, `ART-05` v0.4, `ART-06` v0.8, `ART-07` v0.6, `ART-08` v0.5; `DEC-008`, `DEC-050`, `DEC-053`–`DEC-059` |
 | Следующий gate | Исполнение Gate 2 → отдельный owner gate результата |
 
+Паспорт выше относится к базовой части MVP v0.5.
+[Дополнение пополнения корпуса](#дополнение-пополнение-поискового-корпуса) имеет
+собственный статус APPROVED_BY_OWNER по сообщению «СОгласовано, продолжай»
+2026-10-12; оно не наследует утверждение базовых критериев.
+
 ## Назначение и граница
 
 Документ определяет, чем подтвердить готовность локального MVP. Компактная трассировка связывает группы бизнес-требований с правилами, функциями, данными, NFR и проверками. Промежуточные локальные ID и повторная трассировка к каждому источнику не создаются.
@@ -79,3 +84,254 @@ MVP получает технический `PASS`, когда:
 - v0.3 `DRAFT` — по `SRC-049`, `DEC-057` закрыты лимиты, метрики, формат ID и контур JSON-отчёта. Третий круг оставляет критические ошибки и срок хранения.
 - v0.4 `DRAFT` — по `SRC-050`, `DEC-058` определены критические ошибки загрузки и срок хранения.
 - v0.5 `APPROVED_BY_OWNER` — по `SRC-052`, `DEC-059` критерий полной замены заменён первоначальной загрузкой единственного рабочего снимка; final review — `PASS`, 0/0/0; утверждено `SRC-053`.
+
+
+## Дополнение: пополнение поискового корпуса
+
+### Паспорт дополнения
+
+| Поле | Значение |
+|---|---|
+| Версия / дата | v1 / 2026-10-12 |
+| Статус дополнения | APPROVED_BY_OWNER — «СОгласовано, продолжай» 2026-10-12 после review/исправления Minor |
+| Основание | [ФТ v1](../../specs/corpus-optimization/functional-requirements.md), [TO-BE v2](../../specs/corpus-optimization/to-be.md), APPROVED_BY_OWNER |
+| Назначение | Канонические сценарии приёмки и измеримые результаты пополнения для Spec Kit |
+| Граница | Отдельная возможность пополнения; прежние критерии поиска v0.5 и их статус не меняются |
+
+Метод проверки и ожидаемое свидетельство заданы ниже. На дату утверждения
+дополнения проверки ещё не проводились; фактические синтетические свидетельства
+2026-10-14 записаны в отдельной таблице ниже.
+Подготовленные начальные состояния могут быть синтетическими. Реальный корпус,
+модели и изменение БД требуют отдельного пакета/разрешения. Это критерии поведения,
+а не обещание достигнутого качества, времени полной обработки или экономии RAM.
+
+### Запуск и размер партии
+
+**Требования:** FR-020–026, FR-066.
+**Сценарии:** допустимый запуск с ожидающими фото выбирает максимум 5;
+недопустимый пакет или конкурирующий запуск отклоняется; пустая очередь не
+вызывает ML; достижение любого лимита не допускает новую работу; после завершения
+следующий запуск не начинается автоматически.
+**Измеримый результат:** в одном запуске выбрано не более 5 фото; 0 новых операций
+после исчерпания допуска; 0 автоматических следующих партий.
+**Проверка / свидетельство:** наблюдение выбранной партии и истории допуска/вызовов;
+сводка результата и причин отказов.
+
+### Обработка и сохранение стадий
+
+**Требования:** FR-027–030, FR-070–071.
+**Сценарии:** фото с найденными областями получает crops и согласованный полный
+набор векторов; новая тяжёлая стадия начинается после завершения предыдущего
+исполнителя; неполный результат не считается завершённым; повтор подтверждения
+той же стадии/попытки не создаёт второй результат.
+**Измеримый результат:** 0 стадий, объявленных завершёнными с неполными результатами;
+0 дубликатов при повторном подтверждении; 0 пересечений тяжёлых стадий.
+**Проверка / свидетельство:** сопоставление ожидаемых и сохранённых результатов,
+последовательность вызовов/завершений и подтверждения прогресса.
+
+### Продолжение и совместимость
+
+**Требования:** FR-031–035, FR-047–048.
+**Сценарии:** после остановки и нового разрешения пригодные стадии сохраняются,
+выполняется незавершённая часть; повреждённые, неполные и несовместимые результаты
+не переиспользуются; прежний живой исполнитель препятствует продолжению;
+изменение выбранных фото или смыслового профиля создаёт новую редакцию.
+**Измеримый результат:** 0 повторных вызовов для пригодных завершённых стадий;
+0 переиспользований неподходящих результатов; 0 запусков продолжения без нового допуска.
+**Проверка / свидетельство:** состояние до/после восстановления, история вызовов,
+причины отказов и идентичность редакции/профиля.
+
+### Ошибки и ручной повтор
+
+**Требования:** FR-036–040.
+**Сценарии:** отсутствие ногтей завершает фото без кодирования; техническая ошибка
+фото сохраняется и не мешает независимым фото; повторяется только вручную
+выбранная ошибка; недостоверность общего хранения завершает запуск.
+**Измеримый результат:** 0 автоматических повторов ERROR; 0 вызовов кодирования
+для исхода «ногти не найдены»; каждая техническая ошибка имеет сохранённую причину.
+**Проверка / свидетельство:** исходы фото, причины, выбор ручного повтора и история операций.
+
+### Предупреждение и ограниченное ожидание
+
+**Требования:** FR-041–045.
+**Сценарии:** warning приостанавливает новую тяжёлую операцию; время ожидания не
+продлевается колебаниями; 30 секунд устойчиво допустимых свежих наблюдений допускают
+продолжение только при действующем пакете; исчерпание ожидания завершает запуск.
+**Измеримый результат:** логический срок ожидания — максимум 5 минут и не дольше
+остатка окна; устойчивость перед продолжением — минимум 30 секунд подряд;
+0 новых тяжёлых операций при warning/истёкшем допуске.
+**Проверка / свидетельство:** управляемая временная последовательность сигналов,
+момент решения продолжить/завершить и история операций. Допуски реального таймера
+и выбор частоты наблюдения определяются в техническом плане до испытания.
+
+### Hard STOP
+
+**Требования:** FR-046–048, FR-060.
+**Сценарии:** critical, unknown или stale имеют приоритет над ожиданием; запуск
+останавливается, пригодный закреплённый прогресс сохраняется; новая публикация
+и автоматический restart не начинаются; продолжение требует нового допуска.
+**Измеримый результат:** 0 новых тяжёлых операций и публикаций после hard STOP;
+0 автоматических продолжений; все пригодные закреплённые результаты доступны восстановлению.
+**Проверка / свидетельство:** сигнал STOP, сохранённый прогресс, история операций
+и подтверждение завершения собственных исполнителей.
+
+### Готовность и публикация товара
+
+**Требования:** FR-049–059.
+**Сценарии:** у товара 7 выбранных фото — после первых 5 публикации нет; после
+остальных 2 товар публикуется автоматически, если минимум одно фото готово;
+все ERROR/NO_NAILS не приводят к публикации. Включаются только полные совместимые
+фото. Ошибки другого товара не блокируют готовый. Повтор публикации не дублирует
+данные; ошибка не открывает частичную новую редакцию и сохраняет прежнюю.
+Ошибка публикации сохраняется отдельно от ошибки фото; ручной повтор публикации
+использует пригодные результаты без повторения завершённых ML-стадий.
+**Измеримый результат:** 0 опубликованных товаров с незавершёнными выбранными фото;
+0 неполных фото в поиске; 0 дубликатов при повторе редакции; 0 потерь остальных
+опубликованных товаров при успешном добавлении одного товара; 0 повторных
+ML-вызовов для пригодных стадий при ручном повторе публикации; ошибки публикации
+различимы с ошибками фото.
+**Проверка / свидетельство:** выбранный список/исходы фото, опубликованный состав
+до/после и результат повторной либо неуспешной публикации. Для неизвестного ответа
+после завершённой публикации факт устанавливается по сохранённому состоянию.
+
+### Поиск и пополнение по очереди
+
+**Требования:** FR-061–064.
+**Сценарии:** до пополнения новые запросы поиска недоступны; текущий поиск завершается;
+без подтверждения освобождения ресурсов build не начинается. После build поиск
+возвращается только после подтверждённого завершения исполнителей и допустимых ресурсов;
+неподтверждённое завершение сохраняет недоступность с причиной.
+**Измеримый результат:** 0 пересечений ML-поиска и пополнения; 0 разрешений нового
+режима без необходимого подтверждения завершения прежнего.
+**Проверка / свидетельство:** последовательность допуска/состояний своих процессов,
+статус поиска и причины отказа; отсутствие одновременных model-backed режимов.
+
+### Итог и видимость прогресса
+
+**Требования:** FR-065, FR-067–069.
+**Сценарии:** каждый завершённый запуск оставляет сводку; владелец видит исходы
+фото и оставшуюся работу, результаты публикации, причину завершения и доступность поиска.
+**Измеримый результат:** для каждого завершённого проверочного запуска имеется
+сводка со всеми перечисленными сведениями и соответствием сохранённому состоянию.
+**Проверка / свидетельство:** сверка сводки с известным состоянием заданий и каталога.
+
+### Покрытие и оставшиеся границы дополнения
+
+Девять групп покрывают FR-020–071. Общий бизнес-вход — утверждённый TO-BE v2;
+канонические функции — отдельный документ ART-06. Точные схемы данных и resource
+profile остаются предметом технического плана и профильных артефактов; они не
+дополняются придуманными значениями ради теста. Критерии скорости, качества
+и RAM для реального прогона здесь не устанавливаются.
+
+Это утверждённое дополнение критериев, а не приёмка реализации. До model-backed проверки владелец
+утверждает конкретные входы/бюджеты и ожидаемые свидетельства; результаты сохраняются отдельно.
+
+Проверка дополнения v1: независимое review PASS, 0 Critical / 0 Major / 1 Minor.
+Уточнены явные результаты FR-057/058: отдельная ошибка публикации и ручной повтор
+без пересчёта пригодных стадий. Исправление самопроверено, повторное review не требуется.
+На дату review дополнения реализация и выполнение критериев не проверялись.
+Последующие свидетельства не меняют этот исторический результат review.
+
+### Фактическая трассировка — 2026-10-14 (пункты 047–048)
+
+Нормативные критерии выше сохранены. Это запись свидетельств STANDARD, а не
+переход gate или приёмка эксплуатации. Все 52 FR-020–071 сопоставлены с тестами.
+«B1» означает подтверждённое поведение в выбранной синтетической проверке;
+«Частично» означает подтверждённую часть с явно оставшейся границей.
+Результат общей регрессии и границы: [отчёт](../../specs/001-corpus-replenishment/acceptance-verification-report.md).
+Реальные модели/корпус/MPS, расходование runtime claims и качество поиска не проверялись.
+
+| FR | Предмет проверки | Уровень свидетельства | Выполненный тест |
+|---|---|---|---|
+| FR-020 | Фиксированный список и профиль | B1 | [test_input_identity_is_verified_before_mode_or_database_mutation](../../tests/test_replenishment_flow.py) |
+| FR-021 | Отказ для недопустимого пакета | B1 | [test_invalid_scope_or_inconsistent_deadlines_are_refused](../../tests/test_replenishment_contracts.py) |
+| FR-022 | Конкурирующий запуск | B1 | [test_rejected_second_start_cannot_replace_repository_of_active_build](../../tests/test_replenishment_flow.py) |
+| FR-023 | Сохранённая очередь | B1 | [test_queue_binding_is_finite_and_cannot_choose_another_batch_in_same_run](../../tests/test_replenishment_postgres_integration.py) |
+| FR-024 | Максимум пять фото | B1 | [test_seven_photos_wait_for_explicit_second_batch_and_summary_explains_waiting](../../tests/test_replenishment_acceptance_flow.py) |
+| FR-025 | Лимиты и конец окна | Частично | [test_admission_budget_stops_work_and_preserves_pending_photo](../../tests/test_replenishment_controller.py) |
+| FR-026 | Пустая очередь без ML | B1 | [test_no_work_does_not_open_a_worker](../../tests/test_replenishment_controller.py) |
+| FR-027 | Crop по маске и области | Частично | [test_mask_bbox_white_pixels_and_source_mask](../../tests/test_nail_image_processor.py) |
+| FR-028 | Порядок трёх encoder-стадий | Частично | [test_stages_are_sequential_and_checkpoints_precede_success](../../tests/test_replenishment_controller.py) |
+| FR-029 | Полный подтверждённый результат | B1 | [test_attempt_cannot_be_marked_complete_without_checkpoint](../../tests/test_replenishment_postgres_integration.py) |
+| FR-030 | Checkpoint каждого фото | B1 | [test_checkpoint_receipt_is_idempotent_and_conflicting_hash_is_refused](../../tests/test_replenishment_postgres_integration.py) |
+| FR-031 | Восстановление сохранённого состояния | B1 | [test_ready_snapshot_survives_restart_without_automatic_ml](../../tests/test_replenishment_recovery_flow.py) |
+| FR-032 | Проверка identity и целостности | B1 | [test_manifest_cannot_be_reused_for_different_identity](../../tests/test_replenishment_artifacts.py) |
+| FR-033 | Повреждённое не переиспользуется | B1 | [test_damaged_checkpoint_blocks_all_model_warmups](../../tests/test_replenishment_resume.py) |
+| FR-034 | Повтор только незавершённых стадий | B1 | [test_unknown_commit_is_reconciled_without_repeating_completed_models](../../tests/test_replenishment_resume.py) |
+| FR-035 | Новая редакция при изменении входа/профиля | B1 | [test_changed_profile_creates_new_revision_without_replacing_incompatible_active](../../tests/test_replenishment_acceptance_flow.py) |
+| FR-036 | NO_NAILS без encoders | B1 | [test_empty_localization_finishes_no_nails_without_encoder_attempt](../../tests/test_replenishment_postgres_integration.py) |
+| FR-037 | Ошибка фото сохраняется | B1 | [test_photo_error_is_saved_without_losing_successful_photo](../../tests/test_replenishment_flow.py) |
+| FR-038 | Независимое фото после ошибки | B1 | [test_no_nails_and_photo_errors_skip_encoders_and_other_photo_continues](../../tests/test_replenishment_controller.py) |
+| FR-039 | Только явно выбранная ошибка | B1 | [test_only_selected_error_retries_and_a_second_manual_retry_reuses_first_result](../../tests/test_replenishment_retry.py) |
+| FR-040 | Отказ общего хранения прекращает запуск | B1 | [test_global_store_failure_stops_run_without_marking_photo_success](../../tests/test_replenishment_controller.py) |
+| FR-041 | Warning закрывает новую работу | B1 | [test_warning_waits_for_stable_resources_before_any_warmup](../../tests/test_replenishment_recovery_flow.py) |
+| FR-042 | Ожидание не дольше 300 секунд/окна | B1 | [test_cleanup_cutoff_wins_before_wait_limit](../../tests/test_replenishment_waiting.py) |
+| FR-043 | Продолжение после 30 свежих OK секунд | B1 | [test_warning_blocks_until_thirty_seconds_of_fresh_ok](../../tests/test_replenishment_waiting.py) |
+| FR-044 | Warning сбрасывает устойчивость | B1 | [test_warning_resets_stability_without_resetting_window](../../tests/test_replenishment_waiting.py) |
+| FR-045 | Тайм-аут завершает запуск | B1 | [test_warning_times_out_without_ml_or_publication](../../tests/test_replenishment_recovery_flow.py) |
+| FR-046 | Critical/unknown/stale — hard STOP | B1 | [test_critical_unknown_and_stale_are_terminal_even_after_ok](../../tests/test_replenishment_waiting.py) |
+| FR-047 | Продолжение через новый допуск | Частично | [test_denied_build_never_opens_worker](../../tests/test_replenishment_flow.py) |
+| FR-048 | Проверка старого живого worker | B1 | [test_live_inherited_child_blocks_successor_without_touching_foreign_process](../../tests/test_replenishment_recovery_flow.py) |
+| FR-049 | Результаты предыдущих партий | B1 | [test_seven_photos_wait_for_explicit_second_batch_and_summary_explains_waiting](../../tests/test_replenishment_acceptance_flow.py) |
+| FR-050 | Все терминальны, минимум одно OK | B1 | [test_readiness_requires_all_terminal_and_at_least_one_ok](../../tests/test_replenishment_rules.py) |
+| FR-051 | Автоматическая публикация готового | B1 | [test_start_stages_publish_saved_summary_and_return_search](../../tests/test_replenishment_flow.py) |
+| FR-052 | В поиске только полные совместимые фото | B1 | [test_only_ok_photos_are_materialized](../../tests/test_replenishment_publication.py) |
+| FR-053 | Нет готовых — нет публикации | B1 | [test_all_failed_photos_mark_product_not_publishable](../../tests/test_replenishment_flow.py) |
+| FR-054 | Фото редакции видимы атомарно | B1 | [test_publication_is_atomic_immutable_and_idempotent](../../tests/test_replenishment_publication.py) |
+| FR-055 | Без дубликата редакции | B1 | [test_unknown_publication_checks_receipt_without_second_publication](../../tests/test_replenishment_retry.py) |
+| FR-056 | Ошибка не меняет прежний active | B1 | [test_sql_failure_rolls_back_snapshot_and_keeps_old_active](../../tests/test_replenishment_publication.py) |
+| FR-057 | Ошибка публикации отдельно | B1 | [test_cli_summary_shows_publication_failure_and_refuses_extra_product_fields](../../tests/test_replenishment_acceptance_flow.py) |
+| FR-058 | Ручная публикация без нового ML | B1 | [test_retry_failed_publication_reuses_ready_and_does_not_warm_models](../../tests/test_replenishment_retry.py) |
+| FR-059 | Товары независимы | B1 | [test_independent_failed_product_does_not_block_successful_product](../../tests/test_replenishment_acceptance_flow.py) |
+| FR-060 | Нет публикации после hard STOP | B1 | [test_critical_after_processing_blocks_publication_and_search_restart](../../tests/test_replenishment_recovery_flow.py) |
+| FR-061 | Закрыть поиск перед build | B1 | [test_drain_closes_new_query_admission_atomically_and_retains_mode_lock](../../tests/test_replenishment_lifecycle.py) |
+| FR-062 | Build после завершения поиска | Частично | [test_build_epoch_is_issued_after_owned_search_workers_have_exited](../../tests/test_replenishment_lifecycle.py) |
+| FR-063 | SEARCH после teardown | Частично | [test_start_stages_publish_saved_summary_and_return_search](../../tests/test_replenishment_flow.py) |
+| FR-064 | Неподтверждённый teardown сохраняет отказ | B1 | [test_unconfirmed_exit_persists_failure_and_keeps_search_closed](../../tests/test_replenishment_flow.py) |
+| FR-065 | Сохранённая сводка | B1 | [test_private_socket_routes_cli_start_and_saved_status](../../tests/test_replenishment_flow.py) |
+| FR-066 | Без автоматической следующей партии | B1 | [test_seven_photos_wait_for_explicit_second_batch_and_summary_explains_waiting](../../tests/test_replenishment_acceptance_flow.py) |
+| FR-067 | Исходы и оставшиеся задания | B1 | [test_seven_photos_wait_for_explicit_second_batch_and_summary_explains_waiting](../../tests/test_replenishment_acceptance_flow.py) |
+| FR-068 | Различимые состояния товаров | B1 | [test_summary_distinguishes_no_ready_photo_from_publication_failure](../../tests/test_replenishment_acceptance_flow.py) |
+| FR-069 | Причина и доступность поиска | B1 | [test_unconfirmed_exit_persists_failure_and_keeps_search_closed](../../tests/test_replenishment_flow.py) |
+| FR-070 | Следующая стадия после teardown | Частично | [test_unconfirmed_worker_exit_blocks_next_model](../../tests/test_replenishment_controller.py) |
+| FR-071 | Повтор подтверждения без дубликата | B1 | [test_checkpoint_receipt_is_idempotent_and_conflicting_hash_is_refused](../../tests/test_replenishment_postgres_integration.py) |
+
+Подсчёт: 45 строк имеют свидетельство B1, 7 — частичное. Это уровни
+покрытия, а не процент выполнения требований или результат бизнес-приёмки.
+Для FR-035 также прошёл `test_changed_selected_input_creates_new_revision_and_keeps_old_snapshot`;
+для FR-068 состояния PUBLISHED/WAITING_PHOTOS/PUBLICATION_FAILED подтверждены соседними
+сценариями того же acceptance_flow. Fresh OK/300s/30s — fake monotonic clock.
+
+| Оставшаяся граница | Что требуется дальше |
+|---|---|
+| FR-025 | Реальные ceilings/pressure и полный набор limits реального worker не проверены. |
+| FR-027 | Unit crop processor прошёл; I→replenishment worker ещё не подключён. |
+| FR-028 | Порядок fake стадий подтверждён; вычисления настоящих моделей не выполнялись. |
+| FR-047 | Callback отказа/новый owner проверены; свежие runtime claims и их расходование предстоят. |
+| FR-062 | Owned fake OS workers проверены; освобождение настоящих ML/MPS ресурсов не проверено. |
+| FR-063 | Policy/fake teardown проверены; настоящий SEARCH runtime не активирован. |
+| FR-070 | Отказ при неподтверждённом fake teardown проверен; teardown настоящих моделей не проверен. |
+
+Дальнейшие свидетельства получают в задачах 049–050 после отдельного
+runtime package/разрешения; итоговое code review — 051. Текущие проверки
+не заменяют техническую или бизнес-приёмку реальной системы.
+
+### Дополнительное runtime-свидетельство050 — 2026-10-14
+
+Предыдущая таблица сохраняет состояние немодельной проверки047–048.
+[Отчёт050](../../specs/001-corpus-replenishment/runtime-probe-report.md): явно
+разрешённыйbbb3d386, один товар/фото, новая temporary DB, полный реальный путь
+I→три encoders→4checkpoints→OK/READY→publication;49,690с, cleanup подтверждён.
+
+| Требование | Что дополнила проба | Оставшееся ограничение |
+|---|---|---|
+| FR-025 |84наблюдения OK, finite window, RSS/MPS ниже approved ceilings | Это один вход; все пределы и fault cases настоящими моделями не испытаны |
+| FR-027 | Actual I HTTP→10crops/масок→saved checkpoint | Качество областей не оценено владельцем, разнообразные фото не проверены |
+| FR-028 | Реальные OpenCLIP→DINOv2→SigLIP2,30finite/unit-norm vectors512/768/768 | Качество поиска и паритет рабочего каталога не проверены |
+| FR-047 | Свежий grant consumed для одного frozen package | Real RESUME/retry не выполнялись |
+| FR-062 | Перед запуском model services отсутствовали | Остановка активного рабочего поиска в этой пробе не выполнялась |
+| FR-063 | Temporary host вернулся из BUILD, завершился; модели отсутствуют | Working SEARCH/Web не активированы |
+| FR-070 | Четыре реальные стадии прошли последовательно с owned teardown; конечных процессов нет | Все crash/неподтверждённые teardown cases остаются немодельными свидетельствами |
+
+Это дополнение фактических свидетельств без изменения критериев или утверждения
+технической/бизнес-приёмки. Итоговое review051 остаётся открытым.

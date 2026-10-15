@@ -1,0 +1,250 @@
+{
+  "status": "NOT_SELECTED_BY_OWNER",
+  "package": "pgvector",
+  "version": "0.5.0",
+  "source_root": "/Users/v.pribylovskiy/.codex/worktrees/candidate-i-http/Ai/.superpowers/sdd/plan/g3-test-deps",
+  "target_root": "/Users/v.pribylovskiy/Documents/ChatGPT/Ai/.venv/lib/python3.12/site-packages",
+  "files": [
+    {
+      "path": "pgvector-0.5.0.dist-info/INSTALLER",
+      "bytes": 4,
+      "sha256": "ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508"
+    },
+    {
+      "path": "pgvector-0.5.0.dist-info/METADATA",
+      "bytes": 19422,
+      "sha256": "6d8d7611e88f2a9efc8cfffc9c150f9de16c3fbc54bfc643e30bec8a69005896"
+    },
+    {
+      "path": "pgvector-0.5.0.dist-info/RECORD",
+      "bytes": 6209,
+      "sha256": "aafb9b6360a723298b756e940ecfe88393c7541d02193b897f030f2bc26951cc"
+    },
+    {
+      "path": "pgvector-0.5.0.dist-info/REQUESTED",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pgvector-0.5.0.dist-info/WHEEL",
+      "bytes": 91,
+      "sha256": "69e6228a0d35958183cc1812f07c565ce837b95eb51bd8a33acba9fa4f68d6c9"
+    },
+    {
+      "path": "pgvector-0.5.0.dist-info/licenses/LICENSE.txt",
+      "bytes": 1083,
+      "sha256": "8a631592536e9967bae49aaa121c1312c1571eab9544ab288ff96b08c21d5893"
+    },
+    {
+      "path": "pgvector-0.5.0.dist-info/top_level.txt",
+      "bytes": 9,
+      "sha256": "c4619a5c545c4911c4867d074b514dfd48c25abd46f9648f831c786b43497343"
+    },
+    {
+      "path": "pgvector/__init__.py",
+      "bytes": 193,
+      "sha256": "daa01be153372dcb275b0845bd1a2c9c8e104b42899d30eb6346a84525d721c8"
+    },
+    {
+      "path": "pgvector/_utils.py",
+      "bytes": 642,
+      "sha256": "e11604a230941dadfaaf802c6ae29f4026a1511697558180aa5baa1da01f9ba5"
+    },
+    {
+      "path": "pgvector/asyncpg/__init__.py",
+      "bytes": 75,
+      "sha256": "a056ab7bbc578bb3d283e7028551db9307f59e9f724de8685d1b4d082b2f3332"
+    },
+    {
+      "path": "pgvector/asyncpg/register.py",
+      "bytes": 1027,
+      "sha256": "3a86e5a1932a09e90bc5059baffd38fd0bdf19c42ef128f0229faaae1661cf6c"
+    },
+    {
+      "path": "pgvector/bit.py",
+      "bytes": 3100,
+      "sha256": "270d5519fdbb0f95787c1a803abc68252c59a0bf86ca946234e222b14cf0e4ae"
+    },
+    {
+      "path": "pgvector/django/__init__.py",
+      "bytes": 618,
+      "sha256": "8bf328dcb39995ebe732172985cefcf173435ad139dc866648e0c9b5d1d7cb07"
+    },
+    {
+      "path": "pgvector/django/bit.py",
+      "bytes": 1242,
+      "sha256": "791a6ff04a603438f20e157b3451514f5d4ad1f860dc6e59b625e6d0debb1b8a"
+    },
+    {
+      "path": "pgvector/django/extensions.py",
+      "bytes": 349,
+      "sha256": "407c97524157228feb13f93962f42772a2f98f11dbb2ae3325b266b60e1d37d8"
+    },
+    {
+      "path": "pgvector/django/functions.py",
+      "bytes": 1511,
+      "sha256": "ad7c12db601f160919d4eae5662964e06dee2333924eefa4a3677f236dc956b7"
+    },
+    {
+      "path": "pgvector/django/halfvec.py",
+      "bytes": 1924,
+      "sha256": "caecec39f3d7325eb8b36b433133d16df12ee753650cd6089bfc4550cf497ebc"
+    },
+    {
+      "path": "pgvector/django/indexes.py",
+      "bytes": 1615,
+      "sha256": "1ed42803676bc7bff448e812b5dfa9ba715da30fd27858e31a5426a9570580d5"
+    },
+    {
+      "path": "pgvector/django/sparsevec.py",
+      "bytes": 2125,
+      "sha256": "f3ea41f41cb8d22def5b7d3c23aec39dffcfa5fb3eee80c438b94fc03baa7516"
+    },
+    {
+      "path": "pgvector/django/vector.py",
+      "bytes": 1889,
+      "sha256": "5efa90680fc1bdfdd545dcd9d2500f6864fa6df3f503ff124881eedd24da98ad"
+    },
+    {
+      "path": "pgvector/halfvec.py",
+      "bytes": 3409,
+      "sha256": "6a439b6b92c78ac25520edbd0772acafccf6bf5e63dd09ff0eb586f29754395f"
+    },
+    {
+      "path": "pgvector/peewee/__init__.py",
+      "bytes": 243,
+      "sha256": "7f64cb472753418499796f1fa4cb07510743776cc0375c936ac268802bec3535"
+    },
+    {
+      "path": "pgvector/peewee/bit.py",
+      "bytes": 756,
+      "sha256": "d10efb487d73695d4d72fb9efce2a49a19c02ece240282c6b166b10e543e04d9"
+    },
+    {
+      "path": "pgvector/peewee/halfvec.py",
+      "bytes": 1195,
+      "sha256": "909a36abc65940a577cafb7e7eacee988952ddd53b3f678830c9d196b530c7c4"
+    },
+    {
+      "path": "pgvector/peewee/sparsevec.py",
+      "bytes": 1206,
+      "sha256": "a8043faa17f15dd0294871ca28094fb6d28f6944061d80063431bc6662f45963"
+    },
+    {
+      "path": "pgvector/peewee/vector.py",
+      "bytes": 1178,
+      "sha256": "66030b0cbaa02e6c2512c546c6a31bb727e7bf2f14cc70368031dd466905ffee"
+    },
+    {
+      "path": "pgvector/pg8000/__init__.py",
+      "bytes": 75,
+      "sha256": "a056ab7bbc578bb3d283e7028551db9307f59e9f724de8685d1b4d082b2f3332"
+    },
+    {
+      "path": "pgvector/pg8000/register.py",
+      "bytes": 1166,
+      "sha256": "135295cbdbca0835af12f39a3bccff56e6fd4a7dc5d26bbc7e3512339f3cdb73"
+    },
+    {
+      "path": "pgvector/psycopg/__init__.py",
+      "bytes": 128,
+      "sha256": "7ffeb490f574be5e84f0ad60376a108701b6148cab7086f5dad5afc40e7dd93e"
+    },
+    {
+      "path": "pgvector/psycopg/bit.py",
+      "bytes": 941,
+      "sha256": "91b7497745c7fb5c84369cb896c6c1292342bb5c631acf9d1e9c11adf3ac57d9"
+    },
+    {
+      "path": "pgvector/psycopg/halfvec.py",
+      "bytes": 1532,
+      "sha256": "99784300bb25d835fa4b27a6d8fb9e697ab1b10e0184b4044c364f92ebc30308"
+    },
+    {
+      "path": "pgvector/psycopg/register.py",
+      "bytes": 1239,
+      "sha256": "7a16aa2bf1bacf9c78fca4f1461c9bea2147e2d69cd4f91c17b28ab80e6fafef"
+    },
+    {
+      "path": "pgvector/psycopg/sparsevec.py",
+      "bytes": 1572,
+      "sha256": "6c2a1f1a1e67145fcdf794e1bc9030033479b8f96b137ffb23f1ad0163c62d45"
+    },
+    {
+      "path": "pgvector/psycopg/vector.py",
+      "bytes": 1922,
+      "sha256": "bb583a90a8ae87a02490acaf1588aa1b3d3107f23a42be320de1f0eb8c1a8c8b"
+    },
+    {
+      "path": "pgvector/psycopg2/__init__.py",
+      "bytes": 75,
+      "sha256": "a056ab7bbc578bb3d283e7028551db9307f59e9f724de8685d1b4d082b2f3332"
+    },
+    {
+      "path": "pgvector/psycopg2/halfvec.py",
+      "bytes": 993,
+      "sha256": "d6cdf33cae0eb5f2042b848d59b42c7fc054118688271a12e2ab567e2373ebec"
+    },
+    {
+      "path": "pgvector/psycopg2/register.py",
+      "bytes": 1340,
+      "sha256": "ef6f560b3144427bd10df6753f3f507001809049ad7c63bb069e78c734e1eb7a"
+    },
+    {
+      "path": "pgvector/psycopg2/sparsevec.py",
+      "bytes": 1027,
+      "sha256": "0554c3f5f22029ec4ceb3aca6b9f5ed8a006ba3606ad830e8ada535af392c931"
+    },
+    {
+      "path": "pgvector/psycopg2/vector.py",
+      "bytes": 1237,
+      "sha256": "297f57646f076c39a28b51029d86ff9e640dfefa2b1d42190736fa83e9d0ff83"
+    },
+    {
+      "path": "pgvector/py.typed",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pgvector/sparsevec.py",
+      "bytes": 5851,
+      "sha256": "2ab0d1abfa0930ce74fb21e710cea3e554eca5362750087d8810676d7b0c1e26"
+    },
+    {
+      "path": "pgvector/sqlalchemy/__init__.py",
+      "bytes": 286,
+      "sha256": "faec23f54b0da3a022011a9b35f10519a79b10898833fc9e1f3b7b39a8866d59"
+    },
+    {
+      "path": "pgvector/sqlalchemy/bit.py",
+      "bytes": 857,
+      "sha256": "3544e7bb31aded49ca1a13e100775d90634337bf819e8b11b114c0e0361fb3bf"
+    },
+    {
+      "path": "pgvector/sqlalchemy/functions.py",
+      "bytes": 300,
+      "sha256": "cc026e108b300ce584aa690750fb0cf0101d7a875f3526b2987a483ac5247155"
+    },
+    {
+      "path": "pgvector/sqlalchemy/halfvec.py",
+      "bytes": 1876,
+      "sha256": "0866aee202cee36768e4d2ffb2c797efbe9ea4c3ad85157bb0e780ad3875f06d"
+    },
+    {
+      "path": "pgvector/sqlalchemy/sparsevec.py",
+      "bytes": 1895,
+      "sha256": "da83980630751b1ec82540da9c62966d8bf3e6ef9995c36d6523778330d99f24"
+    },
+    {
+      "path": "pgvector/sqlalchemy/vector.py",
+      "bytes": 1855,
+      "sha256": "af58ce1e4c81237ed06062c0f5a95dfc5334a2bedf683fd81e3a5c15713c34eb"
+    },
+    {
+      "path": "pgvector/vector.py",
+      "bytes": 3233,
+      "sha256": "fdc426490148e37b4207696d90522a4594a7673e5f397b6a0a2a56ac25e63e6c"
+    }
+  ],
+  "scope": "Only pgvector and its matching dist-info; no other packages, no whole venv, no download; no copying performed."
+}

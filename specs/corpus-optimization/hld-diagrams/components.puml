@@ -1,0 +1,19 @@
+@startuml
+title HLD · Компоненты пополнения
+skinparam backgroundColor white
+skinparam shadowing false
+component "Владелец / пользователь\nКоманды и поиск" as owner
+component "Web / локальная команда\nБез ML-моделей" as web
+component "Управление режимами\nДопуск и свои процессы" as supervisor
+component "Исполнитель поиска\nСобственные ML-процессы\nФиксированный снимок" as query
+component "Контроллер пополнения\nI и encoder по очереди\nДо 5 фото на запуск" as build
+component "PostgreSQL / pgvector\nЗадания и прогресс\nРедакции / снимки" as db
+component "Частные файлы\nФото / маски / crops\nРезультаты стадий" as files
+owner --> web : Запрос
+web --> supervisor : Допуск
+supervisor --> query : Режим SEARCH
+supervisor --> build : Режим BUILD
+query --> db : Чтение каталога
+build --> files : Запись / проверка
+build --> db : Прогресс / публикация
+@enduml

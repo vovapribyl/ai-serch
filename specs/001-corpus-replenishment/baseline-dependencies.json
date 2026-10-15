@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-13",
+  "python": "3.12.14",
+  "method": "AST imports and distribution metadata; no third-party module imported, no tests/models executed",
+  "modules": [
+    {
+      "module": "PIL",
+      "installed_distributions": [
+        {
+          "name": "pillow",
+          "version": "11.3.0"
+        }
+      ],
+      "classification": "installed_metadata_only"
+    },
+    {
+      "module": "alembic",
+      "installed_distributions": [
+        {
+          "name": "alembic",
+          "version": "1.19.1"
+        }
+      ],
+      "classification": "installed_metadata_only"
+    },
+    {
+      "module": "fastapi",
+      "installed_distributions": [
+        {
+          "name": "fastapi",
+          "version": "0.141.1"
+        }
+      ],
+      "classification": "installed_metadata_only"
+    },
+    {
+      "module": "httpx",
+      "installed_distributions": [
+        {
+          "name": "httpx",
+          "version": "0.28.1"
+        }
+      ],
+      "classification": "installed_metadata_only"
+    },
+    {
+      "module": "open_clip",
+      "installed_distributions": [],
+      "classification": "not_resolved_by_installed_metadata"
+    },
+    {
+      "module": "pgvector",
+      "installed_distributions": [],
+      "classification": "not_resolved_by_installed_metadata"
+    },
+    {
+      "module": "psycopg",
+      "installed_distributions": [
+        {
+          "name": "psycopg",
+          "version": "3.3.4"
+        }
+      ],
+      "classification": "installed_metadata_only"
+    },
+    {
+      "module": "pytest",
+      "installed_distributions": [
+        {
+          "name": "pytest",
+          "version": "8.4.2"
+        }
+      ],
+      "classification": "installed_metadata_only"
+    },
+    {
+      "module": "sqlalchemy",
+      "installed_distributions": [
+        {
+          "name": "SQLAlchemy",
+          "version": "2.0.52"
+        }
+      ],
+      "classification": "installed_metadata_only"
+    },
+    {
+      "module": "starlette",
+      "installed_distributions": [
+        {
+          "name": "starlette",
+          "version": "1.6.0"
+        }
+      ],
+      "classification": "installed_metadata_only"
+    },
+    {
+      "module": "torch",
+      "installed_distributions": [],
+      "classification": "not_resolved_by_installed_metadata"
+    },
+    {
+      "module": "transformers",
+      "installed_distributions": [],
+      "classification": "not_resolved_by_installed_metadata"
+    },
+    {
+      "module": "uvicorn",
+      "installed_distributions": [
+        {
+          "name": "uvicorn",
+          "version": "0.52.4"
+        }
+      ],
+      "classification": "installed_metadata_only"
+    }
+  ]
+}

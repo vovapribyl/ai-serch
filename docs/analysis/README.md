@@ -9,6 +9,7 @@
 | [`artifact-contracts.md`](artifact-contracts.md) | Границы `ART-00`–`ART-10` |
 | [`governance.md`](governance.md) | Режимы работы и доказательность |
 | `01-vision-and-scope.md` … `10-risks-assumptions-and-open-questions.md` | Утверждённые предметные артефакты |
+| [ART-06: точка входа в требования](06-user-scenarios-and-functional-requirements.md) | Базовые требования поиска и индекс отдельных документов по возможностям; статус каждого документа указан отдельно |
 
 Для Gate 2 обязательный маршрут намеренно ограничен: `AGENTS.md` → `current-context.md` → [`../gate-2.md`](../gate-2.md). Этот индекс не является четвёртым обязательным документом Gate 2.
 

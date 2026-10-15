@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-14",
+  "baseline_manifest_sha256": "5a89cf8b542fd4f186fbe84ebd2922341f5332ba03251bd2958d086bbe5c7c3e",
+  "unchanged_records": 78,
+  "intentional_changes": [
+    {
+      "path": "src/product_search/search/nail_service.py",
+      "baseline_sha256": "48a6b2f52970bb98ccc914c501f38938ab7bf8243e1a544d2a027b441f9fba3a",
+      "current_sha256": "8407dc1b2574c600190f9d8e7aac2631c0e56c3f22a5e1d1133c9b292f634803",
+      "reason": "Shared ranking and explicit snapshot entrypoint"
+    },
+    {
+      "path": "tests/test_nail_dependency_boundaries.py",
+      "baseline_sha256": "56bc464a141fc117c53401dc977e1a5c9328f75fba6b093abda81e25b060812f",
+      "current_sha256": "4fbcdc99eff9608b8bff4147139ce0e9402ce3779a626b1e6dd21cf987e381f7",
+      "reason": "Transitive checks include the exact new pure core modules and stdlib enum"
+    }
+  ]
+}

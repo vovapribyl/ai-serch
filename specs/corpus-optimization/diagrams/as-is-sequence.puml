@@ -1,0 +1,31 @@
+@startuml
+title AS-IS · Успешная обработка одного фото
+hide footbox
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam sequenceArrowColor #65758B
+skinparam sequenceLifeLineBorderColor #C9D3DF
+skinparam sequenceParticipantBorderColor #C9D3DF
+skinparam sequenceParticipantBackgroundColor white
+participant "Владелец" as owner
+participant "Сборщик" as control
+participant "Подготовка crops\nNailImageProcessor" as processor
+participant "Локализатор I" as local
+participant "Вычислитель\nвекторов" as encode
+participant "Хранилище" as store
+owner -> control : Разрешить ограниченный проход
+control -> store : Прочитать состояние выбранного фото
+store --> control : PENDING фото и его вход
+control -> processor : Подготовить фото
+processor -> local : Выделить области ногтей
+local --> processor : Области и маски
+processor --> control : Готовые crops из исходных пикселей
+loop OpenCLIP → DINOv2 → SigLIP2
+control -> encode : Вычислить векторы всех crops фото
+encode --> control : Vectors выбранной модели
+end
+control -> store : Сохранить маски / crops и все три набора векторов
+store --> control : Полный исход фото закреплён
+control --> owner : В конце прохода вернуть сводку
+note over owner, store : Загруженные модели остаются в памяти. Публикация выполняется отдельно.
+@enduml

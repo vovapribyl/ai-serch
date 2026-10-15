@@ -1,0 +1,14 @@
+@startuml
+title HLD · Ядро, порты и адаптеры
+skinparam backgroundColor white
+skinparam shadowing false
+component "Ядро приложения\nПравила готовности / совместимости\nСценарии обработки и публикации\nПолитика режимов / ожидания" as core
+component "Входные порты\nЗапуск / продолжение / повтор / поиск" as incoming
+component "Выходные порты\nЗадания / результаты / каталог\nML / процессы / наблюдения / время" as outgoing
+component "Входные адаптеры\nWeb / локальная команда / тест" as driving
+component "Выходные адаптеры\nPostgreSQL / файлы / HTTP I / модели\nОС / ресурсный монитор / часы" as driven
+core ..> incoming : Реализует
+core --> outgoing : Использует
+driving --> incoming : Вызывает
+driven ..> outgoing : Реализует
+@enduml

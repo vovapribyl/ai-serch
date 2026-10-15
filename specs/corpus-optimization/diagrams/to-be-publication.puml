@@ -1,0 +1,23 @@
+@startuml
+title TO-BE · Автоматическая публикация товара
+hide footbox
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam sequenceArrowColor #65758B
+skinparam sequenceLifeLineBorderColor #C9D3DF
+skinparam sequenceParticipantBorderColor #C9D3DF
+skinparam sequenceParticipantBackgroundColor white
+participant "Управляющий\nпроцесс" as control
+participant "Задания\nи прогресс" as state
+participant "Файлы\nрезультатов" as files
+participant "Поисковый\nкаталог" as catalog
+control -> state : Проверить все выбранные фото товара
+state --> control : Все завершены; есть готовое фото
+control -> files : Проверить целостность и совместимость результатов
+files --> control : Проверенные готовые фото
+control -> catalog : Подготовить неактивную редакцию товара
+catalog --> control : Редакция проверена
+control -> catalog : Атомарно опубликовать и записать редакцию товара
+catalog --> control : Commit: товар доступен поиску
+note over control, catalog : Без ручного подтверждения; сбой до commit сохраняет прежний каталог.
+@enduml

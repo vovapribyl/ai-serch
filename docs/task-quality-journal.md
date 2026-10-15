@@ -1351,3 +1351,1266 @@ Records61/63/65 STANDARD безreview. Safe suites396/62 имеют разные
 403PASS.20готовых товаров подтверждены;full100/78PENDING не закрыты. Очередь и
 стадийная сборка предложены,не реализованы. Gitcommit не заменяет owner gate,
 публикацию или включение вmain. Причинныйэффекткниг/процесса не установлен.
+
+### 2026-10-12 — Изучение точки входа оптимизации корпуса
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись71; прочитан README отдельного checkout, без продолжения реализации |
+| Результат | Git подтвердил codex/corpus-optimization и незакоммиченные изменения в целевом checkout; README разделяет image-only результат, ограничения доказательств и предложенное пополнение |
+| Проверка / review | Проверены локальные ссылки README и diff журнала; отдельное review не проводилось. Runtime, ML, DB и качество поиска не проверялись |
+| Границы | Рабочий каталог чата не переключался; новые решения, запуск, commit/push/merge и публикация не выполнялись |
+| Основание | README specs/corpus-optimization в /Users/v.pribylovskiy/.codex/worktrees/corpus-optimization/Ai и git status этого checkout |
+
+### 2026-10-12 — Смена маршрута оптимизации на текущую ветку
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | STANDARD, запись72; владелец явно указал продолжать на ветке текущего чата вместо codex/corpus-optimization |
+| Результат | Git подтвердил codex/upload-optimiz в основном checkout; локальная точка входа обновлена на этот маршрут, прежний checkout обозначен как сохранённый источник предыдущего контекста |
+| Проверка / review | Локальные ссылки, конфликтные маркеры и git diff --check; отдельное review не проводилось |
+| Границы | Код между checkout не переносился; совпадение реализации UNKNOWN; ML/build/publish и commit/push/merge не выполнялись |
+| Основание | Прямая инструкция владельца в чате, git status и [точка входа](../specs/corpus-optimization/README.md) |
+
+### 2026-10-12 — Поиск исторического сравнения трёх моделей
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись73; восстановление результатов прошлых диагностических примеров для обсуждения возможного отключения модели |
+| Источник | Чат «Определить следующий шаг», 2026-09-17, 01a0ae41-8da6-7c90-bb1e-d840c8417119; первичные сообщения сверены с локальной историей |
+| Результат | В четырёх исходных full-image примерах DINOv2 уступал другим моделям в трёх случаях; после исправленного симметричного маскирования два примера дали ему ранг1. Это диагностика малого набора, не benchmark текущих per-nail crops |
+| Ограничения | Прежние transparent-mask результаты признаны предварительными из-за convert RGB; подстановка только правильного эталона не заменяет полную переиндексацию. Сравнение текущей выдачи с моделью и без неё NOT_RUN |
+| Проверка / review | Исторические сообщения, текущий документ G2 и diff check; отдельное review не проводилось |
+| Границы | Отключение модели не выполнялось; новые ML/DB/build/query запуски отсутствуют. Нужна отдельная проверка вклада модели в текущий поиск |
+
+### 2026-10-12 — Проверка данных для отключения DINOv2
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись74; инвентаризация сохранённых vectors/queries/labels без inference |
+| Результат | SHA manual20 совпал с отчётом; 20 товаров/112 областей/336 vectors, размерности и число строк согласованы. В проверенных сессиях query vectors не найдены; 4 сохранённых PNG, labels/evaluation пусты |
+| Основание ограничения | Source search держит query vectors в памяти; payload содержит итоговые top-10/assignment, которых недостаточно для нового assignment без модели |
+| Проверка / review | Read-only schema/count/SHA/source, ссылки/conflicts/diff; отдельное review не проводилось. Качество с двумя моделями NOT_RUN |
+| Границы | Модели и формула не менялись, ML/DB не запускались; собственные каталожные vectors не выдаются за новые query examples |
+| Артефакт / skills | [Инвентаризация](../specs/corpus-optimization/model-ablation-inventory.md); ponytail для переиспользования существующих данных без новой инфраструктуры |
+
+### 2026-10-12 — Показ запросов и каталога для owner-разметки
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись75; по просьбе владельца показаны 4 сохранённых запроса и пронумерованный каталог из 20 фото |
+| Результат | Локальная Markdown-галерея во временном частном каталоге; исходные изображения не изменялись и не копировались в Git |
+| Проверка / review | 4 запроса просмотрены, 20 SHA каталожных изображений совпали со snapshot; отдельное review не проводилось |
+| Границы | Expected goods ожидают ответа владельца; labels не выдуманы, ML не запускался, модель не отключалась |
+
+### 2026-10-12 — Сводка после семидесяти пяти записей
+
+Записи71–75: изучение handoff, смена рабочего маршрута по решению владельца,
+восстановление исторического сравнения моделей, инвентаризация данных и показ
+фото для разметки. Все задачи STANDARD, отдельное review не проводилось.
+Историческое отставание DINOv2 на full-image примерах не доказывает его
+бесполезность в текущем per-nail поиске. Каталог20/336vectors проверен;
+query vectors и owner labels в проверенных сессиях отсутствуют. Сравнение
+качества двух моделей NOT_RUN, разметка ожидается. ML/DB/publication не выполнялись.
+Причинный эффект книг или процесса не установлен.
+
+
+### 2026-10-12 — Запуск поиска для перепроверки четырёх фото
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись76; владелец прямо попросил запустить систему для восстановления expected goods |
+| Результат | Новый one-shot manual20 frozen пакет; private temporary runtime snapshot из84 byte-identical pins, ветка чата codex/upload-optimiz сохранена |
+| Проверка | Model-free assembly/runtime/permission/catalog PASS;53safe testsPASS/2existingwarnings; initial missing fixture исправлена копированием прежнего файла; HTTP health/root/manual-test200 и browser UI подтверждены |
+| Review | Один read-only reviewer PASS0Critical/0Major/0Minor до bootstrap |
+| Границы | 20photos/623admissions/3600s и прежние STOP; agentqueries0, reserved0 на bootstrap; no auto restart, build100/READY/publication/model disable отсутствуют |
+| Skills / результат | Systematic-debugging для collection dependency; verification-before-completion для fresh checks; owner expected goods pending, двухмодельное сравнение NOT_RUN |
+| Основание | [План](../specs/corpus-optimization/manual-recheck-plan.md), [отчёт](../specs/corpus-optimization/manual-recheck-report.md), fresh private job/UI/observation |
+
+### 2026-10-12 — Разметка четырёх запросов владельцем
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись77; сохранение явно сообщённых owner labels |
+| Результат | Первые3 expected goods однозначно сопоставлены с private metadata и membership subset20; запрос4 owner отметил как отсутствующий в subset20 |
+| Проверка / review | Private JSON записан600/O_EXCL,4querySHA/catalogidentity закреплены; отдельное review не проводилось |
+| Границы | Source IDs/пути/labels не копировались в Git; query vectors отсутствуют, качество двух моделей NOT_RUN; новый ML не запускался |
+| Основание | Прямой ответ владельца в чате,private owner-expected-goods-4.json и [инвентаризация](../specs/corpus-optimization/model-ablation-inventory.md) |
+
+### 2026-10-12 — Сравнение семи комбинаций embedding моделей
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись78; владелец подтвердил7комбинаций и «Приступай» |
+| Результат | Один новый3query/15regions/45vectors pass, затем7offline combinations против subset20: всеexpected ranks1/1/1, top3/top10=3/3; query4excluded |
+| Проверка | TDD12experimentPASS;64safePASS включали11experiment+53existing;RuffPASS;baseline score/assignment parity60pairsPASS;newclaim/pins/runtime validated |
+| Runtime | 34,039s,51/96admissions,exit0/noSTOP;pressure1×135/2×24,ownlive0/leasestrue. Это не длительная стабильность или RAMsaving |
+| Review | 0Critical/0Major/1Minor(offline driver отсутствовал);исправлен TDD rank_combinations и real baseline parity;повторноеreview не требовалось |
+| Прежний стенд | Owned SIGTERM,controllerPermissionError/no finalresult;отдельныйps/locks check0live/leasestrue. Newrun имеет полныйsession-result |
+| Книги / skills | CleanArchitecturemini: изолированный расчёт/ML adapters;brainstormingbounded/TDD/ponytail/verification;причинныйэффекткнигнеустановлен |
+| Границы | ModelremovalNOTDECIDED;production algorithm/DB/corpus/publish unchanged;raw inputs/vectors/labels outsideGit;нового окна отчёт не разрешает |
+| Основание | [План](../specs/corpus-optimization/model-ablation-plan.md), [результат](../specs/corpus-optimization/model-ablation-report.md),fresh private capture/trace/rankings |
+| Сохранение | 19evidence files скопированы в постоянный private каталог внеGit с SHA-проверкой; архив не executablejob/не новое разрешение |
+
+### 2026-10-12 — Сводка исследования и реестр гипотез
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | STANDARD, запись79; владелец подтвердил минимальный пакет: сводка, гипотезы, README и ссылки на существующие отчёты |
+| Результат | Существующие факты, ограничения и owner позиции сведены отдельно от6гипотез; historical full-image результаты отделены от текущих per-nail, варианты проверки обозначены как предложения |
+| Проверка / review | Источники/историческая таблица сверены; относительные ссылки и anchors, таблицы, конфликты, diff check; независимое review не проводилось |
+| Границы | Scope/нормативные требования/model contract не менялись; batchsize/checkpoints/resume/publication ещё не спроектированы. Код/ML/DB не запускались; restricted сырьё и IDs в документы не копировались |
+| Skills / книги | Request-assessor: согласование состава пакета завершено явным подтверждением; новые инженерные правила/книги не применялись |
+| Основание | [Сводка](../specs/corpus-optimization/research-summary.md), [гипотезы](../specs/corpus-optimization/hypotheses.md), [маршрут](../specs/corpus-optimization/README.md) |
+
+### 2026-10-12 — Объяснение AS-IS и предлагаемого To-Be сборки
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись80; описание текущей реализации и существующего предложения процесса простыми словами |
+| AS-IS | Source NailCatalogBuildService проверен: по одному фото localize→3encoders→artifacts/outcome; готовые фото сохраняются, intermediate checkpoints нет; ERROR требует явного retry |
+| To-Be | Предложены партии по стадиям, private checkpoints и teardown owned workers, проверка совместимости/полноты перед отдельной публикацией; конкретный размер и политики ещё не утверждены |
+| Проверка / review | Source/предложение сверены; journal link/conflict/diff checks; независимое review не проводилось |
+| Границы | Нормативные решения и productcode не менялись; новый ML/build/publish не выполнялся |
+| Основание | [Предложение](../specs/candidate-i-http/incremental-corpus-proposal.md),source NailCatalogBuildService/NailEmbeddingAdapter в сохранённом corpus-optimization checkout |
+
+### 2026-10-12 — Сводка после восьмидесяти записей
+
+Записи76–80: новый ручной стенд, разметка4запросов, ограниченное сравнение7модельных
+комбинаций, сводка evidence/гипотез и объяснение AS-IS/To-Be.76/78 — FULL с одним
+reviewer;77/79/80 — STANDARD без независимогоreview. Для78 исправлен1Minor,
+реальный прогон34,039s/51admissions/noSTOP; все7вариантов дали1/1/1 на3запросах.
+Pressure2 наблюдался, короткий прогон не подтверждает длительную стабильность.
+Прежний manual controller не записал finalresult после остановки; отдельно
+проверены0ownedlive/свободныеlocks. Новая проба имеет полный session-result.
+Векторы/evidence сохранены privately. Слабая модель не выделена, удаление не
+принято; batchsize/checkpoints/retry/publication остаются проектными вопросами.
+Проверка документации и объяснение процесса не разрешают новый ML/build.
+Причинный эффект книг или процесса не установлен.
+
+### 2026-10-12 — AS-IS / TO-BE с диаграммами для портфолио
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись81; владелец подтвердил2Markdown документа и5диаграмм с PlantUML исходниками/SVG |
+| Результат | AS-IS сверён с source; TO-BE DRAFT описывает стадии/checkpoints/resume и отдельно publication; роли/термины объяснены стороннему аналитику |
+| Диаграммы | 2overview/3sequence; общий JSON источник, локальный SVG layout и генерируемыеPUML. SVG browser visual QA, XML/accessibility/semantic checks; Java/PlantUML отсутствуют,PUML compilation NOT_RUN |
+| Review | Один read-only reviewer0Critical/0Major/2Minor(пробелы и канонический источник);исправлены/самопроверены,повторноеreview не требуется |
+| Проверка | Источники,относительные ссылки/anchors,таблицы,конфликты,diff;JSON не меняется пригенерации,outputs воспроизводимы |
+| Границы | TO-BE ещё не утверждён;batchsize/retry/coverage/publication/concurrency открыты. Productcode/ML/DB не запускались;неpublication portfolio |
+| Skills / книги | Diagram-design для читаемых обзоров/sequence;новые книжные правила не выбирались;request-assessor согласование структуры завершено |
+| Основание | [AS-IS](../specs/corpus-optimization/as-is.md),[TO-BE](../specs/corpus-optimization/to-be.md),[диаграммы](../specs/corpus-optimization/diagrams/README.md) |
+
+Позднее уточнение к записи81 — 2026-10-12: владелец спросил, создаёт ли I crops,
+и попросил уточнить документацию. Source CandidateIBinding/NailImageProcessor
+подтвердил границу: I возвращает области/маски, backend processor создаёт crops.
+Текст, роли и AS-IS/TO-BE sequence исправлены: добавлен отдельный processor,
+сохранение checkpoints отнесено к backend-стадии. ОбзорTO-BE уточнён; исправлена
+двусмысленность исходного документа, это не новый scope и не новая запись задачи.
+Проверены согласованность JSON/SVG/PUML, ссылки/таблицы/diff и визуальное отображение.
+Productcode/ML/DB не запускались; компиляцияPUML по-прежнему NOT_RUN.
+
+### 2026-10-12 — Закрытие прикладных вопросов TO-BE
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись82; решения владельца в этом чате: coverage от одного готового фото после всех выбранных, automatic publication, search/build по очереди, warning5мин/устойчивость30сек, ручной retry, до5фото на запуск |
+| Результат | TO-BE v2: очередь и прогресс отдельно от файлов; checkpoint file-before-DB-commit; готовность товара через несколько партий; атомарная идемпотентная публикация и ограниченная пауза; инженерные предложения отделены от принятых ответов |
+| Review | Один независимый read-only reviewer: 0Critical/0Major/1Minor — review не утверждает; исправлено и самопроверено, повтор не требуется |
+| Проверка | Ссылки/таблицы/конфликты/diff; шесть SVG XML/accessibility и JSON/PUML семантика; воспроизводимость генерации; browser QA изменённых SVG. PUML compilation NOT_RUN |
+| Границы | Целостный документ APPROVED_BY_OWNER: «Да утверждаю» 2026-10-12 после review; физические таблицы/SQL и launch/test пакеты — следующая детализация. Productcode/ML/DB/publish не запускались |
+| Skills / книги | Request-assessor, brainstorming, diagram-design; book-guidance: DDDmini — различение завершённого фото/готового товара/опубликованной редакции; CleanArchitecturemini — правила готовности отделены от файлов/БД. Upstream893a88a6fce3a80c565bf39ac65021b43a8b2990; причинный эффект не установлен |
+| Основание | [TO-BE](../specs/corpus-optimization/to-be.md), [диаграммы](../specs/corpus-optimization/diagrams/README.md), ответы владельца2026-10-12; README/сводка/гипотезы синхронизированы |
+
+Утверждение к записи82 — 2026-10-12: владелец сообщил «Да утверждаю» на
+предъявленный TO-BE v2. Статус синхронизирован в TO-BE, README и сводке;
+проверены ссылки, таблицы, конфликтные маркеры и diff. Это завершение той же задачи,
+без повторного review и без запуска зависимой реализации/ML/DB/publish.
+
+### 2026-10-12 — Требования по возможностям: ART-06 как точка входа
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись83; владелец утвердил точное правило сообщением «Хорошо, утверждаем» после предложения ART-06 как индекса документов по возможностям |
+| Результат | Контракт ART-06, governance, AGENTS и индекс согласованы: одна каноническая формулировка, уникальные UC/FR во всём наборе, собственные версии/статусы документов; краткие пояснения допустимы |
+| Проверка | Относительные ссылки и anchors, таблицы, конфликтные маркеры, diff; все FR строки и текст UC-001 совпадают с HEAD. Runtime не проверялся |
+| Review | Один независимый read-only reviewer: PASS, 0Critical/0Major/0Minor; повторное утверждение точного уже принятого правила не требуется |
+| Границы | Требования/базовый scope поиска v0.8 не изменены; дочерний DRAFT не наследует approval индекса. Документ требований пополнения пока не создан; ML/DB/productcode/publish не запускались |
+| Skills / книги | Дополнительные инженерные книги не применялись: изменение организации документации |
+| Основание | [Контракт](analysis/artifact-contracts.md#организация-требований-по-возможностям-системы), [ART-06](analysis/06-user-scenarios-and-functional-requirements.md), ответ владельца2026-10-12 |
+
+### 2026-10-12 — Функциональные требования пополнения корпуса
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись84; владелец попросил отдельный документ ФТ простым языком на основе утверждённого TO-BE v2 |
+| План-контракт | Подготовить сценарии и наблюдаемые функции без новой архитектуры/бизнес-решений; включить DRAFT в ART-06; сверить TO-BE/ссылки/ID/таблицы и baseline; одно read-only review, исправления, owner gate |
+| Результат | functional-requirements.md: 4сценария UC-007..010, 52требования FR-020..071; источник по группам TO-BE §§4–7; очередь/прогресс/ошибки/пауза/публикация/поиск; APPROVED_BY_OWNER по сообщению «Утверждаю»2026-10-12 |
+| Проверка | Относительные ссылки и anchors, таблицы, уникальность новых FR/UC, конфликты и diff; базовые FR строки и текст UC-001 совпадают с HEAD. Тесты реализации не проводились |
+| Review | Один независимый read-only reviewer: PASS, 0Critical/0Major/1Minor; FR-035 «учитывать» заменено на наблюдаемое «создавать новую редакцию», исправление самопроверено; повтор не требуется |
+| Границы | Содержание FR/UC — отдельная возможность пополнения; базовая проверка CHECK не создаёт данные. Нет физической схемы БД, готовых тесткейсов или обещаний RAM/качества; нет запуска ML/DB/productcode/publish |
+| Skills / книги | verification-before-completion для evidence до заявления готовности; инженерные книги не выбирались, продуктовый код/модель не проектировались |
+| Основание | [ФТ](../specs/corpus-optimization/functional-requirements.md), [TO-BE](../specs/corpus-optimization/to-be.md), [ART-06](analysis/06-user-scenarios-and-functional-requirements.md) |
+
+Утверждение к записи84 — 2026-10-12: владелец сообщил «Утверждаю» на
+предъявленный документ ФТ v1. Статус синхронизирован в документе, ART-06 и README;
+ссылки/anchors/таблицы/ID/diff проверены. Требования не менялись; повторное review
+не проводилось. Реализация, ML, БД и публикация не запускались.
+
+### 2026-10-12 — HLD пополнения поискового корпуса
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись85; владелец запросил анализ документов и HLD; входы TO-BE v2/ФТ v1 APPROVED_BY_OWNER |
+| Результат | HLD v1 DRAFT: модульное приложение, один controller, управляемые ML-процессы, режим search/build, очередь БД, checkpoint и fencing; immutable редакции товаров и snapshots состава с атомарным active pointer |
+| Анализ source | Сохранённый corpus-optimization checkout HEADba49504 dirty: NailCatalogBuildService/repository/search/leases; whole READY representation и runtime fingerprint не поддерживают новую publication без изменения контракта. Source не runtime |
+| Review | Один read-only reviewer: PASS, 0Critical/0Major/1Minor; явно добавлена совместимость всех редакций snapshot, включая прежние товары; исправлено/самопроверено, повтор не требуется |
+| Проверка | Ссылки/anchors/таблицы/diff; 52 FR распределены; 2 SVG XML/accessibility/JSON/PUML semantic checks, воспроизводимость и browser QA. Java/PlantUML отсутствуют, compilation NOT_RUN |
+| Границы | HLD DRAFT до owner approval. Точные contracts/runtime binding/migrations/deadlines/lock inheritance — LLD до исполнения. Productcode/ML/DB/publish не запускались; прежние claims/STOP сохранены |
+| Skills / книги | Book-guidance: CleanArchitecturemini для границ ядра/адаптеров, ImplementingDDDmini для immutable редакций и transaction boundary. Upstream893a88a6fce3a80c565bf39ac65021b43a8b2990; ponytail для reuse существующей БД/моделей, diagram-design для схем; эффект книг не измерялся |
+| Основание | [HLD](../specs/corpus-optimization/hld.md), [ФТ](../specs/corpus-optimization/functional-requirements.md), [TO-BE](../specs/corpus-optimization/to-be.md), source-локаторы HLD §12 |
+
+### 2026-10-12 — Сводка после восьмидесяти пяти записей
+
+Записи81–85: документы AS-IS/TO-BE с диаграммами, закрытие решений TO-BE,
+организация требований по возможностям, функциональные требования и HLD.
+Все пять задач FULL с одним независимым reviewer: Critical/Major не зафиксированы;
+Minor соответственно2/1/0/1/1, исправлены с самопроверкой. TO-BE v2 и ФТ v1
+утверждены владельцем; HLD пока DRAFT. В81 позднее уточнена граница I/backend
+без новой записи задачи. В83 правило индекса ART-06 утверждено до записи.
+Документные проверки и SVG QA не доказывают реализацию. ML/БД/публикация в этих
+задачах не запускались; экономия памяти, качество и длительная устойчивость UNKNOWN.
+PlantUML sources проверены структурно, compilation NOT_RUN. Книги выборочно
+применены в82/85; причинный эффект процесса/книг не установлен.
+
+### 2026-10-12 — Оценка HLD относительно гексагональной архитектуры
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись86; ответ на вопрос владельца, без изменения HLD или архитектурных решений |
+| Основание | [HLD §4](../specs/corpus-optimization/hld.md#4-компоненты-и-размещение), source NailCatalogPort/NailLocalizationPort/NailEmbeddingPort/NailImageStorePort в сохранённом checkout, [исходная статья Cockburn](https://alistair.cockburn.us/hexagonal-architecture/) |
+| Вывод | Принципы совместимы с ports/adapters; HLD показывает главным образом runtime-компоненты. Для явной гексагональной модели нужны границы ядра/use cases, входные/выходные порты, адаптеры и направление code dependencies; реализация новых механизмов не проверялась |
+| Проверка / review | HLD и определения source-портов прочитаны, концепция сверена с первичным источником; ссылки и diff проверены. Независимое review не проводилось |
+| Skills / книги | Ранее выбранный CleanArchitecturemini применён к оценке зависимости правил от SQL/HTTP/OS; новых наборов не загружали |
+| Границы | HLD остаётся DRAFT; productcode/ML/DB не запускались; числовая оценка соответствия и runtime claims не делались |
+
+### 2026-10-12 — Гексагональная схема и контракты в HLD
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись87; владелец попросил дополнить HLD схемой ядро/порты/адаптеры и таблицей контрактов |
+| Результат | HLD v1.1 APPROVED_BY_OWNER по сообщению «Утверждаю»2026-10-12, §§4.1–4.3: ядро/use cases, входные/выходные порты, адаптеры, code dependencies и 12 логических контрактов. Правила публикации отделены от DB commit, политика режимов от OS lifecycle |
+| Review | Один независимый read-only reviewer: PASS, 0Critical/0Major/1Minor; назначение поиска уточнено «Найти похожие товары по фото», исправлено/самопроверено; повтор не требуется |
+| Проверка | Ссылки/anchors/таблицы/diff; 3 SVG XML/accessibility, JSON/PUML semantic checks, детерминированная генерация; новая схема просмотрена в браузере. PUML compilation NOT_RUN |
+| Границы | Новые интерфейсы показаны как логические договоры до LLD; классы/микросервисы на каждую строку не требуются. HLD утверждён как проект, TO-BE/ФТ/модели/scope не менялись; productcode/ML/DB не запускались |
+| Skills / книги | Book-guidance: ранее прочитанный CleanArchitecturemini для зависимостей и plain contracts; diagram-design для отдельной схемы code dependencies; причинный эффект не измерялся |
+| Основание | [HLD §4.1](../specs/corpus-optimization/hld.md#41-гексагональная-граница-ядро-порты-и-адаптеры), [схема](../specs/corpus-optimization/hld-diagrams/ports-adapters.svg), [контракты](../specs/corpus-optimization/hld.md#42-таблица-контрактов) |
+
+Утверждение к записи87 — 2026-10-12: владелец сообщил «Утверждаю» после
+предъявления и объяснения целостного HLD v1.1. Статус синхронизирован в HLD,
+README и метаданных предпросмотра. Содержание контрактов/схем не менялось;
+ссылки/anchors/таблицы/семантика/генерация/diff проверены. Повторное review
+не проводилось; LLD, productcode, ML, БД и публикация не запускались.
+
+### 2026-10-12 — Компактная спецификация Spec Kit пополнения
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись88; владелец согласовал компактный spec→план/выборочный LLD→tasks и напомнил TDD. Выполняется стадия specify до owner gate зависимого планирования |
+| План-контракт | Применить speckit-specify; resolved templates/init/hooks/constitution; один feature/spec и quality checklist; canonical FR ссылки и критерии ART-09; структурная проверка и один независимый read-only review |
+| Результат | specs/001-corpus-replenishment/spec.md и checklist DRAFT; .specify/feature.json указывает новый feature. Actual git branch codex/upload-optimiz сохранена. Девять групп ART-09 appendix DRAFT покрывают FR-020..071 |
+| Источники / hooks | TO-BE v2, ФТ v1, HLD v1.1 APPROVED_BY_OWNER. Шаблон constitution не принят как норма; AGENTS/governance/development-method действуют. before/after extension hooks отсутствуют |
+| Проверка | Ссылки/anchors/таблицы/маркеры/ID/diff; 52FR покрыты; базовый ART-09 до дополнения совпадает с HEAD, кроме notice границ. prerequisite paths разрешают newfeature. Критерии не выполнялись |
+| Review | Один независимый read-only reviewer: PASS, 0Critical/0Major/1Minor; явно дополнено покрытие FR-057/058 (отдельная ошибка publication и manual retry без ML), самопроверено; checklist16/16, повтор не требуется |
+| Границы | Нет нового порога RAM/latency/качества. Spec/checklist не означают runtime. Plan/tasks/code/ML/DB/publish не запускались; следующий артефакт требует owner approval spec/критериев |
+| Skills / метод | speckit-specify, verification-before-completion; TDD-read и утверждённый метод: RED→GREEN→REFACTOR для будущей логики. Новые книги не применялись |
+| Основание | [Spec](../specs/001-corpus-replenishment/spec.md), [чек-лист](../specs/001-corpus-replenishment/checklists/requirements.md), [ART-09](analysis/09-acceptance-criteria-and-traceability.md#дополнение-пополнение-поискового-корпуса) |
+
+Утверждение к записи88 — 2026-10-12: владелец сообщил «СОгласовано, продолжай».
+Спецификация и дополнение ART-09 APPROVED_BY_OWNER; содержание не менялось.
+Разрешён переход к speckit-plan, исполнение и runtime не разрешаются автоматически.
+
+### 2026-10-12 — Технический план Spec Kit и выборочный LLD
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / owner | FULL, запись89; спецификация и ART-09 согласованы владельцем; продолжить speckit-plan с TDD |
+| План-контракт | Setup-plan/templates/hooks/constitution, source research, plan/research/data-model/contracts/quickstart, немодельная проверка документов, один reviewer и повтор после Major |
+| Результат | План v1 DRAFT, research, data-model, quickstart и5contract документов. Checkpoint, процессы/leases, публикация и runtime binding детализированы; TDD RED/GREEN/REFACTOR задан до реализации |
+| Review | Один reviewer: первое REWORK0Critical/2Major/1Minor; исправлены SEARCH/DRAIN handoff, product head и publication attempts; повтор PASS0/0/0 |
+| Проверка | Source pyproject/dirty/untracked baseline metadata и модельные размеры, Python3.12.14 локального venv; ссылки/anchors/таблицы/routing/branch/diff. Mac man2flock/man2close и первичные Python/PostgreSQL docs — свойства механизмов, не runtime feature |
+| Границы | B0 manifest/согласование baseline до кода; budgets/deadlines обязательные inputs нового пакета, consumed synthetic profile не reusable. Отдельные testDB/nativeFake/ML gates. Код, процессы feature, модели, БД и публикация не запускались |
+| Skills / книги | speckit-plan; выбранные CleanArchitecturemini/ImplementingDDDmini для ports/transaction/current revision; ponytail для existing PostgreSQL/std lib/no broker; TDD и verification. Конституция placeholder не нормативна; research автором по AGENTS, без planner/author agents |
+| Основание | [План](../specs/001-corpus-replenishment/plan.md), [research](../specs/001-corpus-replenishment/research.md), [модель](../specs/001-corpus-replenishment/data-model.md), [quickstart](../specs/001-corpus-replenishment/quickstart.md) |
+
+Утверждение к записи89 — 2026-10-12: владелец сообщил «Утверждаю».
+Весь технический пакет plan/research/data-model/contracts/quickstart APPROVED_BY_OWNER;
+разрешён переход к генерации tasks, операционные gates и TDD сохраняются.
+
+### 2026-10-12 — Задачи Spec Kit по утверждённому плану
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись90; генерация задач из утверждённого технического пакета без новых нормативных решений или операционного перехода |
+| Результат | tasks.md: 51пункт (общие15,UC00719,UC0106,UC0087,UC0094), 13явных RED/GREEN/REFACTOR циклов; отдельно baseline, vertical flows, integration и runtime gates |
+| Формат | Checklist с локальными порядковыми номерами и существующими UC вместо новых T/US IDs по AGENTS; paths конкретные, потенциальный parallel описан без команды запускать агентов |
+| Проверка | setup-tasks resolved template; prerequisite require-spec/tasks; 51ordinal/path rows,13TDD cycles, ссылки/конфликты/diff. Read-only speckit-analyze:52/52 FR mapped,0ambiguity/duplication/critical findings; конституция template не принята как нормативная |
+| Review | Независимое review не проводилось; STANDARD самопроверка задач и междокументная проверка |
+| Границы | Tasks не выполнены; B0/source approval,testDB/nativeFake/ML и finite package обязательны. Нет productcode/ML/DB/publish, новых IDs, автоматического commit/merge/push |
+| Skills | speckit-tasks, speckit-analyze; process TDD сохранён; новых книжных правил не выбирали |
+| Основание | [Tasks](../specs/001-corpus-replenishment/tasks.md), [план](../specs/001-corpus-replenishment/plan.md), [spec](../specs/001-corpus-replenishment/spec.md), ответ владельца «Утверждаю»2026-10-12 |
+
+### 2026-10-12 — Сводка после девяноста записей
+
+Записи86–90: оценка гексагональности, схема/контракты HLD, спецификация Spec Kit,
+технический план/выборочный LLD и задачи.86/90 STANDARD без независимого reviewer;
+87/88/89 FULL с одним reviewer.87/88 — по1Minor исправлено;89 —2Major/1Minor
+исправлены, повтор0/0/0. HLDv1.1, spec/ART09 и технический пакет утверждены владельцем.
+90:51tasks,13TDD cycles,52FR mapped; это покрытие планирования, не доказательство
+реализации. Legacy baseline имеет dirty/untracked исходники и требуетB0;
+реальные budgets/claims задаются отдельно. Во всех пяти задачах модели/БД/публикация
+не запускались. Gate approval не разрешает будущие operational действия автоматически.
+Эффект книг и методов не измерен; диаграммы проверены как SVG,PUML compilationNOT_RUN.
+
+
+### 2026-10-13 — B0: manifest и сверка исходного baseline
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись91; запрос «Начинай» запускает утверждённый план с read-only B0; конкретный manifest ещё не утверждён |
+| Результат | baseline-manifest.json:80файлов,72PROPOSE_ADD/4KEEP_IDENTICAL/2REFERENCE_ONLY/2MERGE_REVIEW_REQUIRED; AST closure без unresolved static localimports; raw данные/веса/env не включались |
+| Baseline | Sourceba49504 dirty/untracked, targetb38f07e/codex-upload-optimiz; hashes по файлам фиксируют actual source, а не один commit. Source migration chain9/head0009, currentchain0001–0004 |
+| Проверка | verify_baseline.py read-only:80source/target SHA совпадают; JSON/schema/ссылки/diff. Статический анализ не доказывает import/collection/test/runtime success |
+| Dependencies | Metadata .venv3.12.14 без third-party imports; pytest/ruff/httpx присутствуют, pgvector и MLpackages отсутствуют. Ничего не устанавливалось |
+| Review | Независимое review не проводилось; ограниченный evidence STANDARD |
+| Границы | Пункт001 checked,002owner manifestapproval pending. Код не переносился, тесты/ML/БД не запускались. Работа в текущем checkout по ранее выбранному владельцем маршруту; новой ветки/worktree/commit нет |
+| Skills / книги | Учтены using-git-worktrees и plan/task routing: explicit текущий checkout имеет приоритет; новых книг не применяли. Подготовка B0 проверяется hashes, не выдаётся за TDD RED/GREEN |
+| Основание | [B0](../specs/001-corpus-replenishment/baseline-review.md), [manifest](../specs/001-corpus-replenishment/baseline-manifest.json), [tasks](../specs/001-corpus-replenishment/tasks.md) |
+
+Утверждение к записи91 — 2026-10-13: владелец сообщил «Утверждаю бэйслайн».
+Утверждён manifest SHA2565a89cf8b542fd4f186fbe84ebd2922341f5332ba03251bd2958d086bbe5c7c3e;
+пункт002 закрыт, разрешён контролируемый перенос пункта003. Отдельные
+dependency/testDB/nativeFake/ML gates сохраняются.
+
+### 2026-10-13 — Перенос baseline и ExecutionPackage по TDD
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись92; исполнение утверждённого baseline и foundation без новых требований |
+| Результат | 72согласованных файла добавлены;80целевых исходов сверены; source сохранён. ExecutionPackage и state DTO: новые core/test файлы |
+| Проверка | 229немодельных baseline tests; RED129failed/3passed, GREEN132passed, malformed-scope RED2failed/133passed; финал364passed,ruff новых файлов иdiff check |
+| Дефекты / ограничения | Первичный collection безPYTHONPATH:4ModuleNotFoundError, исправлен способом запуска без code change; одно Starlette/httpx deprecation warning. Полный suite не запускался из-за отдельных native/DB scopes и отсутствующегоpgvector |
+| Review | Независимое review не проводилось;STANDARD, самопроверка иTDD |
+| Skills / книги | test-driven-development,verification-before-completion,systematic-debugging,ponytail; book-guidance/CleanArchitecture mini,upstream893a88a: immutable plain DTO, core безSQL/HTTP/OS/ML |
+| Границы | Закрыты003/005–007;004/008–051 открыты. Новые production budgets не назначены; нетinstall/DB/native processes/ML/публикации/commit/push |
+| Основание | Утверждение владельца «Утверждаю бэйслайн»; [отчёт](../specs/001-corpus-replenishment/baseline-transfer-report.md), [tasks](../specs/001-corpus-replenishment/tasks.md) |
+
+### 2026-10-13 — Порты, правила партии и controller по TDD
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись93; реализация008–016 по принятому плану, подготовкаB1 без исполнения нового operational gate |
+| Результат | Pureports/fakeclock,5-photo selection/readiness, sequential stages/checkpoint receipt/ERROR vsNO_NAILS; нет следующей automatic партии |
+| Проверка | RED/GREEN отдельных циклов зафиксированы; финал413passed(184new+229baseline),ruff/diff checks. Одно прежнееStarlette/httpx warning |
+| Самопроверка | Дополнены guards scope/ownership/attempt/receipt/admissions/deadline. Late-result тест исправлен по approved deadline:0checkpoint после конца окна |
+| Review | Независимое review не проводилось;STANDARD, самопроверка |
+| Skills / книги | test-driven-development,verification-before-completion,executing-plans/ponytail; CleanArchitecturemini upstream893a88a: policy-ownedports и plainDTO, adapters не импортируются ядром |
+| Границы | Фактические supervisor/DB/ML/pub отсутствуют.004/017–051 открыты. B1prepared/pendingapproval, image inspect read-only; зависимости не устанавливались |
+| Основание | «Разршаю» — продолжениеunitTDD и подготовка проверки; [отчёт](../specs/001-corpus-replenishment/unit-core-report.md), [B1](../specs/001-corpus-replenishment/test-execution-package.md) |
+
+Утверждение к записи93 — 2026-10-13: владелец сообщил «Утверждаю».
+B1 test-execution-package.md APPROVED_BY_OWNER, задача004 закрыта; разрешены
+только описанные synthetic process/files/testDB проверки с finite budgets.
+RealML/рабочаяDB scopes не менялись; установки packages нет.
+
+### 2026-10-13 — B1: native lifecycle, checkpoints и DB preflight
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись94; выполнение approvedB1, новый dependency scope только подготовлен, не исполнен |
+| Результат | Tasks017–019/023–025:ModeLease/Supervisor/ownedprocessregistry иprivate stagefiles; sharedlock/querydrain/checkpoint file durability отдельно отDB |
+| Проверка | RED/GREEN по циклам в отчёте;427unit/harness/baseline+26native+15files=468passed;ruff/diff. Одно прежнееStarlette/httpx warning |
+| Ошибки | Первичныеscaffold/thread/syntax errors исправлены; `_build_package` сохранён; OverflowErrors контролируемы. Неполная оценка dependencies исправлена: migration0005 требуетPythonpgvector |
+| БД | Три bootstrap setupfailures(TEST_COMMAND_FAILED→ModuleNotFoundErrorpgvector), неTDDRED; два следующих запуска менялиdiagnosticlogger. Новые ownedcontainers удалены, рабочийDSN исключён |
+| Review | Независимое review не проводилось;STANDARD, самопроверка/TDD/native tests |
+| Skills / книги | test-driven-development,systematic-debugging,verification-before-completion,executing-plans/ponytail; продолжены CleanArchitecturemini границыcore/adapters; ImplementingDDDmini decision-rules прочитаны справочно, новойdomainмодели не вводили |
+| Границы | Pythonpgvector не установлен; dependencyaddendum pendingownerapproval.020–022/026–051 открыты; нетrealML/рабочейDB/публикации/commit/push/merge. Показатели не доказывают общуюruntimeготовность |
+| Основание | ApprovedB1; [отчёт](../specs/001-corpus-replenishment/b1-progress-report.md), [дополнение](../specs/001-corpus-replenishment/test-dependency-addendum.md) |
+
+### 2026-10-13 — Переиспользование локальной зависимости вместо загрузки
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись95; ограниченный анализ по вопросу владельца, без изменения runtime или нормативного правила проекта |
+| Результат | Две локальные копииpgvector0.5.0; выбран минимальный sourcecandidate-i-http/g3-test-deps,48файлов80515bytes,no compiledextensions; подготовлен точныйcopy manifest |
+| Проверка | RECORD SHA и совпадениеpackage content двух копий; read-only import currentPython3.12+SQLAlchemy2.0.52/Vector(512)PASS,безpycache/source changes; ссылки/diff |
+| Review | Независимое review не проводилось;STANDARD |
+| Пожелание / дефект | Новое пожелание — уменьшить повторную подготовку окружений. Исправление прежней неполной оценкиdependencies остаётся в94; localreuse предлагается отдельно |
+| Границы | Неткопирования/установки/новогоDockerпрогона/ML/DB; B1dependencyaddendum по-прежнемуpendingapproval. Wholevenv не переносится; общийcache предложен, не внедрён |
+| Основание | Вопрос владельца о копировании из другой ветки; [дополнение](../specs/001-corpus-replenishment/test-dependency-addendum.md),[manifest](../specs/001-corpus-replenishment/test-dependency-local-manifest.json) |
+
+### 2026-10-13 — Сводка после девяноста пяти записей
+
+Записи91–95: baseline manifest/approval/transfer,ExecutionPackageTDD,unitports/rules/
+controller,B1native/files/DBpreflight иlocaldependencyreuse. STANDARD:независимое
+review не проводилось. Baseline80files утверждён,72добавлены; hashes сохраняются.
+По итогам94:427unit/harness/baseline+26native+15files=468passed; это проверки
+компонентов, не общий runtime или качествоML. БДbootstrap трижды остановился
+на отсутствующемPythonpgvector миграции0005; контейнеры очищены.95:найдена
+совместимаялокальнаякопия0.5.0,предложен перенос48файлов безdownload; копирование
+и installation не выполнялись. Dependency scope ожидаетвладельца. Fullfeature/
+DBfencing/publication/CLI/runtimeML не завершены; commit/push/merge не выполнялись.
+Причинный эффект книжных правил не измерялся.
+
+Дополнение к записи94 — 2026-10-13, исправление dependency блокера:
+владелец сообщил «Давай установим с ноля, как ты предлагал изначально».
+Установлен толькоpgvector0.5.0 (--no-deps,--only-binary) изpipcache;
+metadata/import/Vector(512)PASS. Новый B1bootstrap1passed: baseline0001–0009
+в ownedsyntheticDB, затем контейнер удалён; B1label listing пуст.
+РабочийDSN/ML не использовались. Schema/state/publication ещё не реализованы.
+
+Дополнение к записи95 и сводке95 — 2026-10-13: localcopy не выбрано
+владельцем; manifestNOT_SELECTED_BY_OWNER. Выбрана первоначальная
+pipустановка; она использовала ужеcachedwheel. Общийcache/envpolicy
+не внедрялся. Dependencyapproval больше не ожидается; дальнейший
+schema/stateTDD разрешён действующимB1.
+
+### 2026-10-13 — Схема и PostgreSQL state adapter по TDD
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись96; пункты020–022 утверждённого плана, без новых требований |
+| Результат | Миграция0010:15таблиц; очередь запуска до5фото, owner epoch/current head/version CAS, immutable checkpoint и COMPLETE одной транзакцией, terminal photo guards |
+| Проверка | 431unit/harness/baseline+26native+15files+25DB=497passed; одно прежнее Starlette/httpx warning; Ruff и diff checks; baseline80hashes сохранён |
+| TDD / исправления | Schema RED4/1; adapter RED7/6; immutable run/COMPLETE RED2/17. Дополнительный RED выявил SQL после медленного подключения вне deadline и пропуск RUNNING; исправлены. Ошибка поля триггера исправлена, не выдана за поведенческий RED |
+| БД / границы | Только ownedsyntheticDB B1, временные контейнеры очищены. Нет ML/корпуса/рабочегоDSN/публикации/commit/push/merge; runtime wiring и recovery ещё предстоят |
+| Review | Независимое review не проводилось; STANDARD, самопроверка и TDD |
+| Skills / книги | executing-plans, test-driven-development, systematic-debugging, verification-before-completion, ponytail, book-guidance; ImplementingDDDmini upstream893a88a: идентичность редакции, явные операции репозитория, plain DTO без SQL в ядре. Причинный эффект не измерялся |
+| Основание | «Приступай» после установки зависимости; approvedB1 и [отчёт](../specs/001-corpus-replenishment/state-adapter-report.md) |
+
+### 2026-10-14 — Подготовка READY и транзакция публикации
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись97; исполнение026–028 по утверждённому плану и B1 |
+| Результат | Проверенные checkpoint файлы перенесены в отдельные regions/vectors, подготовка READY атомарна; новая публикация сохраняет остальные товары и старые снимки; receipt/SUCCEEDED/pointer одной транзакцией |
+| Проверка | 23publication+25stateDB+431unit+26native+15files=520passed; одно прежнее Starlette/httpx warning. Ruff/diff; baseline80hashes сохранён |
+| TDD / дефекты | RED12; preparation GREEN5/publication RED7; GREEN12. Дополнительные18passed; RED3 выявил NOT_PUBLISHABLE, audit fencing и автоматический повтор FAILED — исправлены, GREEN20. Финал48DB. Первые12fixture setup errors не считались RED; импорт fixture исправлен |
+| Сбои | SQL и deadline откатывают запись; lost COMMIT/unavailable→UNKNOWN и сверка receipt без повторного ML. Обе стороны STOP race проверены; старый owner не записывает error audit |
+| Review | Независимое review не проводилось; STANDARD, самопроверка и TDD |
+| Skills / книги | executing-plans, test-driven-development, systematic-debugging, verification-before-completion, ponytail, book-guidance/ImplementingDDDmini upstream893a88a: root identity, явные операции и plain DTO; readiness в ядре. Причинный эффект не измерялся |
+| Границы | Только synthetic файлы/ownedsyntheticDB; контейнеры очищены. Нет ML/реального корпуса/рабочей БД/commit/push/merge. Snapshot query binding, автоматический controller wiring, CLI/recovery/retry ещё не готовы |
+| Основание | «Разрешаю» — продолжение следующего этапа; [отчёт](../specs/001-corpus-replenishment/publication-report.md), approvedB1 и план |
+
+### 2026-10-14 — Snapshot reader и runtime binding
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись98; реализация029–031 принятого плана, разрешение «Разрешаю» и B1 |
+| Результат | Отдельные snapshot DTO/entrypoint, поток по закреплённому descriptor, полный профиль и отдельный query claim; RuntimeVerifier и независимые SHA checks; общий ranking для legacy/snapshot |
+| Проверка | 21binding+23publication+25stateDB+431unit+26native+15files=541passed; B1 объединённо69passed. Ruff/diff; одно прежнее Starlette/httpx warning |
+| TDD / дефекты | RED12→GREEN12; дополнительные RED3/3 выявили unhashable claim и observer failure→GREEN21. Проверка границ отклонила новый pure core import/enum; точный список расширен без снятия запрета внешних imports,38passed |
+| Baseline | 78записей совпали,2намеренно изменены: сервис с общим ranking/отдельным snapshot path и транзитивный dependency checker. Исходные hashes этих файлов подтверждены; manifest сохранён, текущие SHA отдельно записаны |
+| Review | Независимое review не проводилось; STANDARD, самопроверка и TDD |
+| Skills / книги | executing-plans, test-driven-development, systematic-debugging, verification-before-completion, ponytail, book-guidance/CleanArchitecturemini upstream893a88a: plain DTO, порт ядра, зависимости внутрь. Причинный эффект не измерялся |
+| Границы | Только synthetic runtime observations/files/DB; контейнеры очищены. Нет ML/weights/реального корпуса/рабочей БД/HTTP cutover/install/commit/push/merge. CLI/vertical wiring/recovery/retry и реальный runtime package ещё предстоят |
+| Основание | [Отчёт](../specs/001-corpus-replenishment/catalog-binding-report.md), утверждённый план и B1 |
+
+### 2026-10-14 — CLI, Web availability и вертикальный fake flow
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись99;032–035 по утверждённому плану, «Разрешаю» и B1 |
+| Результат | Private owner IPC/grammar/exit codes, CHECK read-only, start/status; минимальный Web503 hook. Fake vertical flow связывает supervisor, стадии, публикацию и saved summary; общий deadline и cleanup-only termination audit |
+| Проверка | 146B1+436unit/Web=582passed; прежнее Starlette/httpx warning в обоих прогонах. Ruff/diff, ссылки,77baseline hashes+3намеренных изменения |
+| TDD / дефекты | CLI RED22→GREEN22; IPC реализация до native RED удалена, затем scaffold RED1→GREEN25. Schema boolean RED1→исправлен. Flow RED4,4setup errors keyword-only constructor не считались RED; core deadline RED1, flow GREEN4. RED2 remaining/repository, RED2 terminal states, RED1 input identity→GREEN10flow. Общий финал в отчёте |
+| Окружение | Sandbox Unix bind errno1 диагностирован; scoped IPC/B1 execution выполнен с разрешённым доступом. OwnedsyntheticDB containers очищены, чужие ресурсы не останавливались |
+| Review | Независимое review не проводилось; STANDARD, самопроверка/TDD.051 остаётся открытым |
+| Skills / книги | Superpowers executing-plans/TDD/systematic-debugging/verification, ponytail; CleanArchitecturemini upstream893a88a: pure controller и внешняя композиция/IPC/SQL/Web. Причинный эффект не измерялся |
+| Границы | Resume/retry application NOT_IMPLEMENTED до036–046; warning/recovery и real host/workers ещё не готовы. Нет corpus/weights/MPS/рабочей БД/install/Web cutover/commit/push/merge |
+| Основание | [Отчёт](../specs/001-corpus-replenishment/cli-flow-report.md), approvedB1, принятый план |
+
+### 2026-10-14 — Resume, ожидание ресурсов и recovery
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись100;036–042 утверждённого плана, «Разрешаю», B1 synthetic-only |
+| Результат | Resume исходной партии, проверка/reuse COMPLETE checkpoints до warmup; INTERRUPTED отдельно от ERROR; warning300s/30s свежих OK; startup admission закрыт, saved READY/pointer сохранены |
+| Проверка | 158B1+443unit/Web=601passed; после деклараций портов19boundary checks. Прежнее Starlette/httpx warning. Ruff/diff/ссылки;77baseline исходов+3прежних изменений SHA; B1 label listing пуст |
+| TDD / дефекты | Resume RED3/1→GREEN4; повреждение позже усилено до CHECKPOINT_INVALID. Waiting RED6→GREEN6; wiring RED3→GREEN3. Дополнительные restart tests после wiring, отдельный первоначальный поведенческий RED не зафиксирован. pytest/asdict import errors исправлены как setup defects |
+| Операционный дефект | Две DB-выборки ошибочно запущены параллельно вопреки B1. Второй процесс прерван, собственный orphan container проверен/удалён, credentials удалены. Прерванный прогон не засчитан. Harness global OS lease и orphan preflight: RED1→GREEN, harness15passed; финальный прогон последовательный |
+| Review | Независимое review не проводилось; STANDARD, самопроверка и регрессия. Итоговое051 открыто |
+| Skills / книги | Superpowers executing-plans/TDD/debugging/verification, ponytail, book-guidance/CleanArchitecturemini upstream893a88a: DTO/порты и зависимости внутрь. Причинный эффект не измерялся |
+| Границы | Только fake clocks/workers/observations и ownedsyntheticDB. Нет realML/corpus/MPS/workingDB/install/Web cutover/commit/push/merge; retry043–046 и runtime049–050 открыты |
+| Основание | [Отчёт](../specs/001-corpus-replenishment/resume-recovery-report.md), approvedB1 и принятый план |
+
+### 2026-10-14 — Сводка после ста записей
+
+Записи96–100: schema/state, READY/publication, snapshot reader, CLI/fake flow,
+resume/wait/recovery. Итоговая выбранная регрессия выросла от497 до601passed;
+это разные расширяющиеся выборки, не сравнение производительности и не полный
+suite. Данные, модели и наблюдения синтетические; workingDB/realML не запускались.
+77baseline исходов сохранены,3изменения зафиксированы с SHA. Временные B1-контейнеры
+удалены. В100 нарушено правило одного контейнера; прерванный прогон не засчитан,
+добавлен общий admission lease и orphan preflight. Дополнительные restart-тесты
+в100 не имеют отдельного первоначального RED; это ограничение TDD evidence.
+Независимое review в STANDARD не проводилось. Retry, итоговая трассировка,
+реальный runtime и review ещё предстоят. Причинный эффект книжных правил
+и экономия ресурсов не измерялись; commit/push/merge не выполнялись.
+
+### 2026-10-14 — Ручной повтор фото и публикации
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись101;043–046 принятого плана, «Разрешаю», B1 synthetic-only |
+| Результат | Retry-photo новой редакции/head CAS; одна выбранная ERROR, прочие исходы сохранены, immutable reuse через original-photo reference. Retry-publication без worker factory, FAILED history и UNKNOWN reconciliation после fenced нового owner |
+| Проверка | 168B1+443unit/Web=611passed; прежнее Starlette/httpx warning. Ruff/diff/ссылки;77baseline исходов+3прежних изменений SHA. B1 label listing пуст |
+| TDD / дефекты | Первые4retry RED; ещё2CLI RED→итог6failed. Validate_inventory отклонил RETRY scope, диагностирован guard; добавлены два утверждённых scope→GREEN6. Дополнительные4 boundary regressions PASS; refactor и перенос CLI tests→36passed; общий финал в отчёте |
+| Координация проверок | Первый unit-набор ошибочно запущен во время B1:442passed/1TEST_DB_BUSY, глобальный lease штатно удерживался DB. После диагностики unit-набор выполнен последовательно:443passed. Два DB-контейнера не запускались; guard не ослаблялся |
+| Review | Независимое review не проводилось; STANDARD, самопроверка и релевантная регрессия.051 остаётся открытым |
+| Skills / книги | Superpowers executing-plans/TDD/debugging/verification, ponytail, book-guidance/Implementing DDD mini upstream893a88a: identity редакции, root/version инварианты, явные операции repository. Причинный эффект не измерялся |
+| Границы | Синтетические файлы/observations/workers и собственная временная БД; миграция0010 не развёрнута в рабочей БД. Нет realML/corpus/MPS/workingDB/install/Web cutover/commit/push/merge.047–051 открыты |
+| Основание | [Отчёт](../specs/001-corpus-replenishment/retry-report.md), approvedB1, принятые model/CLI contracts |
+
+### 2026-10-14 — Трассировка и сквозная синтетическая проверка
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись102;047–048 утверждённого плана, «Разрешаю» и B1. Нормативные критерии и operational gates не менялись |
+| Результат | 52FR→exact test names в ART-09:45B1/7частичных.8новых acceptance cases:5+2, input/profile revisions, independent products, product summary, downgrade/upgrade0010 и safe CLI |
+| Проверка | 619различных успешных случаев:175общийB1+1diagnostic+443unit/Web. Общий B1 не был полностью зелёным:1setup error TEST_DB_READINESS до тела stale-head/version теста; после чтения helper/cleanup отдельный bounded diagnostic1passed. Точная первоначальная причина UNKNOWN |
+| TDD / дефекты | FR-067/068 summary gap RED2/2→GREEN4; read projection и строгие CLI поля products. Расширение1failed/7passed: тест ошибочно ожидал ERROR, хотя resolve_active отказывает PROFILE_MISMATCH; ожидание сверено с совместимостью, head/profile/pointer assert сохранены;8passed. Это ошибка теста, не функциональный RED |
+| Очистка / baseline | B1 containers удалены, credentials удалены; полный упавший набор автоматически не повторялся. Ruff/diff/links/52FR/test-name checks;77baseline исходов+3прежних изменений SHA. Прежнее Starlette/httpx warning |
+| Review | Независимое review не проводилось; STANDARD, самопроверка/регрессия.051 открыто; acceptance owner gate не закрывался |
+| Skills / книги | executing-plans, TDD, systematic-debugging, verification-before-completion; сохраняется минимальная правка существующих adapters. Дополнительные книжные наборы в этой задаче не применялись; причинный эффект не измерялся |
+| Границы | Fake stages/clocks/resources и ownedsyntheticDB/native OS children. RealML/MPS/weights/corpus/workingDB/claims consumption не проверены; no install/Web cutover/commit/push/merge.049–051 открыты |
+| Основание | [Отчёт](../specs/001-corpus-replenishment/acceptance-verification-report.md), approved B1 и ART-09 контракт свидетельств |
+
+### 2026-10-14 — Подготовка runtime-предложения049, частичный этап
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись103; подготовка049 по «Приступай», без operational gate transition |
+| Результат | Owner выбрал одно уже выбранное фото. Frozen private PNG612×617/RGBA469661bytes, SHA совпал; original644 не менялся. Новый finite ExecutionPackage/profiles/permission proposal сохранён private0700/0600; execution_ready=false,049 открыт |
+| Read-only факты | Host16GiB; controller44distributions безML SDK; существующие I90/encoder72 environments.89encoder snapshot bytes и36I manifest entries проверены;71code files hashed. SDK импорт/модели не загружались |
+| Identity / проверки |3code entries и installed inventory отличаются от accepted I snapshot; fresh fingerprint/proposed I profile сформированы. Inventory/VCS/runtime metadata/конструктор I app PASS безTorch/Transformers/server; DTO/finite budgets/SHA/permissions/relative input ref PASS. Execution claim не создавался, previous claims не использованы |
+| Ошибки подготовки | Старый code SHA не совпал — выделена новая identity, source/cache не изменялись. Bootstrap без private runtime directory отказал; own0700dir создан, metadata assembly PASS. Один DTO check безPYTHONPATH дал import error; команда исправлена. Не считать TDD RED/ML proof |
+| Оставшаяся работа | Настоящие StageWorkers factory, supervisor host, resource observer/poll и fresh claim issuer/consumer. После wiring hashes/package заново freeze; затем отдельный050 owner gate.049 не помечен выполненным |
+| Review / skills | Независимое review не проводилось; STANDARD. executing-plans/verification; Ponytail: предложено read-only reuse существующих окружений вместо новых установок. Книжные наборы для этого inventory не применялись, причинный эффект не измерялся |
+| Границы | Одна local private copy, metadata/byte reads; no model import/load/inference/HTTP server/DB/publication/install/download/J/commit/push/merge. Прежние619 synthetic cases не повторялись и не повышены в realruntime evidence |
+| Основание | [Предложение](../specs/001-corpus-replenishment/runtime-probe-proposal.md), owner input choice, approved plan049. Реализация wiring продолжает ту же задачу; поздние результаты дополнять эту запись |
+
+Дополнение к записи103,2026-10-14 — разрешённое продолжение049: реализованы
+StageWorkers/native entry, finite host/owned target, fresh issuer/consumer,
+pressure/RSS/MPS guards, inherited coordinator FD, независимый guardian и
+ограниченный private observation log. Source DTO fenced к RUNNING attempt;
+фактические frozen input bytes проверяются до допуска. Known photo error отделён
+от неопределённого HTTP timeout.
+
+Итог:512 выбранных unit/Web/native passed,1 новый synthetic DB case passed;
+Ruff/diff и frozen identities проверены.26 lifecycle cases прежние,43 новые
+в выбранной регрессии; ещё1 новый DB case.3 environment entrypoint refusal checks
+и I metadata constructor прошли без SDK/server. Encoder entries:87=39+18+30;
+первоначальное89 — ошибка подсчёта, уточнено.77 code files в новом пакете.
+
+Процесс TDD: первые missing-implementation imports не засчитаны как функциональный
+RED; затем поведенческие RED на заготовках/дефектах → GREEN. Не для каждого
+параметризованного negative case отдельно зафиксирован RED. Sandbox Docker access
+отказал до создания DB; scoped elevation разрешила bounded RED/GREEN source case.
+Опечатка collection, model identity/list comparison и изменение byte-SHA JSON
+профиля I исправлены без ослабления guards. Точные profile bytes сохранены;
+metadata readiness/assembly повторно PASS. Подробности — в
+[отчёте](../specs/001-corpus-replenishment/runtime-binding-verification-report.md).
+
+049 завершён как подготовка, новый SHA в [предложении050](../specs/001-corpus-replenishment/runtime-probe-proposal.md).
+Owner grant/realML/MPS inference/model-backed publication не выполнялись.
+Независимое review не проводилось;051 открыт. executing-plans/TDD/verification,
+ponytail и Clean Architecture mini: volatile OS/SDK composition за портами, DTO
+без infrastructure dependencies. Причинный эффект книжных правил UNKNOWN.
+Рабочие DB/Web/cache и сторонние окружения не изменены; commit/push/merge нет.
+
+### 2026-10-14 — Однократная проба050 и исправление ложного RESOURCE_STOP
+
+| Поле | Значение |
+|---|---|
+| Тип / scope | STANDARD, запись104; выполнение ранее согласованной пробы по явному «Разрешаю», без нового нормативного решения |
+| Результат | Один START на одном выбранном фото; новая owned DB/schema0010/seed1/1, fresh grant consumed. STOPPED RESOURCE_STOP до стадии;0attempts/checkpoints/vectors/publications.050 не завершён,051 открыт |
+| Причина | Callback журнала обращался к control=None сразу после создания driver; memory observations были OK. Дефект связки, не доказанная нехватка памяти |
+| Исправление / проверка | TDD actual host wiring: STOP вместо OK до guard, OK после. Итог91selected model-free passed; ruff/diff PASS. Новый private пакет подготовлен, настоящее повторение не выполнялось |
+| Неуспешные команды | Начальный import error без PYTHONPATH не считался RED. Ошибочно расширенная sandbox-команда включила DB/socket:3FAILED/12ERROR; Docker setup/bind не подтвердились, не объявлены успешной интеграционной проверкой |
+| Очистка | Host exit0; owned container и secret env/target удалены; текущие0native host/workers,0probe containers, socket отсутствует |
+| Review / оценка владельца | Независимое review не проводилось; оценка UNKNOWN |
+| Границы | Нет inference/compatible vectors/модельного MPS или тяжёлого teardown evidence. Рабочий каталог/Web не переключались; предыдущий consumed grant не разрешает новый SHA |
+| Основание | [Отчёт](../specs/001-corpus-replenishment/runtime-probe-report.md), явное разрешение владельца на frozen package, private resource/DB/cleanup evidence |
+
+Дополнение к записи104,2026-10-14 — владелец разрешил повтор на пакете65815b4d.
+Один свежий START/owned DB/schema0010/seed1/1, grant consumed. RECOVERY_REQUIRED
+до готовности localization; control/stage.claim есть, telemetry/ready нет,
+0attempts/checkpoints/vectors/publications; host0,2,266с. До запуска pressure=1,
+ранние observations OK. Наиболее вероятна гонка startup/poll: stage.claim появился
+около0,498с после control, а телеметрия записывалась после inventory check;
+отдельный совпадающий metadata inventory занял0,049с. Полный traceback worker
+UNKNOWN; другие ошибки готовности не исключены.
+
+Тест порядка telemetry-before-inventory дал поведенческий RED, после минимальной
+перестановки GREEN;92selected model-free/native passed, ruff/diff PASS. Нулевой
+bootstrap MPS записывается только после control/claim/owner проверки до SDK;
+старение5с и остальные защиты сохранены. Очистка проверена:0host/workers,
+0containers, socket отсутствует, temporary credentials удалены. Новый пакет1254eaea
+подготовлен без grant/DB/ML; следующий допуск pending.050/051 остаются открытыми.
+Review не проводилось, оценка владельца UNKNOWN. Это продолжение той же задачи,
+а не новая запись или доказательство работоспособности моделей.
+
+Дополнение к записи104,2026-10-14 — третий отдельный допуск на1254eaea:
+START/ownedDB/schema0010/seed1/1/fresh consumed grant. RECOVERY_REQUIRED до
+localization ready;9,477с, host0,0attempts/checkpoints/vectors/publications.
+Telemetry создана, после Torch MPS475136байт; RSSmax317456384байт в успешных
+наблюдениях, pressure1. Модельный inference UNKNOWN, память в момент STOP UNKNOWN.
+
+Подтверждён дефект actual assembly: i_files mixed str/object path передавался
+в Path(value), детерминированный TypeError. Прежний preparation checker нормализовал
+paths сам и не покрывал actual conversion. Тест actual localization assembly
+TypeError RED→GREEN; object.path преобразуется в Path.93selected checks PASS,
+exact worker paths metadata assembly PASS безTorch, ruff/diff PASS. Полный traceback
+worker не сохранён (DEVNULL), точная цепочка завершения UNKNOWN. Это исправление
+дефекта подготовки, не изменение требований и не доказательство качества модели.
+Cleanup0host/workers/containers/socket, secret env/target удалены. Новыйd0e4b79d
+prepared/pending approval, no grant/DB/run.050/051 открыты; review не проводилось,
+оценка владельца UNKNOWN. Продолжение той же записи104.
+
+
+### 2026-10-14 — Инвентаризация всех Git-веток
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись105; список локальных и удалённых веток, описание сохранённого содержимого и отсутствия отдельных коммитов |
+| Результат | 11 локальных веток, 3 удалённые ветки; origin/HEAD — символическая ссылка. Проверены HEAD, история, различия с main и рабочие копии. corpus-optimization совпадает с gate-4-manual-testing; upload-optimiz совпадает с task-quality-journal; gate-2-import-reliability совпадает с main |
+| Проверки | for-each-ref, rev-list/log, ls-tree/show/diff, worktree list/status; ls-remote --heads подтвердил сохранённые remote SHA. git diff --check PASS. Незакоммиченные файлы отделены от содержимого коммитов |
+| Границы | Без checkout/fetch/commit/push/merge, удаления или запуска продукта. Единственное изменение исполнителя — добавление записи и пятёрочной сводки в этот журнал; прежние изменения сохранены |
+| Review / skills | Независимое review не проводилось; using-superpowers. Книжные правила не применялись: инженерное проектирование и code review не выполнялись |
+| Неизвестные данные | Точная модель исполнения, оценка понятности владельцем и поздние замечания — UNKNOWN. Наличие файлов не подтверждает runtime или качество поиска |
+| Основание | Запрос владельца в текущем чате; текущее состояние Git и read-only проверка origin на 2026-10-14 |
+
+### 2026-10-14 — Сводка после ста пяти записей
+
+Записи101–105 охватывают повтор фото/публикации, синтетическую трассировку,
+подготовку и продолжение runtime-пробы, а также инвентаризацию Git. В101–102
+зафиксированы проверки синтетического контура;103–104 содержат подготовку,
+частичные runtime observations и исправления, которые не подтверждают качество
+моделей или завершение зависимых этапов. В105 проверены ветки и сохранённость
+различия между коммитами и незакоммиченной работой. Независимое review в этих
+записях не проводилось. Оценка владельцем и причинный эффект книжных правил
+UNKNOWN; задачи повторно ради сравнения не выполнялись.
+
+Дополнение к записи104,2026-10-14 — четвёртый отдельный допускd0e4b79d:
+реальная I HTTP localization,10областей/crops/масок и1saved checkpoint.
+187,022с, STOPPED RESOURCE_STOP до encoders;0vectors/publications, photoPENDING.
+Resource654samples150OK502WARNING2STOP; successful RSSmax1439137792/MPSmax4052598784;
+WARNING→OK, стабильность и запись checkpoint достигнуты. Last_sample в STOP
+не доказывает actual fault memory. Локализация выполнена, её качество UNKNOWN.
+
+Подтверждена гонка close_stage: monitor отключался после termination и воспринимал
+штатное исчезновение sample как RESOURCE_STOP. Поведенческий RED→GREEN, monitor
+stop/join перенесён перед owned registry TERM/KILL; guardian/physical confirmation/
+recovery сохранены.94selected checks PASS, ruff/diff PASS. Полный traceback UNKNOWN;
+actual I→encoder transition ещё не подтверждён. Ownedcleanup0process/container/
+socket, secret env/target удалены; private checkpoint evidence сохранено, DB удалена.
+Новыйbbb3d386prepared/pendingapproval, no grant/DB/MLrun.050/051 открыты, review
+не проводилось, оценка владельца UNKNOWN. Продолжение записи104.
+
+Дополнение к записи104,2026-10-14 — пятый отдельный допускbbb3d386 завершён **OK**:
+один START/товар/фото, новая owned temporary DB,49,690с с подготовкой и очисткой,
+host0. Реальный IHTTP→10crops/масок→OpenCLIP→DINOv2→SigLIP2→4checkpoints→OK/READY→
+1snapshot/1publication;10regions/30vectors. Сохранённые artifacts10vectors/model,
+dimensions512/768/768,finite/unit-norm PASS.84resource samples allOK, RSSmax1527382016,
+MPSmax4055564288; не складываются, не доказывают большую вместимость. Owned cleanup
+подтверждён:0host/worker/guardian/container/socket, secret env/target удалены,
+private evidence сохранено. Предыдущие ошибки не удалены и не переобъявлены PASS.
+
+050 выполнен как limited probe/evidence,051review остаётся открытым. Нет quality
+search/real retry-resume/больших партий/workingDB/Web/cutover/production acceptance/
+merge/push. Независимое review не проводилось, оценка владельца UNKNOWN.
+Это завершение той же задачи104, не новая запись и не нормативное утверждение.
+
+### 2026-10-14 — Итоговое независимое code review051
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись106; явное «Разрешаю» на051, read-only code review без нового нормативного решения |
+| Результат | REWORK0Critical/5Important/0Minor;051 открыт до исправления,050 limited runtime success сохранён |
+| Замечания | Native retry-publication не consume grant; grant expiry/revocation не блокирует commit после teardown; stale socket блокирует restart; stale SQL timeout превышает общий остаток; Unicode canonical SHA расходятся |
+| Проверка | Один независимый ревьюер read-only;37ключевых файлов frozen package плюс contracts/tests/dependencies. Parent94selected tests PASS0,90с/ruff/diff PASS; ASCII SHA совпадает, Unicode нет. Полный suite не запускался |
+| Исправления | Не выполнялись; требуется последующий TDD RED→GREEN на существующих контрактах. Новые пожелания не добавлялись |
+| Review / оценка владельца | Независимое review проведено; оценка владельца UNKNOWN |
+| Границы | Нет новых ML/DB/workingDB/Web/cutover/merge/push; static review не доказывает quality/production acceptance/большие партии |
+| Основание | [Отчёт](../specs/001-corpus-replenishment/final-code-review.md), frozen review package, сообщение ревьюера и parent read-only диагностика |
+
+### 2026-10-14 — TDD-исправления пяти замечаний review051
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись107; явное «Разрешаю» устранить пять существующих дефектов, требования/scope не менялись |
+| Результат | Все5Important исправлены: общий lifecycle consume; livegrant перед SQL/commit; stale own socket recovery; текущие SQL/FETCH budgets; общая UTF-8canonical.051 выполнен |
+| TDD |6первых RED (Unicode2/budget1/grant3),2claim/native-publication RED, crashsocket RED и cursor/FETCH regression RED→GREEN. Fakeepoch setup и слишком длинный macOS Unixpath не считались behavioral RED |
+| Проверка | Финал194selected B1/native PASS199,67с; отдельно300selected pure/native PASS1,03с, выборки пересекаются. Ruff/diff/owned cleanup PASS;0B1containers/modelprocesses. Не полный repository suite |
+| Неуспешный промежуточный прогон |188PASS/5FAIL199,10с: SQL wrapper безcursor сломал catalog reading. Добавлен bounded stream path/test; следующий прогон зелёный, прошлый результат сохранён |
+| Книжные правила | Book-guidance/Clean Architecture mini, upstream893a88a6fce3a80c565bf39ac65021b43a8b2990: plaincallback и внешний grant adapter, без новых слоёв. Причинный эффект правил не измерялся |
+| Review / оценка владельца | Исходное независимое review в106 проведено; исправления проверены автором, повторное независимое review не проводилось. Оценка владельца UNKNOWN |
+| Ограничения | Legacy stale socket без proof/при живом PID не удаляется. Нет новых моделей/grants/workingDB/Web/cutover/install/commit/push/merge; прежняя real проба не доказывает новый код/большие партии/quality |
+| Основание | [Отчёт с RED/GREEN и границами](../specs/001-corpus-replenishment/final-code-review.md), final selected tests, явное разрешение владельца |
+
+### 2026-10-14 — Подготовка пробы исправленного кода после051
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись108; «Разрешаю» на следующий этап подготовки runtime package, без нового нормативного решения |
+| Результат | Новый79f709eepackage/root/nonce/target, тот же один товар/фото и прежние пределы. PREPARED/PENDING_OWNER_APPROVAL, grant/DB/ML не созданы |
+| Проверка |77code SHA/frozen input/DTO/permissions PASS; I36manifest/inventory/VCS/runtime/metadata assembly PASS;87encoder files39+18+30 manifests PASS;3actualenv entrypoint refusalscode5/inventory/noSDK PASS |
+| Ошибки команд | Первоначальный manifest_sha256 KeyError: фактическое поле manifest_sha сверено, bytes verification прошла. Не defect модели/TDD RED |
+| Review / книги / оценка | Независимое review подготовки не проводилось; книжные правила в этой подготовке не применялись. Оценка владельца UNKNOWN |
+| Границы | Текущие ресурсы/процессы проверяются перед исполнением. Нет real models/DB/grant/publication/workingDB/Web/install/commit/push/merge. Ранее consumed packages не reused |
+| Основание | [Подготовленный пакет](../specs/001-corpus-replenishment/post-review-runtime-proposal.md), исправления051, разрешение подготовки и private metadata/bytes evidence |
+
+### 2026-10-14 — Реальная проба после исправлений051 и немодельная диагностика
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись109; явное разрешение на79f709ee, один START/товар/фото/новая own temporary DB, без изменения требований |
+| Результат |50,074с,4real model stages/4attempts/4checkpoints/photoOK. ERROR INFRASTRUCTURE_ERROR до publication; revisionOPEN,0SQLregions/vectors/snapshots/publications. Полный post-review pipeline не подтверждён |
+| Свидетельства |30checkpoint vectors10each512/768/768 finite/unitnorm PASS;81resourcesallOK, peakRSS1525039104/MPS4049272832. Не quality oracle, не публикация |
+| Диагностика | RootcauseUNKNOWN, CLI скрывает raw exception, traceback не сохранён. Added actual host/grant/application/repo B1 composition с fake workers:1PASS2,25с; real error не воспроизведена. Начальный digest NameError — setup, не TDD RED |
+| Изменения / review / книги | Только новый diagnostic test и документы; production code не менялся, исправление неизвестной причины не заявлено. Review не проводилось; книги не применялись, оценка владельца UNKNOWN |
+| Очистка |0host/worker/guardian/probe/B1containers/socket/marker; secret env/target удалены, private evidence сохранено |
+| Границы | Нет нового ML retry/reuse grant/workingDB/Web/cutover/install/commit/push/merge. Следующий шаг — bounded private failure diagnostics, немодельная проверка и новый конкретный runtime package |
+| Основание | [Отчёт](../specs/001-corpus-replenishment/post-review-runtime-report.md), approved scope, private resource/vector/DB/cleanup evidence |
+
+### 2026-10-14 — Приватная диагностика owner command
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись110; «Разрешаю» добавить private failure diagnostics; требования не менялись |
+| Результат | Dispatcher/socket callbacks пишут type/frame/cause metadata, без message/source/locals/args/SQL/fullpaths.600file/700root/OEXCL/NOFOLLOW/fsync,65536cap/4chain/32frames/1024walk, overwrite/symlink отказ |
+| Проверка |2behavioral RED→GREEN;127selected unit/native PASS0,94с,2DBcases deselected,1pre-existing warning; ruff/diff PASS. БД/ML не запускались |
+| Ограничения | Sink failure сохраняет originalpublicerror; отсутствие файла не подтверждает запись. Причина realerror79f709ee UNKNOWN, исправление не заявлено |
+| Следующий пакет |7d89d5da prepared,77code/input/DTO/permissions/I metadata/3env refusal PASSnoSDK.87encoderbytechecks прежние, полного rehash сейчас не было. Grant/DB/ML отсутствуют, approval pending |
+| Review / книги / оценка | Review не проводилось, книги не применялись; оценка владельца UNKNOWN |
+| Границы | Нет realML/DB/workingDB/Web/install/cutover/commit/push/merge, no automaticretry/consumedgrantreuse |
+| Основание | [Диагностика и пакет](../specs/001-corpus-replenishment/runtime-failure-diagnostics.md), permission, behavioral tests |
+
+### 2026-10-14 — Сводка после ста десяти записей
+
+106–110: independent review, пять TDD-исправлений, подготовка post-review пакета,
+real probe/диагностика и private error recording; все STANDARD.106: REWORK0Critical/
+5Important/0Minor.107: исправления проверены автором, без нового independent PASS;
+194selected B1/native и300selected model-free PASS с пересечением, прежние188PASS/
+5FAIL streamingcursor сохранены.108: metadata/bytes PASSnoML.109:4реальные стадии/
+checkpoints/photoOK, но publication0/INFRASTRUCTURE_ERROR/rootcauseUNKNOWN;
+synthetic host composition1PASS realerror не воспроизвела.110: diagnostics2RED→GREEN/
+127selected PASS, нового real runtime нет. Temporary DB/process/socket cleanup
+проверен в соответствующих задачах. Working catalog/Web/cutover/merge/push не было.
+Owner quality/acceptance и причинный эффект правил UNKNOWN. Отдельные успехи не
+доказывают full suite, исправление неизвестной причины или production readiness.
+
+### 2026-10-14 — Успешная диагностическая проба исправленного runtime
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись111; явное разрешение7d89d5da, один START/товар/фото/new owned temporary DB, пределы прежние |
+| Результат | OK82,661с с prep/cleanup, host0.4real stages/4attempts/4checkpoints/photoOK/revisionREADY/10regions/30vectors/1snapshot/1publication |
+| Свидетельства |10vectors/model512/768/768 finite/unitnorm PASS;203samples197OK6WARNING0STOP, RSSmax1225326592/MPSmax4042981376. Это не quality/batchcapacity measurements |
+| Неопределённость | Ошибка79f709ee не повторилась, rootcauseUNKNOWN; не объявлена исправленной. command-failure record не создан, так как fault не возник; logging доказан немодельно, не fault runtime |
+| Очистка |0host/worker/guardian/probecontainers/socket/marker, secret env/target удалены, private artifacts/grant evidence retained |
+| Review / книги / оценка | Независимое review не проводилось; книги в runtime task не применялись. Owner quality/acceptance UNKNOWN |
+| Границы | Нет автоматической партии/real crash-retry/workingDB/Web/cutover/install/commit/push/merge; one-input current happy path подтверждён, production readiness не выводится |
+| Основание | [Отчёт и история](../specs/001-corpus-replenishment/post-review-runtime-report.md), owner approval, private result/vector/resource/cleanup evidence |
+
+### 2026-10-14 — Подготовка пробы партии пяти фото
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись112; разрешение подготовить партию до пяти фото, без нового нормативного решения |
+| Результат | PREPARED / PENDING_OWNER_APPROVAL: cfe49786, пять разных товаров × одно фото, 24 admissions; остальные пределы прежние |
+| Проверка | 77code/frozen input/DTO/permissions PASS; пять RGB decode PASS; I metadata/три entrypoint отказа без допуска PASS, без SDK. 87encoder bytes проверены ранее, полного rehash сейчас не было |
+| Ошибки / исправление | Первичный отбор учитывал только PNG; исправлен после проверки JPEG-декодера. Все20 фото проходят ограничения размера. Промежуточный пакет3фото не утверждался/не запускался. Ошибки JS команд не изменили файлы; запись выполнена меньшими командами |
+| Review / книги / оценка | Независимое review не проводилось; книжные правила не применялись, код не менялся. Оценка владельца UNKNOWN |
+| Границы | Grant/DB/ML не созданы. Нет workingDB/Web/cutover/install/commit/push/merge, автоматической партии/повтора. Live resources проверяются перед исполнением |
+| Основание | [Предложение партии](../specs/001-corpus-replenishment/batch-runtime-proposal.md), разрешение подготовки, приватные input/decode/metadata evidence |
+
+### 2026-10-14 — Проба партии пяти фото и ограниченное ожидание ресурсов
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись113; явное разрешение одного START пакета cfe49786, пять товаров × одно фото, отдельная временная БД |
+| Результат | STOPPED / WAIT_TIMEOUT,404,117с,host0. Пять localization manifest/32artifact regions, но четыре SQL checkpoints/пять attempts. Revisions5OPEN,photos4PENDING/1RUNNING; SQL regions/vectors/snapshots/publications0 |
+| Свидетельства | Private failure record подтверждает _admit_resources перед пятым commit_checkpoint.1448samples297OK/1151WARNING/0STOP; RSSpeak1495007232/MPSpeak6251102208; pressure2 в1151samples. Причина устойчивой нагрузки UNKNOWN |
+| Проверка / очистка | Code/input/package SHA сверены до исполнения. После:0owned processes/probecontainers/socket/marker; secret env/target удалены, private evidence retained. Итоговые ссылки/таблицы/маркеры/diff проверены |
+| Уточнение сообщения | Пять файлов manifest первоначально названы контрольными точками; исправлено по SQL evidence: четыре принятые точки, пятый результат только в файлах |
+| Review / книги / оценка | Независимое review не проводилось; книги не применялись. Production code не менялся, launcher адаптирован для5seed records и агрегатов. Оценка владельца UNKNOWN |
+| Границы | Нет полного цикла партии/quality acceptance/workingDB/Web/cutover/install/commit/push/merge. Пределы не повышались, допуск использован, повтора не было |
+| Основание | [Отчёт партии](../specs/001-corpus-replenishment/batch-runtime-report.md), явное разрешение, private DB/resource/failure/cleanup evidence |
+
+### 2026-10-14 — Разбор нагрузки партии и сравнение с историческими 674 фото
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись114; анализ сохранённых замеров/кода и исторического dossier, без новых нормативных решений и ML-прогонов |
+| Результат | Главный измеренный MPS-потребитель двух проб — I. Single:3,77GiB против0,35–0,39GiB каждого encoder; batch:5,82GiB,encoders не запускались. WARNING вызван pressure2 всей машины, а не MPS-порогом |
+| История | Gate2 импорт674; Gate3 dossier подтверждает674vectors/model/2022total sequential. Исторический indexer работает с целым фото; текущий I содержитGDINO+SAM2/возможный ROI secondpass |
+| Основания / неизвестное | Сверены context.stage/model/owned worker в1448batch и203single samples, source resource guard/upstream. Driver memory включает кеш/framework; current tensor memory/CPU per PID/вклад фона/GDINO-vs-SAM2 UNKNOWN. При ожидании I остаётся alive, poll только sleep; утечка не доказана |
+| Ошибки анализа | Попытка совместить mtime с monotonic через текущее смещение дала несоответствие более2000с; сопоставление отклонено и не использовано. Пофотная память не объявлена установленной |
+| Проверка / review / книги | Проверены агрегаты/арифметика/ссылки/таблицы/маркеры/diff. Review не проводилось; книги не применялись, production code не менялся. Оценка владельца UNKNOWN |
+| Границы | Нет нового DB/ML/grant/реального повтора/очистки кеша/изменения порогов/отключения моделей/commit/push/merge. План диагностических метрик не является допуском исполнения |
+| Основание | [Разбор нагрузки](../specs/001-corpus-replenishment/load-diagnosis.md), private stage aggregates, код наблюдателя/локализатора, owning worktree e727 Gate3 dossier |
+
+### 2026-10-14 — Диагностика внутри локализатора и подготовка пакета
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись115; «Давай» на добавление согласованных диагностических замеров, без новых правил пополнения |
+| Результат | Опциональная infrastructure instrumentation GDINO/SAM2/проходов/encoder/admission/checkpoint; MPS live/driver, CPU/RSS own PID, pressure/swap/pageouts, own DB memory. Алгоритмы, параметры, пороги прежние; private capped JSONL/status |
+| Проверка | 3behavioral RED→GREEN;90selected tests PASS0,77с/1pre-existing warning. Fake SDK/socket native wiring, host flag on/off, приватность/лимиты/отказ overwrite-symlink/чужой PID-container/исходные результаты/ошибки проверены. Actual macOS collector PASSnoSDK;ruff/diff PASS |
+| Ошибки команд | Отсутствие PYTHONPATH/pytest import — setup, не behavioralRED.6socket setup failures повторились с elevation; прямой bind подтвердил122bytes/AF_UNIX path too long. Short fresh basetemp дал PASS;socket production code не менялся |
+| Подготовка runtime | de3c9c6e,78codefiles, те же5фото/24admissions/прежние пределы. Code/input/DTO/permissions/I metadata/3actualenv отказа PASSnoSDK.87encoderbytes проверены ранее, сейчас полного rehash не было. PREPARED/PENDING_OWNER_APPROVAL,grant/DB/ML отсутствуют |
+| Review / книги / оценка | Review не проводилось. Clean Architecture mini,upstream893a88a6fce3a80c565bf39ac65021b43a8b2990: наблюдение и SDK hooks во внешней инфраструктуре, core policies/DTO не менялись. Оценка владельца UNKNOWN; причинный эффект книги не измерялся |
+| Ограничения | Sampling добавляет overhead; без synchronize время не равно GPU-only. Driver-minus-live не точный кеш. Контейнерная память не macOS RSS/Colima footprint. Диагностические ошибки отмечаются incomplete, не ослабляют guards; фактическая SDK-проба ещё не выполнена |
+| Границы | Нет нового START/DB/ML/grant/очистки кеша/отключения моделей/повышения порогов/workingDB/Web/cutover/install/commit/push/merge |
+| Основание | [Замеры и пакет](../specs/001-corpus-replenishment/load-diagnostics-proposal.md), подтверждение владельца, behavioral/native tests, private frozen packet и OS evidence |
+
+### 2026-10-14 — Сводка после ста пятнадцати записей
+
+111–115: однофотный полный цикл OK; подготовка партии; партия STOPPED/WAIT_TIMEOUT;
+разбор нагрузки; опциональная диагностика и новая подготовка. Все STANDARD.
+111:82,661с/4checkpoints/1publication.113:404,117с/5localization manifest/4SQL
+checkpoints/0publication,cleanup подтверждён.114: I — главный измеренный MPS-потребитель;
+pressure2 всей машины вызывает WARNING, разбивка внутри I и вклад фона UNKNOWN.
+Исторические674vectors/model относятся к индексации целых фото без текущего I.
+115:3behavioral RED→GREEN/90selected PASS; длинный Unix-socket путь устранён
+через test basetemp, новые измерения на реальных моделях ещё не выполнялись.
+Независимое review этих пяти задач не проводилось; полная regression suite,
+owner quality/acceptance и причинный эффект книжных правил не установлены.
+Рабочий каталог/Web не менялись; автоматического повторного ML и изменения
+порогов не было. Новый пакет требует отдельного одноразового допуска.
+
+### 2026-10-14 — Реальный диагностический прогон пяти фото
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись116; явное разрешение de3c9c6e, один START, те же5товаров/5фото/own temporary DB |
+| Результат | OK89,322с/host0;20attempts/checkpoints/5photoOK/5revisionREADY/32regions/96vectors/5snapshots/publications/active members5.32vectors/model512/768/768 finite/unitnorm PASS |
+| Нагрузка | 201guard samplesallOK/pressure1,RSSaggregate1382334464/MPSdriver6261587968. I worker observedCPU19,67с,encoders4,59/2,70/3,18с. Прирост driver~1GiB на первых4GDINO calls, live после вызовов около1,16GiB почти стабильны;cache/framework split и причина старого pressure2 UNKNOWN |
+| Диагностика / ограничения | 212parent rowsallmeasurementOK/statusincompletefalse.51Irows/13perencoder,модельные before/after pairs присутствуют/allmeasurementOK. Worker.after/finalstatus отсутствуют:теardown diagnostics UNKNOWN. Код и диагностика в ходе прогона не менялись, исправление регистрации footer не заявлено |
+| Проверка / очистка | Code/input/package сверены до grant;128actual crop/mask artifacts64/run bytes/SHA PASS,cross-run64SHA equal/regioncounts equal. Нет own processes/container/socket/marker;secret env/target удалены;private evidence retained;links/tables/markers/diff PASS |
+| Review / книги / оценка | Review не проводилось; книги в runtime task не применялись. Owner quality/acceptance UNKNOWN. Измерения не доказывают quality/production readiness/устранение WAIT_TIMEOUT/причинный эффект instrumentation |
+| Границы / следующий предмет | Рабочий каталог/DB/Web не менялись,grant used,no auto retry/cache clear/limit change/install/commit/push/merge. Освобождение только неиспользуемого MPS-кеша — предлагаемая отдельная гипотеза, не выполненная исправительная работа |
+| Основание | [Диагностический отчёт](../specs/001-corpus-replenishment/load-diagnostics-report.md), explicit approval, private SQL/vector/phase/OS/cleanup evidence |
+
+### 2026-10-14 — Подготовка проверки освобождения MPS-кеша
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись117; «Разрешаю» на следующую проверяемую гипотезу, подготовка одной переменной без принятия постоянной оптимизации |
+| Результат | Opt-in empty_cache_after_photo после успешного I binding call, один раз после всех ROIpasses; требуется load_diagnostics. Только unused allocator cache, без reset SAM/gc/synchronize/model parameter/guard изменений |
+| Проверка | 3behavioral RED→GREEN;95selected tests PASS0,79с/1existing warning. Args/result/original error preserved, cache failure not hidden, off-by-default/type/diagnostic gate, native fake SDK/socket on/off wiring и регрессия. Ruff/diff PASS; реального empty_cache не было |
+| Подготовка | 99cea844,78codefiles, те же5фото/input/model/semantic SHA vsde3c9c6e,24admissions/прежние пределы. Code/input/DTO/permissions/I metadata/3actualenv refusal PASSnoSDK.87encoderbytes проверены ранее, сейчас полного rehash не было. Grant/DB/ML не созданы |
+| Review / книги / оценка | Review не проводилось. Clean Architecture mini893a88a6fce3a80c565bf39ac65021b43a8b2990: memory lifecycle hook во внешнем runtime, core policies/DTO не менялись. Оценка владельца UNKNOWN; causal effect книги не измерен |
+| Ограничения / новый scope | Фактический эффект/сохранение output bytes UNKNOWN до ML-пробы. Ошибка очистки не объявляется успехом. Finalworker status baselineUNKNOWN не исправлялся одновременно; это отдельное возможное улучшение, не дефект бизнес-публикации |
+| Границы | PREPARED/PENDING_OWNER_APPROVAL, требуется approval свежего конкретного пакета после code/runtime freeze по quickstart. Нет ML/grant/DB/workingDB/Web/install/auto retry/limit increase/commit/push/merge |
+| Основание | [Пакет проверки кеша](../specs/001-corpus-replenishment/mps-cache-probe-proposal.md), разрешение владельца на гипотезу, tests/private frozen packet/meta evidence |
+
+### 2026-10-14 — Реальная проверка освобождения MPS-кеша после фото
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись118; explicit approval99cea844, один START/те же5фото/own temporary DB, одна переменная empty_cache_after_photo |
+| Результат | OK86,924с/host0;5photoOK/5READY/20attempts/checkpoints/32regions/96vectors/5snapshots/publications/active members5.32vectors/model512/768/768 finite/unitnormPASS |
+| Память / эффект | 198guard samplesallOK/pressure1,RSSaggregate1231028224/MPSdriver4049272832. Peakdriver−35,33% vsde3c9c6e; afterphoto5−55,79%.5cachepairs,livebefore=after каждой,driver−1,0–1,2GiB. Гипотеза подтверждена для этой партии,не всего корпуса |
+| Output / проверка | 128actual crop/mask artifacts64/run byte/size/SHA verified;64cross-run SHA equal,regioncounts10,3,10,5,4same. РезультатI сохранён на этих входах;vector quality oracle не выполнялся, ускорение по общему времени не заявлено |
+| Диагностика / очистка | Parent211rowsallmeasurementOK/statusincompletefalse;I61rows/encoders13eachallOK/cache boundaries complete. Finalworker status/footerUNKNOWN,не исправлялись. No own processes/probecontainer/socket/marker;secret env/target удалены,private evidence retained |
+| Review / книги / оценка | Review не проводилось; книги в runtime task не применялись. Код в прогоне не менялся. Owner quality/acceptance UNKNOWN; causal effect книжных правил не измерялся |
+| Границы | Grant consumed,no auto retry/default-on/permanent adoption/threshold increase/new installs/workingDB/Web/cutover/commit/push/merge. Эффект касается driver allocations,не точной физической RAM,674image scalability или причины прошлого pressure2 |
+| Основание | [Отчёт проверки кеша](../specs/001-corpus-replenishment/mps-cache-probe-report.md), owner approval, private SQL/vector/cachepair/output/OS/cleanup evidence |
+
+### 2026-10-14 — Обсуждение эксплуатационного логирования и его стоимости
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись119; вопрос владельца о наблюдении падений при сотнях фото и стоимости logging; read-only анализ, без утверждения новых требований |
+| Установлено | Уже есть capped private JSONL resource/load diagnostics и private failure type/frame records, плюс SQL states/checkpoints. emit/observer fsync каждую запись; стоимость OS-sampling и sync нельзя считать стоимостью только текстового logging. Finalworker footerUNKNOWN из последних проб — реальный пробел |
+| Предложено | Разделить постоянные компактные operational events и включаемую подробную диагностику; корреляция run/photo alias/stage/model/attempt, parent exit/signal observation, bounded buffers/rotation/critical flush. Причину неустановленного аварийного выхода оставлять UNKNOWN, resume основывать на DB/checkpoint, не только logs |
+| Оценка | 10000строк × примерно1KiB ≈9,8MiB — иллюстрация объёма, не измерение проекта и не NFR budget. CPU/I/O overhead logging отдельно не измерялся; срок хранения/ретенция/политика flush не приняты |
+| Проверка / review / книги | Сверены logger source, fsync/caps, repository checkpoint/state/error_code и отчёт последней пробы;diff PASS. Review не проводилось; книги не применялись. Оценка владельца UNKNOWN |
+| Границы | Нет реализации/изменений logger/SDK/БД/ML/grant/нового нормативного решения/commit/push/merge. Предложение не является разрешением fault injection или новой модельной пробы |
+| Основание | Вопрос владельца, LoadDiagnostics/RecordingResourceObserver source и [ограничения последней пробы](../specs/001-corpus-replenishment/mps-cache-probe-report.md#нагрузка-полнота-наблюдения-и-очистка) |
+
+### 2026-10-14 — Реализация эксплуатационного журнала пополнения
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись120; владелец согласовал реализацию ранее предложенного logging. Техническое наблюдение без изменения бизнес-правил, gate или автоматического восстановления |
+| Результат | Controller-owned JSONL: batch/stage/photo/checkpoint/publication, parent worker exit/code/signal/expected; приватные псевдонимы, whitelist error codes/errno. Ротация до1MiB×3/host, ordinary OS buffer, critical fsync. Root задаётся frozen binding, fallback shared root |
+| Проверка | Behavioral RED→GREEN для privacy/calls/error/durability/rotation/write failure, known reason/errno и synthetic SIGTERM/SIGKILL. Host wiring с fake repository/observer и diagnostics on/off; 150selected tests PASS31,50с/1existing Starlette warning;ruff/format/diff PASS |
+| Review / книги / оценка | Review не проводилось. Clean Architecture: наблюдение во внешнем composition/process adapter, core policies/DTO не менялись; ponytail: stdlib, без новых зависимостей/очередей. Оценка владельца UNKNOWN; причинный эффект книжных правил не измерялся |
+| Ограничения | ML overhead UNKNOWN; реальные модели/БД не запускались. Постоянный эксплуатационный каталог не создан. Global retention, controller crash diagnosis/recovery и worker diagnostic footer не добавлены. Disk failure не заменяет исходный processing outcome; полнота может остаться UNKNOWN |
+| Границы | Старые гранты consumed, код требует нового frozen package перед ML approval. Нет workingDB/Web/cutover/install/cache default-on/commit/push/merge |
+| Основание | Согласие владельца, [описание журнала](../specs/001-corpus-replenishment/operation-logging.md), source и synthetic tests |
+
+### Сводка записей116–120
+
+Пять задач: baseline диагностика нагрузки, подготовка и запуск cache probe, обсуждение и реализация logging. Реальные ограниченные партии в116/118 завершились успешно; TDD подготовки и logging проверены без ML. Cache probe снизил наблюдаемые driver allocations на пяти фото, но не доказывает масштабирование на674 фото или качество поиска. Причина старого pressure2 и final worker diagnostic completeness остаются UNKNOWN. Независимое review в этих пяти задачах не проводилось; оценка владельца и причинный эффект книжных правил не измерялись. Logging — новая согласованная возможность наблюдения, а не исправление качества моделей.
+
+### 2026-10-14 — Подготовка реальной проверки журнала
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись121; «Разрешаю» после предложения подготовить свежий пакет и отдельно утвердить запуск |
+| Результат | PREPARED/PENDING_OWNER_APPROVAL abb2da2b,79codefiles/те же5фото/24admissions/прежние модели, semantic profile и пределы; diagnostics/cache flags как в99cea844; отдельный private log root |
+| Проверка | Code inventory/input bytes/hash/DTO/permissions PASS. I metadata/inventory/VCS/runtime/config + metadata assembly noSDK PASS;3actualenv proposed-control refusal code5/inventories PASS. Runner syntax PASS, не исполнялся.150selected tests из реализации logger, новый suite не повторялся без code changes;encoder full bytes rehash не повторялся |
+| Review / книги / оценка | Review не проводилось; книги не применялись, нового инженерного решения нет. Оценка владельца UNKNOWN |
+| Границы | Грант/БД/ML не созданы; live pressure/quiescence/target preconditions проверяются перед исполнением, сейчас UNKNOWN. Отдельное разрешение точного SHA по quickstart; нет workingDB/Web/install/auto retry/limit change/commit/push/merge |
+| Основание | [Предложение пробы](../specs/001-corpus-replenishment/operation-log-probe-proposal.md), разрешение на подготовку и private frozen/preflight artifacts |
+
+### 2026-10-14 — Реальная проверка журнала и исправление признака остановки
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись122; explicit approval abb2da2b, один START/5фото/собственная временная БД; последующая bounded logging correction, без нового нормативного решения |
+| Результат | STOPPED ERROR/INFRASTRUCTURE_ERROR61,185с/host0; локализация+OpenCLIP/10attempts10SQLcheckpoints;5PENDING5OPEN/0SQLregions-vectors-snapshots-publications-active |
+| Журнал / причина | 55events15139bytes/incompletefalse/0rotation; PermissionError errno1 chain close_stage→OwnedProcesses.stop→_wait_until→_group_exists killpg0. Причина отказа ОС UNKNOWN. OpenCLIP−15 falsely expectedfalse после первого cleanup exception, источник сохранён без переписывания |
+| Исправление дефекта | Post-run behavioral RED→GREEN: сохранять controller stop intent и фиксировать exit в finally, повторная cleanup не дублирует; исходная ошибка/physical-exit checks/ownership/TERM-KILL сохранены.151selected tests PASS31,08с/1existingwarning,ruff-format/diff PASS. Это не исправление EPERM |
+| Нагрузка / output | 125guard samplesallOK/pressure1,MPS4049272832/RSS1187053568.128actualcrop-mask files64/run checked/region groups byte-size-SHA equal vs99cea844. Partial2/4stages не сравниваются по времени с полной партией; CPU/I/O overheadUNKNOWN; worker final diagnostic statusUNKNOWN |
+| Проверка / очистка | Перед grant SHA/code/input/livequiescence/pressure/probe-targetabsence PASS; после0ownprocess/groups/probecontainer/socket,secret env/target removed. Private evidence retained;links/tables/markers/diff PASS |
+| Review / книги / оценка | Review не проводилось; книг в runtime task не применяли. Owner acceptance/qualityUNKNOWN; causality книги не измерялась. Новый признак logging — исправление дефекта, а не новое пожелание |
+| Границы | Grantconsumed, runtime code изменён после прогона — старый пакет теперь невалиден. Нет retry/newML/workingDB/Web/install/limit change/commit/push/merge. Предложен следующий read-only/synthetic анализ OS check, не новый массовый запуск |
+| Основание | [Отчёт](../specs/001-corpus-replenishment/operation-log-probe-report.md), approval, privateSQL/log/frame/OS/output evidence и regression test |
+
+### 2026-10-14 — Диагностика EPERM проверки process group
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись123; разрешён synthetic анализ отказа ОС, без ML/БД; bounded исправление наблюдения unknown group state |
+| Evidence | 90single-process cases/3env после reap ESRCH;10zombie-leader cases EPERM до wait,ESRCH после.40worker+guardian immediate cases ESRCH;40delayed12ms cases105EPERM observations/PRESENT→EPERM→ESRCH,allgroups vanished,max33ms. Apple XNU источник объясняет zero eligible members. Исторический отказ конкретной ML-пробы compatible hypothesis, моментный snapshot отсутствует |
+| Исправление | PermissionError означает отсутствие группы не подтверждено: прежнее bounded ожидание до ESRCH. PersistentEPERM→false, registry preserved/RECOVERY_REQUIRED; stop/kill/deadline/ownership limits неизменны, reaped group не сигналится |
+| Проверка | 2behavioral RED→GREEN transient/permanent EPERM;20native currentregistry worker+guardian stopPASS/0remaininggroups, в этой native серии только ESRCH — не заявляется наблюдённый EPERM. 153selected tests PASS30,75с/1existing Starlette warning;ruff/diff/links/markers PASS |
+| Review / книги / оценка | Review не проводилось; внешний infrastructure guard соответствует ранее выбранной границе Clean Architecture, новых портов/DTO нет. Stdlib minimal catch по ponytail. Оценка владельца UNKNOWN, причинный эффект книжных правил не измерен |
+| Границы | NoML/DB/grant/new package/workingDB/Web/auto retry/limit change/install/commit/push/merge. Старый пакет invalid после source change; следующий ML требует freshfreeze/approval. Реальный полный цикл после исправленияUNKNOWN |
+| Основание | [Диагностика](../specs/001-corpus-replenishment/process-group-diagnosis.md), owner approval, private synthetic evidence, Apple primary source и tests |
+
+### 2026-10-14 — Подготовка полного цикла после исправления process group
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись124; разрешена подготовка нового пакета после synthetic диагностики, без ML-исполнения |
+| Результат | PREPARED/PENDING_OWNER_APPROVAL19ad687c,79runtime files/те же5фото/24admissions/модели и semantic profile как99cea844. Logger stop intent и bounded EPERM observation включены текущим кодом, прежние thresholds/claims boundaries сохранены |
+| Проверка | Code/input bytes/hashes/DTO/private permissions PASS. I metadata/inventory/VCS/runtime/config + metadata-only assembly noSDK PASS;3actualenv refusal code5/inventories PASS. Runner syntax PASS/not executed.153selected tests из предыдущей исправительной задачи, без повторного suite при неизменном runtime; полный повторный rehash weights не выполнялся |
+| Review / книги / оценка | Review не проводилось; книги не применялись, нового инженерного решения нет. Owner acceptance UNKNOWN |
+| Границы | Grant/DB/ML не созданы; live resource/target conditions проверяются перед разрешённым исполнением, сейчас UNKNOWN. Нет workingDB/Web/auto retry/increase limits/install/commit/push/merge. Требуется отдельный exact package approval по quickstart |
+| Основание | [Предложение полного цикла](../specs/001-corpus-replenishment/operation-log-confirmation-proposal.md), разрешение на подготовку, private frozen/preflight evidence |
+
+### 2026-10-14 — Подтверждение полного цикла с журналом
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись125; explicit approval19ad687c, один START/5фото/собственная временная БД |
+| Результат | OK91,742с/host0;5photoOK/5READY/20attempts-checkpoints/32regions/96vectors/5snapshots-publications/5active members.32vectors/model512/768/768 finite/unitnorm1e−4PASS |
+| Журнал | 115events31887bytes/1file/0rotation/incomplete=false.20photo/checkpoint pairs,5publication pairs allSUCCEEDED,4exit records−15/signal15 expectedtrue,noerrors. Physicalgroup teardown confirmed; наличие EPERM именно в этом прогонеUNKNOWN |
+| Нагрузка / ограничения | 207guardallOK/pressure1,MPS4058890240/RSS1124384768. Parent214rows145180bytes/allmeasurementOK/incompletefalse;4nativeworker measurementOK/final diagnostic statusUNKNOWN.91,742vs86,924с не доказывает overheadlogging; CPU/I/O attributionUNKNOWN |
+| Проверка / очистка | SHA/code/input/binding/livequiescence/pressure/probeabsence передgrantPASS.128actualcrop-maskfiles/64run byte-size-SHA equal vs99cea844.0ownprocess/groups/probecontainer/socket,secret env/target removed. Private evidence retained; source в прогоне не менялся, повторного suite не было; latest153tests. Links/markers/diffPASS |
+| Review / книги / оценка | Review не проводилось; книги в runtime задаче не применялись. Owner business acceptance/qualityUNKNOWN; причинный эффект книжных правил не измерен |
+| Границы | Grantconsumed,noautoretry/newbatch/permanentlogroot/workingDB-Web/cutover/install/thresholdchange/commit/push/merge. Успех ограничен5входами, не production/674photo capacity; новый запуск требует freshpackage/approval |
+| Основание | [Отчёт полного цикла](../specs/001-corpus-replenishment/operation-log-confirmation-report.md), owner approval и privateSQL/log/vector/OS/output evidence |
+
+### Сводка записей121–125
+
+Две задачи подготовки и два ML-прогона, между ними synthetic диагностика завершения процессов. Первый прогон остановился после двух стадий: журнал сохранил PermissionError и partial SQL-state. Synthetic работа воспроизвела EPERM для zombie-only groups и исправила bounded ожидание без принятия неизвестной группы за исчезнувшую;153теста прошли. Второй прогон завершил четыре стадии и пять публикаций, журнал полон, own cleanup подтверждён. Историческая точная причина отказа, добавочная CPU/I/O стоимость logging и качество поиска остаютсяUNKNOWN. Review не проводилось; оценка владельца и причинный эффект книжных правил не измерялись. Увеличение корпуса/рабочая активация не выполнялись.
+
+### 2026-10-14 — Оценка необходимости мониторинга пополнения
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись126; консультация владельца о monitoring vs избыточности, без изменения требований или runtime |
+| Установлено | ProcessStageWorkers наблюдает ресурсы/freshness/owner/deadline и закрывает admission при отказе; SQL summary содержит outcomes/remaining stages/publications. Structured controller log и optional diagnostics уже есть. Это текущая техническая база, не заявленная готовая operator dashboard/external alerting |
+| Предложено | Лёгкий статус партии: progress/currentstage/duration/last heartbeat/resources, переиспользовать существующие measurements и SQL-state. Аварийное уведомление отдельно от анализа logs; для unattended/VM external observer переживает смерть controller. Отсутствие progress само по себе не считается зависанием inference |
+| Соразмерность | На текущих local controlled batches отдельный monitoring stack предлагается отложить до unattended/VM/multiple jobs/history потребности. Сам защитный guard сохранять. CPU/I/O overhead proposedmonitoringUNKNOWN; численный бюджет и новые alert thresholds не утверждены |
+| Проверка / review / книги | Source _monitor/_observe/read_summary и последний runtime report сверены; OpenTelemetry primer как primary reference различий logs/metrics. Review не проводилось, книги не применялись; diff PASS. Оценка владельца UNKNOWN |
+| Границы | Нет code/runtime changes/monitor launch/automation/ML/DB/new policy/commit/push/merge. Предложение не означает новое разрешение на ресурсные прогоны |
+| Основание | Вопрос владельца, live source и [OpenTelemetry primer](https://opentelemetry.io/docs/concepts/observability-primer/) |
+
+### 2026-10-14 — Реализация лёгкого терминального мониторинга
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись127; владелец разрешил реализацию предложенной сводки и отдельно выбрал terminal/3сек/read-only/no server |
+| Результат | Bounded private journal reader + terminal once/watch, progress/stage/duration/heartbeat freshness/resources/final status. Runtime log добавляет safe START totals, подтверждённые finish_photo outcomes и final SQL-summary aggregates. Нет нового DB/OS/GPU polling, worker control или API change |
+| Проверка | Behavioral RED→GREEN для reader progress/final/stale/history/partialline/privacy/access, logger aggregates и stage duration, legacy missing summary. Watch refresh/close проверен с synthetic writes. Реальный CLI прочитал исторический19ad687c:COMPLETED5/5/20checkpoints5publications,staleheartbeat. 163selected tests PASS30,77с/1existing Starlette warning; Ruff/format/diff/links/markers PASS |
+| Review / книги / оценка | Review не проводилось. Brainstorming bounded: существующий status/log flow, выбран terminal; Clean Architecture outer adapters/composition без core DTO/policies; ponytail stdlib/no new services/dependencies. Оценка владельца UNKNOWN, causal book effect не измерялся |
+| Ограничения | CPU не добавлен без нового постоянного measurement. Stale heartbeat не доказывает смерть/hang. Нет external alerts/backgroundservice/automaticretry/restart/production discovery. ML overhead нового viewer/aggregate writes UNKNOWN; новыйMLrun не выполнялся |
+| Границы | Старые snapshots не переписаны, consumed package invalid относительно нового runtime code. Нет ML/DB/grant/newpackage/workingDB-Web/install/thresholdchange/commit/push/merge. Fresh ML требует freeze/approval по quickstart |
+| Основание | User request и terminal answer, source/test/CLI evidence, [описание мониторинга](../specs/001-corpus-replenishment/light-monitoring.md) |
+
+### 2026-10-14 — Подготовка проверки терминального мониторинга на ML-партии
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись128; разрешена подготовка нового пакета для5фото с параллельным viewer |
+| Результат | PREPARED/PENDING_OWNER_APPROVALbf12dde3,81codefiles включая CLIreader, те же5inputs/models/semantic profile/limits/24MLadmissions. Runner подготовлен: host+readonlyviewer3sec, private output и bounded viewer cleanup |
+| Проверка | Frozen code/input/hash/DTO/permissions PASS. I metadata/inventory/VCS/runtime/config+metadata assembly noSDK PASS;3actualenv refusal code5/noSDK/inventories PASS. Runner syntaxPASS/notexecuted. Latest163tests, source unchanged; fullweights rehash не повторялся |
+| Review / книги / оценка | Review не проводилось, книги не применялись: нового инженерного решения нет. Оценка владельца UNKNOWN |
+| Границы | Grant/DB/ML/viewer не запущены; live resource/target preconditions сейчасUNKNOWN, проверяются перед разрешённым исполнением. Нет automaticretry/workingDB-Web/limit increase/install/commit/push/merge. Требуется exact package approval по quickstart |
+| Основание | [Предложение runtime-проверки](../specs/001-corpus-replenishment/monitor-runtime-proposal.md), owner message и private frozen/preflight evidence |
+
+### 2026-10-14 — Реальная проверка терминального мониторинга
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись129; explicit approvalbf12dde3, один START/5фото/own временная БД и параллельный readonlyviewer |
+| Результат | OK91,424с/host0/viewer0;5photoOK5READY20attempts-checkpoints32regions96vectors5snapshots-publications5active members;32vectors/model512/768/768 finite/unitnorm1e−4PASS |
+| Монитор / журнал | 31frames:1WAITING29RUNNING1COMPLETED;30freshframes;stageI/OpenCLIP/DINOv2/SigLIP2,CP0→20/pub0→3→5/photo2→5;last5/5OK20CP5pub.15942viewerbytes/noMONITOR_UNAVAILABLE/noUUIDs.125operationevents34544bytes/incompletefalse0rotation,4expectedexits−15,5photooutcome pairs/allpubSUCCEEDED |
+| Нагрузка / ограничения | 200guardallOK/pressure1,MPS4042981376/RSS1363755008. Parent212records143505bytes/allmeasurementOK/finalcomplete;workerfinaldiagUNKNOWN.91,424vs91,742с не доказывает монитор-overhead; viewerCPU/RSS отдельно не профилировались |
+| Проверка / очистка | SHA/code/input/binding/livequiescence/pressure/probeabsence передgrantPASS.128actualcrop-maskfiles64/run byte-size-SHA groups equal99cea844.0ownhost-worker-viewer/processgroups/container/socket,secret env/target removed;privateevidence retained. Source unchanged/latest163tests;links/markers/diffPASS |
+| Review / книги / оценка | Review не проводилось, книги в runtime-задаче не применялись. Owner business acceptance/qualityUNKNOWN; причинный эффект книжных правил не измерен |
+| Границы | Grantconsumed,noauto retry/newbatch/permanentservice/externalalerts/workingDB-Web/install/limit increase/commit/push/merge. Результат5фото не доказывает674capacity/production readiness; новый ML требует freshpackage approval |
+| Основание | [Отчёт runtime-монитора](../specs/001-corpus-replenishment/monitor-runtime-report.md), approval и privateSQL/log/viewer/OS/output evidence |
+
+### 2026-10-15 — Подготовка двух последовательных партий и сценария resume
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись130; разрешена подготовка проверки многократного пополнения и отдельного controlled stop/resume, без нормативного изменения |
+| Результат | A0b381c3e/B70a98b70 frozen81files,10новых distinct inputs из20,по5фото/1PNG4JPEG,781219/556832bytes. Same models/semantic/code какbf12dde3; shared own target/checkpoints/coordinator, separate grants/evidence. Ожидаем0→5→10 с проверками old members/SQLCP/vector-value SHA/file SHA |
+| Recovery status | PLANNED_NOT_FROZEN: отдельный известный input,START2admissions→localization checkpoint→ADMISSION_LIMIT; потом freshRESUME предполагаемо6admissions/skiplocalization. Нужны фактический stopped state/run reference и ограниченный retention перед допуском, real recoveryUNKNOWN |
+| Проверка | Code/input/hashes/DTO/permissions/nooverlapPASS. Обе I metadata assemblies noSDK PASS;6actualenv refusal checks code5/inventoriesPASS. Runner syntaxPASS/notexecuted. Runtime unchanged/latest163tests, полный weights rehash не повторялся |
+| Review / книги / оценка | Review не проводилось; книги не применялись, используются существующие контракты. Owner acceptance/qualityUNKNOWN; causal book effect не измерялся |
+| Границы | НиML/DB/grants/new runtime не создано. Общий test runner2520с, perphase1200с/24admissions/прежние thresholds. ExactA/Bapproval требуется по quickstart. Нет auto retry/третьейпартии/resume/crash injection/workingDB-Web/install/commit/push/merge |
+| Основание | [Предложение последовательных партий](../specs/001-corpus-replenishment/sequential-batches-proposal.md), owner message, existing resume source/tests и private selection/frozen/preflight evidence |
+
+### Сводка записей126–130
+
+Обсуждён и реализован лёгкий терминальный монитор;163теста и реальная ограниченная партия подтвердили обновление сводки до COMPLETED. Viewer не управляет обработкой и не добавляет DB/OS/GPU polling; точный overheadUNKNOWN. Подготовлены две новые партии для накопления корпуса0→5→10, без их запуска; controlled stop/resume пока только планируется. Независимое review не проводилось, оценка владельца и причинный эффект книжных правил не измерены. Успешные пять фото не доказывают поиск/674capacity/production readiness; новые гранты и рабочая активация не выводятся из подготовки.
+
+### 2026-10-15 — Попытка двух последовательных партий
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись131; владелец разрешил два START A/B по очереди в собственной временной БД, B только после успешной A |
+| Результат | STOPPED_BEFORE_START/RUNNER_ERROR21,309с; БД0010 и пять входных записей A подготовлены, host/viewer запущены, START не отправлен. B не запускалась; рост0→5→10 и сохранность UNKNOWN |
+| Дефект / исправление | Runner ждал A/runtime/owner.sock вместо общего client.root. Дополнительно найдено сравнение SQL tuple с list, до него выполнение не дошло. Исправлены путь, сравнение, сохранение ранней ошибки и текст разрешения. Исходный private итог RuntimeError/empty phases сохранён; timeout установлен по code/config/socket/timing |
+| Проверка | Поведенческие проверки AST без DB/ML: socket present/absent, SQL tuple5/10, reject partial, retain early failure PASS; syntaxPASS. Продуктовый source/packages unchanged, latest163tests не повторялись. Нового runtime после исправления нет; post-stop SQL countsUNKNOWN |
+| Очистка | Собственная DB/env/targets удалены; независимая проверка выявила stale socket, затем он удалён после quiescence.0ownhost-worker-viewer/container/socket/secrets. Build claim отсутствует, неиспользованный грант A отозван; Bgrant отсутствует; private evidence сохранены |
+| Review / книги / оценка | Review не проводилось; нового архитектурного решения нет. Systematic debugging применён к ошибке тестовой подготовки. Оценка владельца UNKNOWN; причинный эффект книжных правил не измерялся |
+| Границы | Нет automaticretry/ML measurements/quality claims/resume/crash injection/workingDB-Web/limit increase/install/commit/push/merge. Свежая подготовка и отдельный допуск нужны перед новым запуском |
+| Основание | Сообщение владельца, private runner/config/log/OS/cleanup evidence; [отчёт серии](../specs/001-corpus-replenishment/sequential-batches-report.md) |
+
+### 2026-10-15 — Свежая подготовка последовательных партий после ошибки runner
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись132; владелец разрешил подготовку повторного запуска, без нового нормативного решения |
+| Результат | PREPARED/PENDING_OWNER_APPROVAL Afc15b466/B6ca13101; те же10input bytes/models/semantic/81productcodefiles/limits, новый private parent/target/claims; исправленный runner закреплён SHA |
+| Проверка | Code/input/DTO/permissionsPASS;2metadata-only assemblyPASS,6actualenv refusals code5/inventoriesPASS без SDK. Проверка реального temporaryUnixsocket readiness/absenttimeout, SQL tuple5/10/rejectpartial и earlyfailure retentionPASS; syntaxPASS. Первичный sandbox bindEPERM, scoped elevation успешна, socket удалён |
+| Review / книги / оценка | Review не проводилось; нового инженерного решения нет, повторно используются существующие контракты и исправления. Оценка владельца UNKNOWN, причинный эффект книжных правил не измерялся |
+| Ограничения | Полный runner после исправления не выполнялся; DB/host/ML/grants/START не создавались. Productsource unchanged/latest163tests не повторялись; fullweights rehash не повторялся. Live preconditions перед исполнением обязательны |
+| Границы | Нужен отдельный exactA/B execution допуск по quickstart; нет automaticretry/третьейпартии/resume/crashinjection/workingDB-Web/limitincrease/install/commit/push/merge |
+| Основание | Сообщение владельца, private frozen/preflight и socket checks; [свежий пакет](../specs/001-corpus-replenishment/sequential-batches-repeat-proposal.md) |
+
+### 2026-10-15 — Повторная серия: защитная остановка локализации
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись133; explicit owner approval точных Afc15b466/B6ca13101; одна собственная DB, B только после успешной A |
+| Результат | STOPPED RESOURCE_STOP49,448с/batch44,518с/host0viewer0; одинSTART A,2localizationattempts1SQLCP,5OPEN/4PENDING1RUNNING/0regions-vectors-publications-active. B не запускалась, grant отсутствует; рост0→5→10 UNKNOWN |
+| Нагрузка / причина |110guard103OK5WARNINGpressure2/2STOP;RSS1481392128/MPS3976462336 ниже6GiB. ExactSTOPcauseUNKNOWN: observer перехватывает обязательные measurement errors без причины, STOP sample — прежний last_sample. Не подтверждены OOM/превышение предела/причинная связь WARNING→STOP |
+| Журнал / монитор |16operationevents3460bytes/incompletefalse,expectedSIGTERM−15exit;fullsuccessverifierREVIEW_REQUIRED.17frames1WAITING15RUNNING1ERROR/8793bytes,CP1pub0countsUNKNOWNstaleheartbeat6,4с,MONITOR_UNAVAILABLE отсутствует |
+| Проверка / очистка | SHA/code/input/runner/livequiescence/pressure1/no-probes доgrantPASS. Parent52allmeasurementOK/finalcomplete,localizer25/footerUNKNOWN. Independent0ownprocess/groups/container/socket/secretenv/targets;Agrantconsumed/Bnone,privateevidence retained/DBdeleted. Productsource unchanged/latest163tests не повторялись; docs checksPASS |
+| Review / книги / оценка | Review не проводилось; нового инженерного решения нет. Анализ ограничен source/runtime evidence, исправление production не выполнялось. Оценка владельца UNKNOWN, причинный эффект книжных правил не измерялся |
+| Границы / следующий шаг | Нужна диагностика конкретной причины resource observation; нет automaticretry/newSTART/resume/crash/limitincrease/workingDB-Web/install/commit/push/merge. Оставшиеся файлы без удалённой DB не дают RESUME |
+| Основание | Сообщение владельца, privateSQL/log/monitor/resource/OS/cleanup evidence; [отчёт повторной серии](../specs/001-corpus-replenishment/sequential-batches-repeat-report.md) |
+| Позднее уточнение 2026-10-15 | По веткам исходного observer и первому STOP установлено mandatory observation failure, конкретная проверка UNKNOWN. [Диагностика](../specs/001-corpus-replenishment/resource-stop-diagnosis.md); исходные runtime evidence не переписаны |
+
+### 2026-10-15 — Диагностика причины resource STOP
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись134; владелец запросил диагностику, добавление safe причин в существующий адаптер без изменения правил защиты |
+| Результат | Исторический firstSTOP сужен до mandatory observation failure, не итоговая aggregate RSS/MPS/pressure ветка; component RSS check/превышение не исключены, exactcheckUNKNOWN. Добавлены reason/check/allowlisted error_type/sample_current, сохранение первой причины; no raw messages/paths/argv/nonce |
+| Проверка |5новых behavioral RED→GREEN,119selected testsPASS; recorder privacy/firstcause/current-vs-last sample/latch проверены. Size-budget test адаптирован к более длинной строке без изменения bounded stop. Ruff/format/diff/linksPASS. Неуспешная collection без PYTHONPATH и вызов несуществующего testpath не считаются RED |
+| Review / книги / оценка | Review не проводилось; Systematic debugging/TDD/минимальное изменение outer adapter. Нового вопроса модульных границ нет, книги не применялись. Оценка владельца UNKNOWN, causal book effect не измерялся |
+| Ограничения | Точная историческая failed check не восстановлена; новый ML/DB/grant не запускался, исходный failure не объявлен устранённым. Recorder failures могут не записаться в неисправный журнал. Overhead нового поля UNKNOWN |
+| Границы | Лимиты/freshness/STOP/restart policy/coreDTO прежние; runtimechanged→oldpackagesinvalid, freshfreeze+ownerexecutionapproval нужны перед ML. Нет workingcutover/commit/push/merge |
+| Основание | Owner request, private runtime chronology и source branch analysis; [диагностика](../specs/001-corpus-replenishment/resource-stop-diagnosis.md) |
+
+### 2026-10-15 — Подготовка прогона с диагностикой причины STOP
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись135; владелец разрешил свежую подготовку после изменения resource diagnostics |
+| Результат | PREPARED/PENDING_OWNER_APPROVAL A10882adb/B07a55b22, две партии5фото/sharedownDB; прежние10inputbytes/models/semantic/limits/81files, freshpaths-target-claims. Изменён только binding diagnostic adapter относительно остановленной серии |
+| Проверка | ExactSHA/code-input-DTO-permissions/sharedrootsPASS,2metadata-onlyassemblies/6actualenv refusalcode5/inventoriesPASS безSDK. Runner syntax и сохранённые socket/tuple/earlyfailure исправленияPASS; fingerprint записан. Latest119tests из предыдущей задачи, исходники после них не менялись, повторsuite не выполнялся |
+| Review / книги / оценка | Review не проводилось; нового инженерного решения нет, используются существующий scope и диагностический адаптер. Оценка владельца UNKNOWN, causal book effect не измерялся |
+| Ограничения | Fullweightsrehash не повторялся; обновлённый runner целиком не выполнялся, ML/DB/grants/START не создавались. Конкретная историческая failurecheckUNKNOWN; повтор может не воспроизвести её. Livepreconditions проверяются перед исполнением после отдельного ownerapproval |
+| Границы | Нет automaticretry/resume/thirdphase/crashinjection/thresholdincrease/workingDB-Web/install/commit/push/merge; exact двухпакетный допуск требуется по quickstart |
+| Основание | Owner message и private frozen/preflight evidence; [предложение диагностического прогона](../specs/001-corpus-replenishment/resource-stop-diagnostic-proposal.md) |
+
+### Сводка записей131–135
+
+Первая попытка серии остановилась до START из-за пути socket в тестовом runner; исправлены socket, SQL tuple и сохранение ранней ошибки. Свежая повторная серия дошла до ML, но остановилась на локализации с1SQLcheckpoint и0публикаций; вторая партия не запускалась. Накопление0→5→10 остаётся непроверенным. Код и старые замеры сужают механизм до исключения обязательной проверки observer; конкретная проверкаUNKNOWN, component RSS ceiling не исключён. Safe диагностика добавлена по TDD/119testsPASS, новые пакеты подготовлены безML/DB/grants. Очистка исполненных контуров подтверждена; нового выполнения диагностических пакетов и resume не было. Review не проводилось, owner acceptance и causal book effect UNKNOWN.
+
+### 2026-10-15 — Успешная серия с диагностикой resource STOP
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись136; explicit owner approval A10882adb/B07a55b22,2START/sharedownDB, B после успешной A |
+| Результат | OK175,831с;batch84,271/84,182с.0→5→10READY/active,20→40SQLCP,23→59regions69→177vectors5→10pub. Размерности512/768/768/finite/unitnormPASS; B сохраняет первые members/SQLCPmanifest/vectorSHA/fileSHA |
+| Диагностика / нагрузка |395guard197+198allOKpressure1/diagnosticreasonOK/currenttrue. MPSguard3901112320/3975774208,RSS1439531008/1528152064. ПрежнийSTOP не воспроизвёлся, exactcauseUNKNOWN; реальная ветка diagnosticfailure не проверена этим прогоном. Worker MPS локализации3,70GiB, encoder около0,35–0,39GiB; вывод ограничен этими входами |
+| Журнал / монитор |125events/log each/incompletefalse/4expected−15exits. По30frames1WAITING28RUNNING1COMPLETED,final5/5OK20CP5pub perphase;обаverifierPASS. Parent210/212allmeasurementOK/finalcomplete;workerfooterUNKNOWN |
+| Проверка / очистка | SHA/code/input/runner/livequiescence/pressure1/no-probesPASS; после runtime independent0ownprocess/groups/container/socket/secretenv/targets,2grantsconsumed/DBdeleted/privateevidence retained. Sourceunchanged/latest119testsnotrerun;docschecksPASS |
+| Review / книги / оценка | Review не проводилось; используются существующие контракты, нового проектирования нет. Owner business acceptance/qualityUNKNOWN, causal book effect не измерялся |
+| Границы | Нет automaticretry/thirdbatch/resume/limits/workingDB-Web/install/commit/push/merge. Успех не доказывает причину прошлого failure,674capacity или качество поиска. БД удалена, файлы без неё не дают RESUME |
+| Основание | Owner message, privateSQL/log/resource/monitor/OS/cleanup evidence; [отчёт серии](../specs/001-corpus-replenishment/resource-stop-diagnostic-report.md) |
+
+### 2026-10-15 — Сводный список проверок пополнения
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись137; read-only сверка критериев и свидетельств для ответа владельцу, без новых требований или gates |
+| Результат | Сопоставлены9групп ART-09, tasks/acceptance/resume/retry/quickstart и последний двухпартийный отчёт. Разделены реальные успешные пробы, synthetic/testDB/native evidence и ещё не подтверждённые runtime/приёмочные шаги |
+| Проверка | Прямое чтение критериев/отчётов; исторические тестовые результаты не объявлены новой регрессией. Реальный0→5→10PASS; realRESUME/retry/рабочийsearchcutover/качество/масштаб остаются неподтверждёнными в этой серии. Рекомендации дальнейших проверок не сделаны новыми нормативными gates |
+| Review / книги / оценка | Review не проводилось, книги не применялись: нового инженерного решения нет. Оценка владельца UNKNOWN, причинный эффект книжных правил не измерялся |
+| Границы | Код/критерии/scope не менялись; ML/DB/процессы не запускались, новые допуски не выдавались |
+| Основание | Вопрос владельца, ART-09/spec/tasks и датированные отчёты в specs/001-corpus-replenishment |
+
+### 2026-10-15 — Пакетная кампания без промежуточных допусков
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись138; владелец прямо разрешил составление планов и исполнение изолированных проверок пакетом без permission-вопроса каждого запуска. Девятьгрупп ART-09/существующие требования, без новых нормативных решений |
+| Автоматические проверки |501passed/27files/0failures-errors-skipped202,743с; один последовательный replenishment suite с B1 DB/native caps, без повторного suite |
+| RealRESUME | Первая START-проба прошлаADMISSION_LIMIT/1CP, межфазный Assertion доRgrant/host/точноеусловиеUNKNOWN. Один instrumentedconfirmation при неизменном gate прошёл61,542с: Iнеповторён/исходныйCPfilesсохранены/4CP10regions30vectors1pubactive |
+| Multipart | Реальный товар7фото обработан5+2 за145,879с:20CP/5OK2PENDING/0pub→28CP/7OK43regions129vectors/1READYpubactive. ПервыеCPfilesSHAсохранены; только2новыхфото |
+| Подготовительные дефекты | InheritedscopeRESUME исправлен в proposedSTARTдоgrant/DB. Copier reformatted I-runtime JSON: вconfirmationR Iнеиспользовался, егоmetadata readiness не подтверждена; на новом multipart preflight поймано и восстановлены исходные байты доML. Исторические evidence не переписаны |
+| Проверка / очистка |410guardallOKpressure1/RSS1530724352/MPS4047175680. Independent0ownhost-worker-viewer/groups/testcontainers/socket/env/targets;3realконтуровудалены/5grantsconsumed/privateJUnit-logs-inputs-retained. Links/markers/fences/diff/sourceinventoryPASS |
+| Review / книги / оценка | Review не проводилось поSTANDARD/AGENTS; writing-plans/executing-plans, нового проектированиямодулей нет/книги не применялись. Owner business acceptance/qualityUNKNOWN, causal book effect не измерялся |
+| Ограничения | ИсторическийresourceSTOP и первая межфазнаяпричинаUNKNOWN. Качество/масштаб/новыеrealnegative/рабочийquery-cutover не выполнены: толькосуществующее synthetic/testDB/native evidence и планы;неproductionready |
+| Границы | Продуктовыйкод/модели/лимиты не менялись, noinstall/workingDB-Web/commit/push/merge. Общийдопуск не заменяет входы/groundtruth/rollback или safetychecks |
+| Основание | Прямое сообщение владельца, privatecampaign aggregate/SQL/runtime/JUnit/cleanup; [план](../specs/001-corpus-replenishment/batch-verification-plan.md), [отчёт](../specs/001-corpus-replenishment/batch-verification-report.md) |
+
+### 2026-10-15 — Диагностика и исправление межфазного test gate
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись139; запрос владельца на причины и исправление, действует общий пакетный допуск |
+| Диагноз | Воспроизведена хрупкость разового process predicate: transient ещё виден→немедленный отказ. Конкретная причина первого исторического AssertionErrorUNKNOWN. ADMISSION_LIMIT намеренный, прежнийresourceSTOP — отдельная история |
+| Исправление | Test helper/runner: read-only wait≤5с, прежние root/script predicates, переход только при подтверждённом отсутствии. Unknown/persistent/lateabsence closed. Safe PID/PGID/role evidence, named SQL check и номер строки отказа. Multiline ps parser исправлен отдельнымRED→GREEN |
+| Проверка | 57testsPASS,7новых;5REDmissinghelper→GREEN, multilineRED→GREEN, lateabsenceregression. Финальные8native cases:6transient clear/2persistent timeout, own children reaped. Промежуточный negative ps timeout далOBSERVATION_FAILED — корректный closed outcome, ожидание пробы уточнено без ослабления helper. Ruff/format/diff/linksPASS |
+| Реальный цикл | STARTed1201b1/RESUMEdf1d5f37, обаmetadata preflightPASS;61,646с/1→4SQLCP/10regions30vectors/1pubactive, skipI/firstCPfilesSHA retained. GateQUIESCENT1poll0,029465с.86guardallOK/MPS4058890240/RSS1528856576;host/viewer0 |
+| Очистка / границы | Independent0ownprocess/groups/testcontainers/socket/env/targets,2grantsconsumed/DBdeleted/privateevidence retained. Product81code/models/limits/workingDB-Web unchanged;noinstall/commit/push/merge.501suite не повторялся. Исторические rootcauses не объявлены устранёнными |
+| Review / книги / оценка | Review не проводилось. Systematic-debugging/TDD/ponytail; нового вопроса модульных границ нет, книги не применялись. Owneracceptance/qualityUNKNOWN, causal book effect не измерялся |
+| Основание | Owner request, private native/runtime/SQL/cleanup evidence; [диагностика](../specs/001-corpus-replenishment/interphase-stop-diagnosis.md) |
+
+### 2026-10-15 — Пакет реальных ошибок фото и публикации
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись140; владелец разрешил представленный следующий пакет, общий batch допуск без промежуточных permission-вопросов |
+| Дефект / TDD | ДоML: malformed image вызывал terminal BuildStop всегоnative запуска.1RED/1PASS по malformed/integrity→2PASS после введения SourceImageDecodeError subtype и перевода только его в PhotoProcessingError(INVALID_IMAGE). LegacyBuildStop и hash/path/size/storage guards сохранены |
+| Регрессия |510passed/28replenishment files/0fail-error-skip197,941с;65image/build/payload selected testsPASS1,96с, пересекаются/не суммируются. Ruff/format/diff/linksPASS. Icodeidentity не менялась;5metadata assemblies/15entrypoint refusalsPASS, новые code/input/package SHA frozen доML |
+| Real фото | START4фото:ERROR/OK/NO_NAILS/ERROR,5CP/10regions30vectors1pub. RETRY_PHOTO толькоordinal1:1новаяпопытка/остальные0,5CP прежние/нетencoder/reusevaluesSHAсовпали,другаяошибка не повторена. Повреждённые bytes не исправлялись, target ожидаемо осталсяERROR |
+| Real публикация | В ownDB trigger23514→FAILED, oldactive unchanged/READYresults retained. После удаления trigger retry безML успешен:9CP23regions69vectors/3snapshots-publications/2active. Повтор successful receipt безML/новогоsnapshot/pub/attempt,4publication_attempts сохранены |
+| Нагрузка / очистка |5фаз137,139с/host-viewer0;205guardallOKpressure1/RSS1378320384/MPS4049272832. Journals59/16/45/7/7events/incompletefalse. Independent0ownprocess-groups/B1-probecontainers/socket/env/5targets,5grantsconsumed/DBdeleted/privateevidence retained |
+| Review / книги / оценка | Review не проводилось. Book-guidance/CleanArchitecture: ошибка декодирования переводится во внешнем адаптере, corePillow не импортирует. Causalbookeffect/owneracceptance/qualityUNKNOWN |
+| Ограничения / границы | Один syntheticwhite negative не измеряет qualityrealbackgrounds. SQLPHOTO_ERROR — общийкласс, подробнаяпричинане добавлялась. Retryпослеустранённойвнешнейпричины не проверен. Private_json отказал metadata selection из/tmp по parent permissions; read-only metadata прочитано обычным способом. SQLгенератор исправлен доDB/ML. Нет workingDB-Web/model-limit/install/commit/push/merge; старые frozenpackagesinvalidпослеcodechange |
+| Основание | Owner message, private regression/runtime/SQL/cleanup evidence; [план](../specs/001-corpus-replenishment/error-retry-runtime-plan.md), [отчёт](../specs/001-corpus-replenishment/error-retry-runtime-report.md) |
+
+### Сводка записей136–140
+
+Подтверждено реальное накопление0→5→10, затем выполнен общий пакет501tests/realRESUME/товар7фото партиями5+2. Межфазный one-shotgate дополнен bounded ожиданием≤5с,57tests/8nativecases/realRESUME прошли; точная причина первого исторического отказаUNKNOWN. Следующий пакет обнаружил и поTDD исправил изоляцию malformed image в native adapter:510replenishment и65пересекающихся baseline/payload testsPASS, реальные ошибки/NO_NAILS/выборочный retry/отказ публикации/retry/идемпотентность проверены. Owncleanup подтверждён. Качество поиска, масштаб и рабочая приёмка не объявлены пройденными; owneracceptance и причинный эффект книжных правил не измерены. Review вSTANDARD не проводилось, исторические evidence не переписывались.
+
+### 2026-10-15 — Проверка новых фото для оценки поиска
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись141; семь переданных PNG и проверка membership в сохранённом manual20 |
+| Результат | Семь файлов доступны; четыре товара: два отсутствуют/четыре запроса, два присутствуют/три запроса. Selection SHA совпал с историческим отчётом. Частный manifest SHA/bytes/owner mapping сохранён вне Git |
+| Проверка / границы | Read-only metadata/source_row и file hashes; рабочая БД/ML/corpus/models не менялись. Дубликаты query/catalog ещё не проверены; quality UNKNOWN. Review не проводилось; инженерного вопроса для книг нет |
+| Основание | Фото и пояснение владельца; [проверка входов](../specs/corpus-optimization/quality-input-check.md), сохранённые metadata/selection manual20 |
+
+### 2026-10-15 — Capture новых запросов и остановка по давлению памяти
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись142; продолжение разрешённого сравнения семи комбинаций на семи переданных фото |
+| Код / TDD | Только experiment capture: frozen count1–7/mixed membership; два ожидаемых RED→GREEN,16experiment checks.69selected safe testsPASS/2dependency warnings1,46с. Первое mixed-cwd окружение68PASS/1bootstrapFAIL; исправлены cwd/PYTHONPATH, не продукт |
+| Real evidence |85code pins/model-free assembly/read-only PG PASS; job4a9b6943…; capture14,891с/контур17,752с.1/220admission/0captures;70samples:69pressure2/1pressure4, explicit RESOURCE_CEILING. Whole-host swapouts delta120596, RSS I1385463808/backend86966272; MPS UNKNOWN |
+| Очистка / границы | Worker−9/controller0; immediate locksfalse→послеquiescence обаtrue.0own processes/container/volume; env/target removed. ПослеSTOP pressure1; нет автоматического повторного ML, workingcorpus/model/limits не повышались, noinstall/commit/push/merge |
+| Review / вывод | Review не проводилось; нового вопроса module/API для книг нет. Quality UNKNOWN, culprit UNKNOWN, исторические причины не переопределены. Семь комбинаций не рассчитаны; следующий предмет диагностики — cold I localization |
+| Основание | Owner «Тогда продолжай по плану», private frozen/runtime/cleanup evidence; [план](../specs/corpus-optimization/quality-seven-plan.md), [отчёт](../specs/corpus-optimization/quality-seven-report.md) |
+
+### 2026-10-15 — Холодный I: локализация одного фото с замерами стадий
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись143; owner «Разрешаю» на отдельную cold I диагностику, один предыдущий input, без HTTP/DB/embedding models |
+| Подготовка / TDD | Private admission/STOP helpers:8RED/2PASS→10PASS; вместе с existing diagnostics26PASS. ДоML исправлены неверный test path и PYTHONPATH. Frozen package6961619b…/code-input-helper pins, model-free assembly PASS;30сpressure1 |
+| Runtime | Один worker18,425с/контур48,970с, localizer.photo12,115с;2ROI passes/3regions.53stage records/incompletefalse,34host samples17normal/17warning/0critical. Driverpeak3945807872/livepeak1684829440; firstGDINOpredict driverΔ2206072832. RSSpeakexternal1011974144; wholehostswapouts24632×16384bytes |
+| Очистка / evidence | Worker0/stopnull, независимый0ownPG/bothleasestrue/pressure1/pinsunchanged. Private ignored archive20files SHA verified. No DB/container/HTTP/modelinstall/productcodechange/commit/push/merge |
+| Вывод / ограничения | GroundingDINO внутриI не DINOv2encoder. ColdI создаёт warning доembedding; историческийcritical не воспроизведён/причинаUNKNOWN. Background/HTTP/DB различаются, controlledcausality не доказана. Quality/7capturesNOT_RUN |
+| Review / книги | Review не проводилось; нового инженерного вопроса для книг нет. Systematic-debugging/TDD/verification; causalbookeffect не измерялся |
+| Основание | Owner permission, private boundary/resource/cleanup evidence; [план](../specs/corpus-optimization/cold-localizer-plan.md), [отчёт](../specs/corpus-optimization/cold-localizer-report.md) |
+
+### 2026-10-15 — Лёгкие worker resource logs и ротация
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись144; owner «Хорошо» после предложения1Гц/boundaries/rotation без нового сервера. Реализация существующей наблюдаемости, без нового нормативного gate |
+| Изменение / TDD | Три infrastructure files: worker log доTorch, periodic1с/optional0,5с, LangSAMimport boundaries, rotation≤3×1MiB наsink/statushistory. TDD RED→GREEN дляrotation/timer/interval/preSDK/error/cacheprerequisite; native integration import-beforeSDK/errororiginal. Domain/profile unchanged |
+| Регрессия | Общий28files523cases202,578с:522PASS/1FAIL/0ERROR/0SKIP. Толькоtest_private_socket_routes_cli_start_and_saved_status отказал из-за107bytes Unix path; controlledbind AF_UNIX path too long, targeted короткийpathPASS. Последующее cacheprecondition RED→GREEN, finalselected53PASS; counts overlap, окончательный524suite повторнонепроводился |
+| Стоимость / очистка | RealOS/noML10,052с/9samples11events5616bytes; CPUself+samplingchildren0,225с, sampletimeΣ0,219/max0,021. Incompletefalse/threadclosed/MPSbeforeSDKUNKNOWN.0B1containers/0ownfixtureprocesses. MLoverheadUNKNOWN, нет причинного A/Bвывода |
+| Границы / review | Старый load_diagnostics opt-in сохранён; defaults1с толькоwhenenabled, guard независим. Открытиеsinkbest-effort кроме прежнего cacheexperimentprerequisite. Sourceδ ровно3files vs frozen81; Ruff/format/diff/linksPASS. NoML/workingDB/install/commit/push/merge. Review не проводилось |
+| Книги / основание | Book-guidance/CleanArchitecture mini: OS/SDKmetrics и потоки вouter infrastructure, core unchanged; causalbookeffect не измерялся. Ownerapproval/private regression-probe-cleanup evidence; [описание](../specs/001-corpus-replenishment/light-resource-logging.md) |
+
+### 2026-10-15 — Раздельный ресурсный цикл одного фото
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись145; прямойowner request на локализацию/сохранение/завершениеI/последовательные embeddings; безHTTP/DB |
+| Подготовка / TDD |2RED→GREEN persistence/RGB roundtrip/tamper refusal;40checksPASS сexisting admission/STOP/diagnostics. Frozen source/model/input/helper pins,4fresh claims; dynamiccropSHA frozen доencoderML. Productcode unchanged |
+| Real результат |4фазыOK156,974с; worker windows16,889/7,117/5,298/5,684.3regions/6PNG21168bytes;3×3vectors dims512/768/768 finite/unitnorm. CropSHAshared/checksunchanged; Iнеповторялся |
+| Ресурсы | MPSdriver peaks3945807872/388743168/380354560/416022528bytes. ПервыйGDINOpredict1,628→3,830ГБ; cropscreate/save MPSunchanged.66host samples54normal/12warning/0critical;108stage records/allcomplete. Wholehostswapouts I7812pages, encoders0; causalityUNKNOWN |
+| Очистка / границы | Independent0all4PG/bothlocks/pinsunchanged/pressure1;90fileprivatearchiveSHAverified. NoHTTP/DB/corpus/publish/install/modelchange/foreigncleanup/commit. HistoricalcriticalcausestillUNKNOWN; quality/scaling/relativegainUNKNOWN |
+| Review / книги / основание | Review не проводилось; нового инженерного вопроса для книг нет. Ownerrequest/private runtime evidence; [план](../specs/corpus-optimization/staged-resource-plan.md), [отчёт](../specs/corpus-optimization/staged-resource-report.md) |
+
+### Сводка записей141–145
+
+Проверены семь новых запросов/четыре товара и membership manual20. Попытка capture остановлена criticalpressure до первого результата; точная причинапрошлогоSTOP не выдумывалась. Отдельный coldI и раздельный I→crops→encoders цикл на одном фото прошли: основной измеренный рост MPS на первомGroundingDINO predict, все триembedding процесса существенно меньше поMPS. Добавлено лёгкое worker logging/rotation/import boundaries; полныйtest campaign имел один environment Unix-pathFAIL, targetedкороткийpathPASS, финальнаярелевантнаявыборка53PASS. Состояние/ограничения каждой пробы сохранены; logs не заменяютguards/SQL, модельноекачество/масштаб/причинныйbookeffectUNKNOWN. Independentreview вSTANDARD не проводилось.
+
+### 2026-10-15 — Проверка кеша после Grounding DINO predict
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись146; owner согласовал продолжение диагностики после staged проб, одно прежнее фото/I only |
+| Метод / TDD | Только privatewrapper aftersuccessfulpredict→synchronize→empty_cache, исходныйрезультаттотже/restoremethod.1RED1PASS→2PASS,30withdiagnosticsPASS; exactaliascopy2PASSbeforeML. Importalias исправлен доfinalpackage, не runtimefailure |
+| Real результат | Package d3ddfefd…/1freshclaim/worker18,254с/контур48,316с;3regions/6PNGbyteparity. synchronize driverunchanged;emptycache freed2181693440 и1156841472bytes, liveunchanged1117496576/1292608768. Peak3937353728≈предыдущие3945807872; transient peakнеустранён |
+| Ресурсы / завершение |53stagecomplete/34hostsamples22normal12warning0critical;wholehostswapouts0/causalityUNKNOWN. Independent0PG/bothlocks/pinsunchanged/pressure1;34fileprivatearchiveverified |
+| Ограничения / границы | Остаток driver-live не объявлен полностью кешем/утечкой. Historicalcriticalcause/quality/scalingUNKNOWN; productioncode/cachepolicy unchanged, noDB/HTTP/embeddings/corpus/install/commit. ReleaseAPIsemantics изlocalTorch2.13docstrings |
+| Review / основание | Review не проводилось; нового module/API вопроса для книг нет. Ownerconsent, private runtime/source/parity evidence; [план](../specs/corpus-optimization/gdino-cache-plan.md), [отчёт](../specs/corpus-optimization/gdino-cache-report.md) |
+
+### 2026-10-15 — Варианты оптимизации I, архитектуры и ресурсного бюджета
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись147; анализ вариантов поowner request, не нормативное изменениеHLD/scope/limits |
+| Основания | Staged/cache reports: I≈3,94ГБ, cachefree≈2,18ГБ безсниженияpeak. ReadonlyRAM16GiB/pressure1/swapused5087,44MiB; GDINOprocessor800/1333. OnlineprimaryHF/PyTorch2.14 vslocal2.13 различены |
+| Результат | Приоритетменьшийprocessorinput сquality/coordvalidation; AMP/smaller model/splitdetector-ROI-SAM. Архитектура:existingcontrolledprocesses, asyncдляожидания, remoteMLhostдляcapacity. РазличеныRAM/allocator/worker metrics/guard;6→8необосновано имеющимсяSTOP |
+| Проверка / границы | Links/markers/fences/diffPASS; noML/новыхпакетов/runtimechanges/нормативныхреестров/install/commit. Не объявлены qualitygain/memorysavings/историческийrootcause. Review не проводилось |
+| Книги / источник | Book-guidance/CleanArchitecture mini: deployment черезouteradapters/ports; неравенствоprocesssplitиhexarchitecture. CausalbookeffectUNKNOWN. [Варианты](../specs/corpus-optimization/resource-architecture-options.md) |
+
+
+### 2026-10-15 — Коммиты пополнения корпуса и накопленных результатов
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись148; владелец явно разрешил коммит. Фиксация ранее выполненной работы без нового нормативного решения или перехода gate |
+| Состав | Два тематических коммита: реализация с baseline-зависимостями, тестами, логированием и мониторингом; затем спецификация, архитектура, отчёты и журнал. Код зафиксирован в0407cba на codex/upload-optimiz |
+| Проверка | AST всех выбранных Python-файлов без ошибок; повторные53теста диагностики/worker binding/stage payloads/host PASS. Первая команда дала4ошибки collection из-за отсутствующего PYTHONPATH; исправленная PYTHONPATH=src:. прошла без правок кода. Scoped Ruff PASS; Markdown targets существуют. Staged check выявил8Markdown hard breaks с пробелами в3новых файлах; заменены на явный backslash с сохранением переносов, повторный staged check PASS |
+| Ограничения | Полный финальный набор524тестов повторно не запускался; ограничения прежних прогонов сохранены в отчётах. Независимое review в этой задаче не проводилось; новых инженерных решений для книжного анализа нет |
+| Данные / границы | Исходные фото и crops из outputs/, приватные ignored artifacts/data/models/runtime, окружение и отдельный PORTFOLIO_RESEARCH.md исключены. Проверка выбранных файлов на credential patterns, полный Sheets ID, embedded base64 image и conflict markers без находок. Новых ML/DB-прогонов, push и merge нет |
+| Основание | Прямое сообщение владельца «Хорошо, давай сделаем комит»; проверенные текущие Git diff/status и результаты команд |

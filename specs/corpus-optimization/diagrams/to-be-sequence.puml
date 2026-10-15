@@ -1,0 +1,38 @@
+@startuml
+title TO-BE · Успешная партия
+hide footbox
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam sequenceArrowColor #65758B
+skinparam sequenceLifeLineBorderColor #C9D3DF
+skinparam sequenceParticipantBorderColor #C9D3DF
+skinparam sequenceParticipantBackgroundColor white
+participant "Владелец" as owner
+participant "Управляющий\nпроцесс" as control
+participant "Подготовка crops\nв backend" as processor
+participant "Локализатор I" as local
+participant "Вычислитель\nвекторов" as encode
+participant "Файлы\nрезультатов" as files
+participant "Задания\nи прогресс" as state
+owner -> control : Разрешить ограниченный запуск
+control -> state : Выбрать до 5 фото из очереди
+state --> control : Фото и профиль партии
+control -> processor : Подготовить фото по одному
+processor -> local : Выделить области ногтей
+local --> processor : Области и маски
+processor -> files : Записать и проверить masks / crops
+processor -> state : Закрепить checkpoint после записи файлов
+processor --> control : Стадия сохранена
+control -> local : Завершить свой процесс; проверить выход
+loop OpenCLIP → DINOv2 → SigLIP2
+control -> encode : Обработать сохранённые crops
+encode -> files : Записать и проверить vectors
+encode -> state : Закрепить checkpoint фото / модели
+encode --> control : Результаты стадии сохранены
+control -> encode : Завершить worker; проверить выход
+end
+control -> state : Проверить готовность товаров по всем выбранным фото
+state --> control : Готовые товары либо оставшаяся работа
+control --> owner : После публикации и teardown вернуть сводку
+note over owner, state : Сначала проверенные файлы, затем commit checkpoint; поиск приостановлен.
+@enduml
