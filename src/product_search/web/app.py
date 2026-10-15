@@ -10,7 +10,12 @@ from product_search.core.image_storage import ImageStorage
 DatabaseProbe = Callable[[], bool]
 
 
-def create_app(database_probe: DatabaseProbe, image_storage: ImageStorage) -> FastAPI:
+def create_app(
+    database_probe: DatabaseProbe,
+    image_storage: ImageStorage,
+    *,
+    search_available: Callable[[], bool] | None = None,
+) -> FastAPI:
     app = FastAPI(title="Product Search MVP", docs_url=None, redoc_url=None)
     app.state.image_storage = image_storage
 
@@ -28,6 +33,16 @@ def create_app(database_probe: DatabaseProbe, image_storage: ImageStorage) -> Fa
 
     @app.get("/", response_class=HTMLResponse)
     def upload_screen() -> str:
+        if search_available is not None:
+            try:
+                available = search_available() is True
+            except Exception:  # noqa: BLE001 -- unknown admission must close the UI.
+                available = False
+            if not available:
+                return HTMLResponse(
+                    "<html lang='ru'><body><p>Поиск временно недоступен. Пополнение корпуса или восстановление ещё не завершено.</p></body></html>",
+                    status_code=503,
+                )
         return """<!doctype html>
 <html lang=\"ru\"><head><meta charset=\"utf-8\"><title>Поиск товара — MVP</title></head>
 <body><main><h1>Поиск ранее рассмотренного товара</h1>
