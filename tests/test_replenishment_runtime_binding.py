@@ -384,7 +384,7 @@ def test_resource_evidence_is_private_and_its_size_limit_stops_new_work(tmp_path
         ("stale", "TELEMETRY_FRESHNESS", "OBSERVATION_FAILED"),
         ("pressure", "RESOURCE_LIMITS", "PRESSURE_CRITICAL"),
         ("mps", "RESOURCE_LIMITS", "MPS_LIMIT"),
-        ("worker_rss", "WORKER_RSS", "OBSERVATION_FAILED"),
+        ("worker_rss", "WORKER_RSS", "RSS_LIMIT"),
     ],
 )
 def test_stop_records_safe_first_cause_and_sample_validity(
@@ -448,3 +448,176 @@ def test_stop_records_safe_first_cause_and_sample_validity(
     rows = [json.loads(line) for line in path.read_text().splitlines()]
     assert all(row["diagnostic"] == diagnostic for row in rows)
     assert "SECRET" not in path.read_text() and "nonce" not in path.read_text()
+
+
+def test_recording_failure_preserves_first_stop_outside_broken_stream(tmp_path, monkeypatch):
+    import os
+
+    from product_search.infrastructure.replenishment_runtime_binding import (
+        RecordingResourceObserver,
+    )
+
+    sensor, _ = observer(
+        tmp_path, telemetry={"pid": 20, "nonce": "nonce", "observed_at": 99.0, "mps_bytes": 100}
+    )
+    record = RecordingResourceObserver(sensor, tmp_path / "observations.jsonl", max_bytes=4096)
+    original_write = os.write
+
+    def fail_stream(fd, data):
+        if fd == record.fd:
+            raise OSError("PRIVATE_DISK_ERROR")
+        return original_write(fd, data)
+
+    monkeypatch.setattr(os, "write", fail_stream)
+    try:
+        assert record().status == "STOP"
+        first = private_json(tmp_path / "resource-stop.json")
+        assert first["diagnostic"]["reason"] == "JOURNAL_WRITE_FAILED"
+        assert first["diagnostic"]["sample_current"] is False
+        assert first["sample_observed_at"] == 100
+        assert first["sample"]["rss_bytes"] == 614400
+        assert record().status == "STOP"
+        assert private_json(tmp_path / "resource-stop.json") == first
+        assert "PRIVATE" not in (tmp_path / "resource-stop.json").read_text()
+    finally:
+        record.close()
+
+
+def test_first_resource_stop_survives_followup_failure_and_keeps_sample_time(tmp_path):
+    from product_search.infrastructure.replenishment_runtime_binding import (
+        RecordingResourceObserver,
+    )
+
+    sensor, _ = observer(
+        tmp_path,
+        pressure="4",
+        telemetry={"pid": 20, "nonce": "nonce", "observed_at": 99.0, "mps_bytes": 100},
+    )
+    record = RecordingResourceObserver(sensor, tmp_path / "observations.jsonl", max_bytes=4096)
+    try:
+        assert record().status == "STOP"
+        first = private_json(tmp_path / "resource-stop.json")
+        assert first["diagnostic"]["reason"] == "PRESSURE_CRITICAL"
+        assert first["sample_observed_at"] == 100
+        sensor.clock = lambda: 120
+        assert record().status == "STOP"
+        assert private_json(tmp_path / "resource-stop.json") == first
+    finally:
+        record.close()
+
+
+def test_sensor_exception_is_distinct_from_journal_failure(tmp_path):
+    from product_search.infrastructure.replenishment_runtime_binding import (
+        RecordingResourceObserver,
+    )
+
+    tmp_path.chmod(0o700)
+
+    def fail():
+        raise RuntimeError("PRIVATE_SENSOR_DETAIL")
+
+    class FailingSensor:
+        last_sample = None
+
+        def __call__(self):
+            return fail()
+
+    record = RecordingResourceObserver(
+        FailingSensor(), tmp_path / "observations.jsonl", max_bytes=4096
+    )
+    try:
+        assert record().status == "STOP"
+        assert (
+            private_json(tmp_path / "resource-stop.json")["diagnostic"]["reason"]
+            == "OBSERVATION_FAILED"
+        )
+        assert "PRIVATE" not in (tmp_path / "resource-stop.json").read_text()
+    finally:
+        record.close()
+
+
+def test_resource_stop_precedes_context_recording_failure(tmp_path):
+    from product_search.infrastructure.replenishment_runtime_binding import (
+        RecordingResourceObserver,
+    )
+
+    sensor, _ = observer(
+        tmp_path,
+        pressure="4",
+        telemetry={"pid": 20, "nonce": "nonce", "observed_at": 99.0, "mps_bytes": 100},
+    )
+
+    def context():
+        raise RuntimeError("PRIVATE_CONTEXT_ERROR")
+
+    record = RecordingResourceObserver(
+        sensor, tmp_path / "observations.jsonl", max_bytes=4096, context=context
+    )
+    try:
+        assert record().status == "STOP"
+        assert (
+            private_json(tmp_path / "resource-stop.json")["diagnostic"]["reason"]
+            == "PRESSURE_CRITICAL"
+        )
+    finally:
+        record.close()
+
+
+def _replace_open_telemetry_once(path, monkeypatch):
+    import os
+
+    original_fstat = os.fstat
+    original_inode = path.stat().st_ino
+    replaced = []
+
+    def fstat_after_atomic_publish(fd):
+        info = original_fstat(fd)
+        if info.st_ino == original_inode and not replaced:
+            replaced.append(True)
+            publish_private_json(
+                path, {"pid": 20, "nonce": "nonce", "observed_at": 99.5, "mps_bytes": 101}
+            )
+            info = original_fstat(fd)
+            assert info.st_nlink == 0
+        return info
+
+    monkeypatch.setattr(os, "fstat", fstat_after_atomic_publish)
+    return replaced
+
+
+@pytest.mark.parametrize("observed_at,expected", [(99.0, "OK"), (90.0, "STOP")])
+def test_atomic_telemetry_replacement_preserves_descriptor_and_freshness(
+    tmp_path, monkeypatch, observed_at, expected
+):
+    data = {"pid": 20, "nonce": "nonce", "observed_at": observed_at, "mps_bytes": 100}
+    sensor, _ = observer(tmp_path, telemetry=data)
+    replaced = _replace_open_telemetry_once(tmp_path / "telemetry.json", monkeypatch)
+    assert sensor().status == expected
+    assert replaced == [True]
+    if expected == "OK":
+        assert sensor.last_sample["mps_bytes"] == 100
+    else:
+        assert sensor.last_diagnostic["check"] == "TELEMETRY_FRESHNESS"
+
+
+def test_immutable_control_reader_still_rejects_unlinked_open_descriptor(tmp_path, monkeypatch):
+    from product_search.infrastructure.replenishment_cli import CliError
+
+    tmp_path.chmod(0o700)
+    path = tmp_path / "control.json"
+    publish_private_json(path, {"status": "old"})
+    replaced = _replace_open_telemetry_once(path, monkeypatch)
+    with pytest.raises(CliError):
+        private_json(path)
+    assert replaced == [True]
+
+
+def test_atomic_telemetry_snapshot_still_rejects_hardlinks(tmp_path):
+    import os
+
+    sensor, _ = observer(
+        tmp_path, telemetry={"pid": 20, "nonce": "nonce", "observed_at": 99.0, "mps_bytes": 100}
+    )
+    os.link(tmp_path / "telemetry.json", tmp_path / "alias.json")
+    assert sensor().status == "STOP"
+    assert sensor.last_diagnostic["check"] == "TELEMETRY_READ"

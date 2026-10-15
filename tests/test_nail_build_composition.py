@@ -484,3 +484,49 @@ def test_observer_failure_trace_keeps_exception_class_without_private_message(tm
         event.get("error_class") == "PermissionError"
         and "private-path-must-not-be-published" not in text
     )
+
+
+@pytest.mark.parametrize(
+    "reason",
+    [
+        "RESOURCE_CEILING",
+        "STORAGE_CEILING",
+        "PRESSURE_CRITICAL",
+        "RSS_LIMIT",
+        "MPS_LIMIT",
+        "OBSERVATION_FAILED",
+        "SECRET_REASON",
+    ],
+)
+def test_watchdog_preserves_safe_terminal_cause(tmp_path, reason):
+    import sys
+
+    from tests.support.candidate_i_probe_watchdog import run_owned_probe
+
+    trace = tmp_path / "trace.jsonl"
+    code = (
+        "import json,pathlib,sys,time; "
+        "pathlib.Path(sys.argv[1]).write_text(json.dumps("
+        "{'event':'resource_observation_error','reason':sys.argv[2],"
+        "'pressure':4,'i_rss':2,'controller_rss':3,'mps_driver_bytes':17,'swapouts_delta':0})+'\\n'); "
+        "time.sleep(10)"
+    )
+    result = run_owned_probe(
+        [sys.executable, "-B", "-c", code, str(trace), reason],
+        tmp_path / "worker.log",
+        trace,
+        2,
+        {
+            "resource_policy": "scenario_suitability_v1",
+            "i_rss_bytes": 10,
+            "backend_rss_bytes": 10,
+            "combined_rss_bytes": 15,
+        },
+    )
+    assert result["stop_reason"] == (
+        reason if reason != "SECRET_REASON" else "RESOURCE_OBSERVATION_ERROR"
+    )
+    assert result["exit_code"] == -9
+    assert result["termination_action"] == "SIGKILL_OWNED_GROUP"
+    assert result["stop_sample"]["mps_driver_bytes"] == 17
+    assert "SECRET" not in (tmp_path / "worker.log").read_text()

@@ -18,12 +18,14 @@ def run_owned_probe(command, output_path, host_trace, wall_limit_s, profile):
     started = time.monotonic()
     offset = 0
     last_sample = None
+    stop_sample = None
+    termination_action = "NONE"
     max_age = profile.get("resource_sample_max_age_s")
     if max_age is not None and (not math.isfinite(max_age) or max_age <= 0):
         raise ValueError("finite positive telemetry deadline required")
 
     def trace_failure():
-        nonlocal offset, last_sample
+        nonlocal offset, last_sample, stop_sample
         if not host_trace.exists():
             return (
                 "RESOURCE_OBSERVATION_ERROR"
@@ -41,7 +43,36 @@ def run_owned_probe(command, output_path, host_trace, wall_limit_s, profile):
                     sample = json.loads(line)
                     offset = trace.tell()
                     if sample.get("event") == "resource_observation_error":
-                        return "RESOURCE_OBSERVATION_ERROR"
+                        stop_sample = {
+                            key: value
+                            for key, value in sample.items()
+                            if key
+                            in {
+                                "pressure",
+                                "i_rss",
+                                "controller_rss",
+                                "swapouts_delta",
+                                "mps_driver_bytes",
+                            }
+                            and type(value) is int
+                            and value >= 0
+                        }
+                        reason = sample.get("reason")
+                        return (
+                            reason
+                            if isinstance(reason, str)
+                            and reason
+                            in {
+                                "RESOURCE_CEILING",
+                                "STORAGE_CEILING",
+                                "RESOURCE_OBSERVATION_ERROR",
+                                "PRESSURE_CRITICAL",
+                                "RSS_LIMIT",
+                                "MPS_LIMIT",
+                                "OBSERVATION_FAILED",
+                            }
+                            else "RESOURCE_OBSERVATION_ERROR"
+                        )
                     if max_age is not None:
                         last_sample = float(sample["monotonic"])
                     if resource_violation(
@@ -85,6 +116,7 @@ def run_owned_probe(command, output_path, host_trace, wall_limit_s, profile):
             # Only the new session created above: includes owned I, never existing apps.
             try:
                 os.killpg(process.pid, signal.SIGKILL)
+                termination_action = "SIGKILL_OWNED_GROUP"
             except ProcessLookupError:
                 pass
             process.wait(timeout=5)
@@ -94,6 +126,8 @@ def run_owned_probe(command, output_path, host_trace, wall_limit_s, profile):
             "event": "watchdog",
             "exit_code": process.returncode,
             "stop_reason": reason,
+            "stop_sample": stop_sample,
+            "termination_action": termination_action,
             "elapsed_seconds": round(time.monotonic() - started, 3),
         }
         log.write((json.dumps(result, sort_keys=True) + "\n").encode())

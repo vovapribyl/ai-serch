@@ -82,7 +82,13 @@ def _parser():
     return parser
 
 
-def private_json(path):
+def private_json(path, *, atomic_snapshot=False):
+    """Read one private descriptor; only mutable telemetry opts into atomic replacement.
+
+    An opened inode can lose its final link during os.replace. Its bytes remain
+    readable; the telemetry caller still validates worker identity and freshness.
+    Immutable control/grant files retain the single-link requirement.
+    """
     try:
         path = Path(path)
         parent = path.parent.lstat()
@@ -98,7 +104,7 @@ def private_json(path):
             if (
                 not stat.S_ISREG(info.st_mode)
                 or info.st_uid != os.getuid()
-                or info.st_nlink != 1
+                or info.st_nlink not in ((0, 1) if atomic_snapshot else (1,))
                 or stat.S_IMODE(info.st_mode) != 0o600
                 or info.st_size > JSON_LIMIT
             ):

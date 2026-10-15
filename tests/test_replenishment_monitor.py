@@ -253,3 +253,154 @@ def test_watch_refreshes_without_starting_processing(tmp_path, monkeypatch):
         == 0
     )
     assert sleeps == [3] and "RUNNING" in out.getvalue() and "COMPLETED" in out.getvalue()
+
+
+@pytest.mark.parametrize(
+    "reason,check",
+    [
+        ("PRESSURE_CRITICAL", "RESOURCE_LIMITS"),
+        ("RSS_LIMIT", "RESOURCE_LIMITS"),
+        ("MPS_LIMIT", "RESOURCE_LIMITS"),
+        ("OBSERVATION_FAILED", "TELEMETRY_FRESHNESS"),
+        ("OBSERVATION_FAILED", "PROCESS_TABLE"),
+        ("JOURNAL_WRITE_FAILED", "RESOURCE_JOURNAL"),
+    ],
+)
+def test_stop_summary_uses_first_cause_and_does_not_refresh_old_sample(tmp_path, reason, check):
+    root = fixture(
+        tmp_path,
+        [
+            {"sequence": 1, "event": "batch", "phase": "before", "monotonic": 10},
+            {
+                "sequence": 2,
+                "event": "stage",
+                "phase": "before",
+                "monotonic": 11,
+                "stage_key": "localization",
+                "model_key": "",
+            },
+            {
+                "sequence": 3,
+                "event": "worker",
+                "phase": "exit",
+                "monotonic": 14,
+                "stage_key": "localization",
+                "model_key": "",
+                "returncode": -9,
+                "signal": 9,
+                "expected": True,
+                "error_code": "RESOURCE_STOP",
+            },
+        ],
+        {
+            "status": "STOP",
+            "observed_at": 29,
+            "sample": {"rss_bytes": 999, "mps_bytes": 888, "pressure": 1},
+            "diagnostic": {"reason": "OBSERVATION_FAILED", "sample_current": False},
+        },
+    )
+    first = {
+        "status": "STOP",
+        "observed_at": 13,
+        "sample_observed_at": 12,
+        "sample": {"rss_bytes": 1024, "mps_bytes": 2048, "pressure": 4},
+        "diagnostic": {
+            "reason": reason,
+            "check": check,
+            "sample_current": False,
+            "error_type": "PRIVATE_ERROR_TEXT",
+        },
+    }
+    path = root / "resource-stop.json"
+    path.write_text(json.dumps(first))
+    path.chmod(0o600)
+    view = snapshot(root, now=30)
+    assert view["failure"]["reason"] == reason
+    assert view["failure"]["check"] == check
+    assert view["failure"]["sample_observed_at"] == 12
+    assert view["failure"]["sample_age_seconds"] == 18
+    assert view["failure"]["sample"]["rss_bytes"] == 1024
+    assert view["failure"]["worker_exit"]["signal"] == 9
+    assert view["failure"]["worker_exit"]["expected"] is True
+    assert view["stage_seconds"] == 3
+    assert reason in render(view)
+    assert "PRIVATE" not in json.dumps(view)
+    assert not view["resources_fresh"]
+
+
+def test_unexpected_worker_exit_is_not_diagnosed_as_oom(tmp_path):
+    root = fixture(
+        tmp_path,
+        [
+            {
+                "sequence": 1,
+                "event": "worker",
+                "phase": "exit",
+                "monotonic": 14,
+                "stage_key": "localization",
+                "model_key": "",
+                "returncode": -9,
+                "signal": 9,
+                "expected": False,
+            },
+        ],
+    )
+    view = snapshot(root, now=30)
+    assert view["failure"]["reason"] == "UNEXPECTED_WORKER_EXIT"
+    assert view["failure"]["worker_exit"]["returncode"] == -9
+    assert "OOM" not in render(view)
+
+
+def test_partial_record_marks_summary_history_incomplete(tmp_path):
+    root = fixture(tmp_path, [{"sequence": 1, "event": "host", "phase": "closed", "monotonic": 10}])
+    path = next((root / "operation-logs").glob("*/events.jsonl"))
+    with path.open("a") as stream:
+        stream.write('{"sequence":')
+    assert snapshot(root, now=30)["history_complete"] is False
+
+
+def test_json_report_includes_failure_and_still_reads_only(tmp_path):
+    import io
+
+    from product_search.infrastructure.replenishment_monitor import main
+
+    root = fixture(
+        tmp_path,
+        [
+            {
+                "sequence": 1,
+                "event": "worker",
+                "phase": "exit",
+                "monotonic": 10,
+                "returncode": -9,
+                "signal": 9,
+                "expected": False,
+            }
+        ],
+    )
+    before = {p: p.read_bytes() for p in root.rglob("*") if p.is_file()}
+    out = io.StringIO()
+    assert main(["--runtime-root", str(root), "--json"], stdout=out) == 0
+    assert json.loads(out.getvalue())["failure"]["reason"] == "UNEXPECTED_WORKER_EXIT"
+    assert before == {p: p.read_bytes() for p in root.rglob("*") if p.is_file()}
+
+
+def test_latched_stop_does_not_make_original_measurement_fresh(tmp_path):
+    root = fixture(
+        tmp_path,
+        [],
+        {
+            "status": "STOP",
+            "observed_at": 29,
+            "sample_observed_at": 10,
+            "sample": {"rss_bytes": 1024},
+            "diagnostic": {
+                "reason": "PRESSURE_CRITICAL",
+                "check": "RESOURCE_LIMITS",
+                "sample_current": True,
+            },
+        },
+    )
+    view = snapshot(root, now=30)
+    assert view["resources_fresh"] is False
+    assert view["failure"]["sample_age_seconds"] == 20

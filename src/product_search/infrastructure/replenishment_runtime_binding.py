@@ -191,6 +191,7 @@ class MacResourceObserver:
         self._sample_lock = threading.Lock()
         self.stopped, self.last_sample = False, None
         self.last_diagnostic = None
+        self.last_sample_observed_at = None
         self.worker_rss_ceiling = lambda: package.rss_ceiling_bytes
 
     def __call__(self):
@@ -205,6 +206,7 @@ class MacResourceObserver:
             return ResourceObservation("STOP", started)
         check, sample_current = "PROCESS_TABLE", False
         error_type = None
+        failure_reason = "OBSERVATION_FAILED"
         try:
 
             def output(argv):
@@ -244,11 +246,14 @@ class MacResourceObserver:
                 check = "WORKER_RSS"
                 worker_rss = sum(row[3] * 1024 for row in processes if row[2] == pid)
                 ceiling = self.worker_rss_ceiling()
-                if type(ceiling) is not int or ceiling <= 0 or worker_rss > ceiling:
+                if type(ceiling) is not int or ceiling <= 0:
+                    raise ValueError
+                if worker_rss > ceiling:
+                    failure_reason = "RSS_LIMIT"
                     raise ValueError
                 rss += worker_rss
                 check = "TELEMETRY_READ"
-                telemetry = private_json(telemetry_path)
+                telemetry = private_json(telemetry_path, atomic_snapshot=True)
                 check = "TELEMETRY_IDENTITY"
                 observed = telemetry["observed_at"]
                 mps = telemetry["mps_bytes"]
@@ -276,6 +281,7 @@ class MacResourceObserver:
             if not 0 <= self.clock() - started <= self.package.observation_max_age_seconds:
                 raise ValueError
             self.last_sample = {"pressure": pressure, "rss_bytes": rss, "mps_bytes": mps}
+            self.last_sample_observed_at = started
             sample_current = True
             check = "RESOURCE_LIMITS"
             status = "WARNING" if pressure == 2 else "OK"
@@ -294,7 +300,7 @@ class MacResourceObserver:
                     else "MPS_LIMIT"
                 )
         except Exception as error:  # noqa: BLE001 -- failed mandatory observation is never evidence of safe resources.
-            status, reason = "STOP", "OBSERVATION_FAILED"
+            status, reason = "STOP", failure_reason
             kind = type(error).__name__
             error_type = (
                 kind
@@ -440,6 +446,8 @@ class RecordingResourceObserver:
         validate_runtime_root(path.parent)
         self.fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
         self.observe, self.max_bytes, self.context = observe, max_bytes, context
+        self.stop_path = path.parent / "resource-stop.json"
+        self.first_stop = None
         self._lock = threading.Lock()
         self.stopped = False
 
@@ -449,20 +457,20 @@ class RecordingResourceObserver:
         with self._lock:
             if self.stopped:
                 return ResourceObservation("STOP", time.monotonic())
+            check = "RESOURCE_OBSERVER"
             try:
                 observation = self.observe()
-                payload = (
-                    canonical(
-                        {
-                            "status": observation.status,
-                            "observed_at": observation.observed_at,
-                            "sample": self.observe.last_sample,
-                            "diagnostic": getattr(self.observe, "last_diagnostic", None),
-                            "context": self.context(),
-                        }
-                    )
-                    + b"\n"
-                )
+                check = "RESOURCE_JOURNAL"
+                record = {
+                    "status": observation.status,
+                    "observed_at": observation.observed_at,
+                    "sample": self.observe.last_sample,
+                    "sample_observed_at": getattr(self.observe, "last_sample_observed_at", None),
+                    "diagnostic": getattr(self.observe, "last_diagnostic", None),
+                }
+                if observation.status == "STOP":
+                    self._record_stop(record)
+                payload = canonical({**record, "context": self.context()}) + b"\n"
                 if self.fd < 0 or os.fstat(self.fd).st_size + len(payload) > self.max_bytes:
                     raise ValueError
                 if os.write(self.fd, payload) != len(payload):
@@ -470,8 +478,44 @@ class RecordingResourceObserver:
                 os.fsync(self.fd)
                 return observation
             except Exception:  # noqa: BLE001 -- incomplete evidence is never silently discarded.
+                self._record_stop(
+                    {
+                        "status": "STOP",
+                        "observed_at": time.monotonic(),
+                        "sample": getattr(self.observe, "last_sample", None),
+                        "sample_observed_at": getattr(
+                            self.observe, "last_sample_observed_at", None
+                        ),
+                        "diagnostic": {
+                            "reason": "JOURNAL_WRITE_FAILED"
+                            if check == "RESOURCE_JOURNAL"
+                            else "OBSERVATION_FAILED",
+                            "check": check,
+                            "sample_current": False,
+                            "error_type": None,
+                        },
+                    }
+                )
                 self.stopped = True
                 return ResourceObservation("STOP", time.monotonic())
+
+    def _record_stop(self, record):
+        if self.first_stop is not None:
+            return
+        self.first_stop = record
+        try:
+            from product_search.infrastructure.nail_build_composition import publish_private_json
+
+            if len(canonical(record)) > 4096:
+                return
+            publish_private_json(self.stop_path, record)
+            fd = os.open(self.stop_path.parent, os.O_RDONLY)
+            try:
+                os.fsync(fd)
+            finally:
+                os.close(fd)
+        except Exception:  # noqa: BLE001, S110 -- disk failure must not mask the original STOP.
+            pass
 
     def close(self):
         with self._lock:
