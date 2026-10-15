@@ -1,5 +1,10 @@
 # Результаты Candidate I HTTP и synthetic поиска
 
+> История реализации и экспериментов локализатора (кодовое имя Candidate I),
+> преимущественно 2026-10-07–11. «Следующий шаг» и разрешения ниже относятся
+> к своим датам. Для текущей работы: [контекст](../corpus-optimization/project-context.md)
+> и [карта проекта](../../docs/project-map.md).
+
 Текущее состояние2026-10-09: T001–T050 выполнены в пределах описанных этапов;
 T044 installation PASS; native MPS/SAM rework PASS; T048 technical scenario PASS:
 2genuine full rounds/36vectors/41operations по [actual report](scenario-runtime-report.md).

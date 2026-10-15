@@ -92,4 +92,4 @@
 
 ## 9. История проверки и утверждения
 
-См. [`registers/history.md`, §9](registers/history.md#9-история-проверки-и-утверждения).
+См. [компактный журнал](registers/history.md).

@@ -1,5 +1,7 @@
 # Phase 1: проверка после реализации
 
+> Порядок проверок исторической feature; не автоматический сценарий продолжения. [Текущий контекст](../corpus-optimization/project-context.md) · [Карта проекта](../../docs/project-map.md).
+
 Это будущие validation scenarios [плана](plan.md). Feature tests/service paths ниже ещё NOT_CREATED/NOT_RUN. Перед командами выполнить этап 0: выбран writable checkout, проверены HEAD/dirty state/interpreter/dependencies, зафиксирован approved contract. Ветка документов не содержит поздний product code.
 
 Уточнение исполнения 2026-10-08: T001–T042 реализованы и проверены в fake/synthetic managed worktree; [фактический контекст](execution-context.md). Real I/actual verification factory/real CLI assembly/corpus ещё не выполнялись. Исходные пометки NOT_CREATED/NOT_RUN ниже относятся к моменту планирования; текущий статус определяется tasks.md и execution-context.

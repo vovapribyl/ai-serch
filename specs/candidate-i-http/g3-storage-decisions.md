@@ -6,7 +6,7 @@
 
 ## План-контракт
 
-FULL: выделить schema/coverage/evidence/session правила из [LLD §9–12](../../docs/architecture/nail-search-lld.md#9-предлагаемая-физическая-модель) → проверить совместимость с реализованным US2 и legacy → независимое read-only review → исправления → решение владельца. В этой подготовке не создаются migration/repository, контейнеры или БД; не читаются рабочие credentials/данные.
+FULL: выделить schema/coverage/evidence/session правила из [LLD §9–12](../../docs/architecture/nail-search-lld.md#9-физическая-модель--g3-approved_by_owner) → проверить совместимость с реализованным US2 и legacy → независимое read-only review → исправления → решение владельца. В этой подготовке не создаются migration/repository, контейнеры или БД; не читаются рабочие credentials/данные.
 
 Ponytail full: PostgreSQL/pgvector, существующие evaluation и маршруты Web; только необходимые шесть таблиц, обычные B-tree, без ANN, очереди и нового публичного API. Book-guidance Clean Architecture mini, commit `893a88a6fce3a80c565bf39ac65021b43a8b2990`: правила readiness принадлежат core/build use case, SQL и транзакции — внешнему адаптеру; ядро не получает ORM/session objects.
 

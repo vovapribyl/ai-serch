@@ -1,6 +1,6 @@
 # Vision & Scope
 
-> [Индекс анализа](README.md) · [Текущий контекст](current-context.md) · [Предыдущий: `ART-00`](00-source-and-decision-register.md) · [Следующий: `ART-02`](README.md#реестр-артефактов)
+> [Индекс анализа](README.md) · [Текущий контекст](current-context.md) · [Предыдущий: `ART-00`](00-source-and-decision-register.md) · [Следующий: `ART-02`](02-stakeholders-and-glossary.md)
 
 | Поле | Значение |
 |---|---|

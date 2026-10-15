@@ -1,5 +1,10 @@
 # Проверка решения: порядок и команды
 
+> [Карта проекта](../../docs/project-map.md) · [Текущие результаты и следующий шаг](verification-followup-status.md).
+> Документ объединяет порядок проверок и хронологию их исполнения. Все датированные
+> «следующие шаги», PREPARED и разрешения ниже относятся к своему этапу, а не к новому
+> допуску. B0 и задачи 001–051 завершены; старые команды не запускать автоматически.
+
 **Последний пакет2026-10-15:** [20фотоOK, качествоPARTIAL, telemetryfixпроверен безML](verification-followup-status.md).
 80checkpoints/336vectors, затем query5из7 и STOPтелеметрии.135postfix testsPASS;
 50–100не запускались. Прежниеpackages после двух code changes не переиспользовать.
@@ -35,7 +40,7 @@ Feature определяется .specify/feature.json. Поле BRANCH shell-sc
 имя feature_directory; actual git branch проверяется git branch --show-current,
 для этой работы она codex/upload-optimiz.
 
-## До реализации
+## Исторические предпосылки: до реализации
 
 Утвердить plan и contracts, затем tasks. Закрыть B0: сравнить checkout/source,
 согласовать manifest, восстановить нужные baseline tests без ML. Наличие .venv

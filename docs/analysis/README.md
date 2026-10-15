@@ -1,10 +1,12 @@
 # Индекс утверждённого аналитического пакета
 
+> [Карта проекта и маршруты чтения](../project-map.md) · [Обзор проекта](../../README.md)
+
 `ART-00`–`ART-10`, контракты, governance и реестры являются действующими нормативными материалами. Открывайте только объект, необходимый для конкретного расхождения.
 
 | Объект | Назначение |
 |---|---|
-| [`current-context.md`](current-context.md) | Единственный короткий текущий контекст |
+| [`current-context.md`](current-context.md) | Маршрутизатор текущей работы; сводка реализации доступна по ссылке |
 | [`00-source-and-decision-register.md`](00-source-and-decision-register.md) | `ART-00`: вход в источники, решения, gaps и историю |
 | [`artifact-contracts.md`](artifact-contracts.md) | Границы `ART-00`–`ART-10` |
 | [`governance.md`](governance.md) | Режимы работы и доказательность |

@@ -1,5 +1,7 @@
 # Tasks: Candidate I HTTP и новый поисковый режим
 
+> Исторический план feature Candidate I. Текущая работа продолжена в [пополнении корпуса](../001-corpus-replenishment/tasks.md); [контекст и границы](../corpus-optimization/project-context.md). Чекбоксы этого плана не переписываются по результатам другой feature.
+
 **Input:** [spec](spec.md), [plan](plan.md), [research](research.md), [data model](data-model.md), [contracts](contracts/README.md), [quickstart](quickstart.md).
 
 **Статус2026-10-09:** T001–T050 выполнены в описанных пределах; T050 — отдельно разрешённый [inventory Gate 2](build-readiness.md), 674 основных фото, без ML/build. T048 technical scenario PASS:2genuine full rounds/36vectors/41operations по [actual report](scenario-runtime-report.md). Owner «Принимаю» утвердил T049/actual G4 runtime в synthetic scope — [reference](runtime-profile-reference.md). Исторические strict REWORK сохранены. Один model window завершён; новые model calls требуют отдельного разрешения. Build/queries/activation сохраняют отдельные G5 permissions; Candidate J и Git publication не разрешены. [Execution-context](execution-context.md).

@@ -1,5 +1,7 @@
 # Маршрут работ по оптимизации
 
+> [Карта проекта](../../docs/project-map.md) · [Краткий контекст](project-context.md) · [Текущий статус проверок](../001-corpus-replenishment/verification-followup-status.md). Ниже после актуальной точки продолжения сохранена хронология этапов.
+
 2026-10-12. Проект **AI-поиск дублей**.
 Рабочая Git-ветка: `codex/upload-optimiz`.
 Рабочий каталог: `/Users/v.pribylovskiy/Documents/ChatGPT/Ai`.
