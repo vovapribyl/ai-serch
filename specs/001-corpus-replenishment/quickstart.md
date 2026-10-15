@@ -1,5 +1,16 @@
 # Проверка решения: порядок и команды
 
+**Последний пакет2026-10-15:** [20фотоOK, качествоPARTIAL, telemetryfixпроверен безML](verification-followup-status.md).
+80checkpoints/336vectors, затем query5из7 и STOPтелеметрии.135postfix testsPASS;
+50–100не запускались. Прежниеpackages после двух code changes не переиспользовать.
+
+
+Последний результат2026-10-15: [полный цикл и две партии1+5+5](three-phase-runtime-report.md)
+прошли в собственной временнойБД:11готовых товаров,44checkpoints/186векторов,
+482guardOK/0WARNING/0STOP, прежний800/лимиты. Сохранность данных и cleanup
+проверены; grants использованы, автоматический новый запуск не разрешён.
+
+
 Изменение2026-10-15: [лёгкий журнал ресурсов](light-resource-logging.md) добавляет worker samples примерно1Гц, import boundaries и ротацию. Прежние frozen packages после изменения трёх инфраструктурных файлов не переиспользуются; новые ML-прогоны этим изменением не выполнены.
 
 Последний результат2026-10-15: [пакет ошибок и повторов](error-retry-runtime-report.md) выполненOK за137,139с. Malformed image теперь изолирован как ошибка фото только в native adapter, hash/storage STOP сохранён; обновлены fingerprints двух продуктовых файлов.510replenishment tests и65пересекающихся image/build/payload testsPASS. Реальные ERROR/OK/NO_NAILS/ERROR, выборочный retry без перерасчёта готового, ожидаемый отказ публикации с сохранением active, retry и идемпотентность безML прошли.205guardallOK/5grantsconsumed/owncleanupPASS; нетworkingcutover/limitincrease/install/commit. Старые execution packages не переиспользуются после изменения кода.

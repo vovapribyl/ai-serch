@@ -2614,3 +2614,183 @@ owner quality/acceptance и причинный эффект книжных пр�
 | Ограничения | Полный финальный набор524тестов повторно не запускался; ограничения прежних прогонов сохранены в отчётах. Независимое review в этой задаче не проводилось; новых инженерных решений для книжного анализа нет |
 | Данные / границы | Исходные фото и crops из outputs/, приватные ignored artifacts/data/models/runtime, окружение и отдельный PORTFOLIO_RESEARCH.md исключены. Проверка выбранных файлов на credential patterns, полный Sheets ID, embedded base64 image и conflict markers без находок. Новых ML/DB-прогонов, push и merge нет |
 | Основание | Прямое сообщение владельца «Хорошо, давай сделаем комит»; проверенные текущие Git diff/status и результаты команд |
+
+
+### 2026-10-15 — Сохранение контекста для продолжения
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись149; прямой запрос владельца «СОхрани контекст проекта». Синхронизация наблюдений без новых требований или перехода gate |
+| Результат | Создан компактный project-context.md; добавлены ссылки в README оптимизации и общий current-context. Прежний Gate 2 snapshot и хронология явно обозначены историческими |
+| Основания | Текущие Git branch/status/log, коммиты0407cba/739962f, tasks/quickstart и отчёты quality/staged/cache/architecture. Неизвестные качество/причина STOP/масштабирование сохранены как ограничения |
+| Проверка | Относительные ссылки, конфликтные маркеры, Markdown fences и git diff --check. Код/ML/БД не запускались; текущее состояние сервера не проверялось |
+| Границы / review | Новый коммит/push/merge не выполнялись; outputs/ и PORTFOLIO_RESEARCH.md сохранены вне scope. Независимое review не проводилось, нового инженерного решения для книжных правил нет |
+
+### 2026-10-15 — Первая причина STOP и сводка диагностики
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись150; владелец «Подтверждаю» на код/немодельные проверки и подготовку отдельной ML-пробы. Нормативные правила и ресурсные лимиты прежние |
+| Реализация | Resource recorder сохраняет первый STOP≤4096bytes отдельно до context/stream; sample имеет собственное время. Ошибка observer отличается от journal. Monitor показывает причину/проверку/worker exit/полноту/возраст, read-only JSON. Watchdog сохраняет разрешённый code/MPS sample и отправленный SIGKILL |
+| TDD / проверки | RED→GREEN: first cause, stream/context/observer failure, worker RSS, stale latched sample, partial record, JSON, safe watchdog codes/MPS. Реальный SIGKILL только synthetic child. Финальные8files156PASS2,85с; широкая немодельная регрессия853PASS/108SKIP/1deselected/1warning5,13с, выборки пересекаются |
+| Отказы / границы регрессии | Первый слишком широкий sandbox run837PASS/10FAIL/73ERROR/36SKIP: импортированные B1 fixtures пытались Docker preflight, socket/lock denied; БД не стартовала. DB closure исключён внешним hook до setup, local sockets разрешены. Следующий847PASS/108SKIP/1ERROR: отсутствующий candidate_i_fake_server.py, исключён явно; не исправлялся. Имена/основания в отчёте; полный зелёный suite не заявлен |
+| Подготовка ML / неизвестное | Один I-only пакет3e7ef09a…/94pins/inputSHAverified/ASTchecked, PREPARED_NOT_EXECUTED; нетownerapproval/claim, SDK не импортирован, weights заново не хешировались. Cold runner проверит worker/watchdog, не production recorder/controller/DB. Исторический critical root cause и ML overhead UNKNOWN |
+| Книги / review / ограничения | Book-guidance/Clean Code mini, commit893a88a6fce3a80c565bf39ac65021b43a8b2990: порядок ошибок и локальная читаемость; причинный эффект книги не измерялся. Review не проводилось. Ruff/format/diff/links проверены; ML/DB/publish/install/commit/push/merge нет |
+| Основание | Подтверждение владельца, текущий код и фактические тесты; [отчёт](../specs/001-corpus-replenishment/stop-observability-report.md), [подготовленная проба](../specs/001-corpus-replenishment/one-photo-observability-proposal.md) |
+
+### Сводка записей146–150
+
+На одном фото проверена очистка GDINO cache: остаточное выделение снизилось,
+временный пик сохранился; причина исторического critical STOP не установлена.
+Варианты архитектуры/бюджета остались предложениями. Сохранены локальные коммиты
+и актуальный контекст. Доработана диагностика первой причины STOP с немодельными
+проверками и подготовлен новый I-only пакет без запуска. Широкая регрессия имеет
+явные исключения DB и отсутствующего HTTP-helper; проверки не доказывают ML
+качество, масштабирование или причинный эффект книжных правил. Независимое review
+в этих STANDARD задачах не проводилось; новых операционных допусков нет.
+
+### 2026-10-15 — Разрешённая I-only проверка диагностики STOP
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись151; отдельноеowner«разрешаю» на один пакет3e7ef09a…/одно прежнее фото/I only. Повтора нет |
+| Подготовка |94pins/input/package/interpreter/privatepermissionsPASS, noothermatchingPythonprobe. Создан отсутствовавшийruntime700 доapproval; код/packagebytes неизменны. Ownerapproval записан на точныйSHA, claimused |
+| Фактический результат | Baseline56samples/30,239с/pressure1. Worker10,548с, веськонтур40,869с; STOPPED/PRESSURE_CRITICAL/exit−9/SIGKILL_OWNED_GROUP. Последняя граница gdino.predictbefore, after/photoresult отсутствуют |
+| Evidence / ограничения |20hostsamples12normal/7warning/1critical;22workerrecords allmeasurementok. STOP RSSI774668288/controller20250624/MPSdriver2733522944bytes; наблюдаемыйpeakRSSI989413376/driver2733522944/live1179216384. MPS — последнее доступноеworkerизмерение, не синхронноhostcritical; wholehostswapouts85576pages не приписаны приложению. Workerfooter отсутствует послеSIGKILL, полнотаUNKNOWN |
+| Очистка / хранение | Independent0controller/worker/PGID, обаlocksacquire/release,94pins/input/packageunchanged. Приватныйignoredarchive113files2084242bytes, manifestd73e3417…проверен. Чужие процессы не тронуты |
+| Проверка / review | Продуктовыйкод/тесты неизменны; suite не повторялся. Проверены runtimeevidence/SHA/cleanup/archive/links/diff. Review не проводилось; новых инженерных решений длякниг нет |
+| Вывод / границы | Новыйwatchdog сохраняет первичныйкодпри реальномSTOP. Давление воспроизведено в окнеGDINOpredict, исключительная причинность/историческийrootcause/качество/overheadUNKNOWN. Productionrecorder/monitor/DBbinding не проверены. НетDB/HTTP/embeddings/install/корпус/publish/изменениялимитов/commit/push/merge. [Отчёт](../specs/001-corpus-replenishment/one-photo-observability-report.md) |
+
+### 2026-10-15 — Подготовка эксперимента GDINO processor640
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись152; owner«Приступай» на сравнение800→640 по памяти/локализации. Подготовлен конкретный runtime пакет, ML по новомуSHA пока не разрешён |
+| Подход | Только private worker wrapper: processor800/1333→640/1066, forward pre-hook проверяет фактический tensorHW, restore послеисключения. OriginalRGB/SAM/core crop policy прежние; productioncode/profile unchanged, экспериментальный overlay отдельный |
+| Evidence / reference | Локальные установленные GDINO.predict/processor/torchhook прочитаны; target_sizes исходные, дополнительный пересчёт не нужен. SameinputSHA как в успешном800 и stopped800; verified6referencePNG/manifest privatelycopied. Новый800 не планируется, causalA/B/qualityacceptance не заявлены |
+| TDD / проверка |3initialRED resize/tensor/unexpectedprocessor;2RED IoU/coordspace; geometrywriter RED на реальномRegionCrop нашёлcrop_bbox вместоcrop_box, исправлено доML.8privatechecks + relevant64PASS0,32с; первоеошибочноеимятестадавалоnotests. AST/scopedRuff/links/diffchecked, producttests/codeunchanged, fullsuiteнеповторялся |
+| Пакет / хранение |61bbdccb…/184pins/обаimportnamespace/input/referencebytesSHAchecked, runtime/crops700/files600, noapproval/claim. Archive204copies4233603bytes/manifestc0ae9131…verified/ignored. SDKнеимпортирован/weightsнеперехешированы; realnativeinventorycheck остаётся обязательным |
+| Границы / неизвестное | НовыйML640/эффект/IoU покаUNKNOWN. Будущий один worker≤300с после30сnormal≤300с, прежние6GiB/critical/freshnessSTOP, noautomaticretry. НетDB/HTTP/embeddings/корпус/publish/limit/install/commit/push/merge. Review не проводилось, новых инженерных вопросов длякниг нет |
+| Основание | Ownerrequest, installedsource и немодельные проверки; [пакет](../specs/corpus-optimization/gdino640-proposal.md) |
+
+### 2026-10-15 — Объяснение источника PRESSURE_CRITICAL
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись153; ответ на вопрос владельца об остановке ниже6GiB. Read-only source/runtime evidence, без новой нормативной настройки |
+| Подтверждено | mac_process_sample читает macOS kern.memorystatus_vm_pressure_level; в сохранённой пробе4. Private gate возвращает PRESSURE_CRITICAL до отдельных RSS/MPS проверок. Watchdog читает этот код и сам отправляет SIGKILL собственной группе.6GiB — верхний guard ceiling, не резерв памяти/гарантия безопасной нагрузки |
+| Ограничения | Известен механизм остановки, первопричина общесистемного pressure4 и исключительный вклад модели/приложения не установлены. OOM/самостоятельный kill ОС не объявлены. Новый640пакет не запускался |
+| Проверка / источники | Прочитаны фактический runner/gate, mac_process_sample и watchdog; saved result pressure4/code/signal совпали. Apple Activity Monitor и XNU memorystatus documentation использованы для системного смысла pressure. Код/тесты/ML/DB/лимиты не менялись, review не проводилось, новых книжных вопросов нет; journal diff проверен |
+
+### 2026-10-15 — Один разрешённый GDINO640-прогон
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись154; явноеownerразрешение exact61bbdccb…/однофото/прежниелимиты/безповторов. Одинclaimused |
+| Подготовка |184pins/package/inputSHA/privatepermissions/quiescencechecked. Подтверждены исходные640/1066 экспериментальные условия, code/packagebytes не менялись |
+| Runtime | Baseline56normal/30,216с; worker14,433с/контур44,711с/exit0/stopnull/watchdogNONE. Tensor872×640;10regions/20PNG238145bytes, fullmask852×1162/geometry/hash/RGBroundtripchecked |
+| Ресурсы |27hostsamples24normal/3warning/0critical, wholehostswapoutsdelta0; peakdriver2880389120/live1344286208/RSSI1424457728bytes.34stagerecordsallmeasurementOK/footerincompletefalse. Сравнение с успешным800driver3945807872 описательное:1vs2ROIpasses и разное состояниеhost, causalpercent/speedupUNKNOWN |
+| Локализация / неизвестное |3reference×10candidateIoU, best0,116385/0,115488/0,111641 всеcandidate3, остальные0. Визуальноcrop640#10срекламой«24штуки»;800тримаскиперекрывающиесяфрагменты, неgoldstandard. Ни10vs3, ниIoU не доказывают улучшение/ухудшение; ownerquality/precision/recall/searchUNKNOWN |
+| Очистка / архив | Independent0controller/worker/PGID, обаlocksacquire/release,184pins/input/packageunchanged. Privateignoredarchive244files4547620bytes/manifest76c307af…verified. Чужиепроцессы не тронуты |
+| Проверка / границы | Код/тестынеизменны, suiteнеповторялся. Провереныruntime/tensors/PNG/IoU/logs/cleanup/archive/links/diff. СистемныйPythonpostprocessingбезPILисправленвыбором.venv, noinstall/noMLretry. Reviewнепроводилось, новыхкнижныхвопросовнет. НетDB/HTTP/embeddings/productionprofile/corpus/publish/limit/install/commit/push/merge |
+| Основание | Прямоеownerразрешение и сохранённыйruntime; [отчёт](../specs/corpus-optimization/gdino640-report.md) |
+
+### 2026-10-15 — Объяснение следующего шага оценки локализации
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись155; владелец попросил подробнее описать следующий шаг. Только объяснение предложенного процесса по сохранённым данным, без нового требования/owner acceptance |
+| Предложение | Сравнительный просмотр исходника, масок800/640 и crops; ручное подтверждение целевых ногтей/спорных случаев, затем учёт найденных/пропущенных/лишних/дублирующих/частичных областей. Точный IoU с эталоном требует ручных пиксельных масок; текущий cross-version IoU не доказывает качество |
+| Границы | Разметка ещё не выполнена, число целевых объектов/приёмочный порог не придуманы. На одном фото нельзя принять production quality; новый ML/поиск/изменение preprocessing не запускались. Следующая выборка/поисковые проверки остаются отдельным этапом |
+| Проверка / источники | Прочитан фактический gdino640-report и текущие операционные границы; объяснение согласовано с сохранёнными3vs10/falseadvertising/overlappingreference observations. Журнал diff проверен; code/tests/ML/DB unchanged, review не проводилось, новых книжных вопросов нет |
+
+### Сводка записей151–155
+
+Разрешённый800прогон остановился по системному pressure4; внешний watchdog
+сохранил первичный код и отправленный SIGKILL. Подготовлен и отдельно разрешён
+один640пакет: он завершился с driver peak2,88ГБ и0critical, но области изменились
+с3на10, включая рекламу. Сохранённый800тоже не оказался размеченным эталоном.
+Разъяснены независимость системногоpressureguard от6GiBceiling и необходимость
+ручной оценки локализации перед решением о профиле. Новых quality gates,
+приёмочного порога, рабочего cutover или автоматических повторов не было.
+Причинный memory gain, историческая первопричинаpressure, precision/recall и
+качество поиска UNKNOWN. Независимое review в этих STANDARD задачах не проводилось.
+
+### 2026-10-15 — Исходный800 при сниженной фоновой нагрузке
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись156; ownerсообщил о закрытии приложений и запросил один тест, затем явно выбрал исходный800/прежниелимиты/безповторов. Ручная оценка масок не выполнялась |
+| Подготовка | Новыйpackage73ef43d1…/166pins; прежнеефото, worker/runner побайтово прежние. Explicit scope mapped to exactfreshapproval/claim, consumedoldpackages не использованы. Hostpreflightpressure1; сторонниеприложениязакрыты—USER_STATEMENT |
+| Runtime | Baseline56normal/30,174с;worker15,669с/контур45,897с/OK/exit0/stopnull/watchdogNONE.3области/2GDINOpredict;29hostnormal/0warning/0critical,swapoutsdelta0;driverpeak3965796352/live1487020288/RSSI1439956992bytes.38stagerecordsallmeasurementOK/footerincompletefalse |
+| Очистка / evidence | Independent0controller/worker/PGID, обаlocksacquire/release,166pins/input/packageunchanged. Privateignoredarchive189files4021961bytes/manifest8e243897…verified |
+| Вывод / границы | Исходный800 прошёл это фото без сменыprocessor/лимитов. Согласуется с влиянием общейнагрузки, но причинность закрытияприложений/прошлыйrootcause/долгаяустойчивость/searchqualityUNKNOWN. Нетповтора/DB/HTTP/embeddings/изменениякода/install/корпуса/publish/commit/push/merge |
+| Проверка / источники | Runtime/cleanup/SHA/archive/links/diffchecked; testsнеповторялись—коднеизменён. Reviewнепроводилось, новыхкнижныхвопросовнет. [Отчёт](../specs/corpus-optimization/low-load-800-report.md) |
+
+### 2026-10-15 — Минимальный следующий шаг после успешного800
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись157; ответ на вопрос о следующем шаге, предложение без исполнения/нового owner gate |
+| Основания / предложение | Последний low-load800 прошёл только I, безembeddings/DB. Предложен один полный технический цикл того же фото: I800→savedcrops→physicalexit→sequentialencoders→checkpoints/testsnapshot в собственной временнойDB; существующие guard/log/monitor, прежние лимиты |
+| Границы | Подготовка пакета/исполнение ещё не выполнены; новыйML/временнаяDB требуют конкретного допуска. Рабочий корпус не меняется, качество поиска/масок не объявляется принятым, разметка и изменение640/ROI не включены |
+| Проверка / источники | Перечитан low-load-800-report и ограничения stop-observability-report; предложение соответствует различию I-only/fullpipeline. Журналdiffchecked; code/tests/ML/DBнеизменны, review не проводилось, новых книжных вопросов нет |
+
+
+### 2026-10-15 — Восстановление точки продолжения проверок партиями
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись158; владелец попросил продолжить и уточнил предполагаемую остановку на группах фото. Восстановление фактического статуса, без нового допуска на ML |
+| Основания / результат | Проверены branch/status/log, project-context, sequential-batches-repeat-report, one-photo-observability-report, low-load-800-report и запись157. Серия5+5 остановлена наA, Bне запускалась; позднее исходный800 прошёл одно фото только наI. Последний предложенный незапущенный шаг — полный цикл одного фото перед возвратом к партиям |
+| Границы / проверка | Незакоммиченные изменения диагностики и отчёты сохранены; код/ML/БД/сервер не запускались. Новый frozen execution package и разрешение нужны для реального повтора; старые claims не переиспользуются. Review не проводилось; новых инженерных решений для книг нет. Первая служебная команда системногоPython отказала наUTF8 до записи, повтор через.venv выполнен; git diff --check выполнен |
+
+
+### 2026-10-15 — Пакетная проверка полного цикла и партий1+5+5
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись159; прямоеownerразрешение «Разрешаю, выполни пакетом»: полный цикл1фото затем5+5 без промежуточных вопросов, одна временнаяБД, прежниеguard/модели |
+| Подготовка / дефекты | Первыйmetadata preflight выявилстарыйwatchdogpin, обновлёнбезизменениямоделей. Первыйтехническийконтур2,831сошибочноунаследовалRETRY_PUBLICATION, clientINVALID_SCOPEдоотправки/ML; DBудалена. FreshSTARTпакеты/target, validate_commandдоDB; старыеclaimsнеповторялись. Исправлена собственная ошибка подготовки, не заявлено падение модели |
+| Проверка |92целевыхmodel-freetestsPASS;3metadata/9entrypointrefusalsбезSDK;6cumulative/4scopehelperchecks. Fullsuiteнеповторялся, TDDпродуктаздесьнепроводился—productcodeнеизменён |
+| Real runtime | S/A/BOK236,178с, batch57,317/84,584/84,986с;11distinctinputs/11OKREADY/44CP/62regions/186vectors/11pubsnapshots. Active1→6→11, previousmembers/CP/vectorhashes/filespreserved. Finiteunitnorm512/768/768;482guardOK/0WARNING/0STOP. Driverpeak3976462336bytes; quality/scaling/causalityUNKNOWN |
+| Очистка / evidence | Independent0ownedprocesses/container, успешныйsocketabsent/обаlocksacquire/pinsinputsunchanged/pressure1; secretsremoved. Privateignoredarchive581files11158887bytesSHAverified, старыймёртвыйsocketнепереносился. Все3host/monitor0/logverificationPASS |
+| Границы / результат | Рабочийкорпус/Web/лимиты/weightsнеизменны, noinstall/commit/push/merge. Reviewнепроводилось, новогоинженерногорешениядлякнигнет. Executing-plans/systematic-debugging/verification; причинныйэффектнавыковнеизмерялся. [Отчёт](../specs/001-corpus-replenishment/three-phase-runtime-report.md), context/README/quickstartсинхронизированы |
+
+
+### 2026-10-15 — Двадцать фото, частичное качество и гонка телеметрии
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись160; owner «Хорошо, приступай» на последовательность20→сверкаrecovery→quality→условно50–100. Исполнение/устранение найденного дефекта без нового нормативного gate или приёмкикачества |
+| Серия20 |4freshSTART/369,453с/20distinctOKREADY/80CP/112regions/336vectors/20pub. Active5→10→15→20, CP/members/vectorhashes/filespreserved.811guardOK/0WARNING/0STOP; peakMPS3977871360bytes. Boundarypressure1/0ownedheavy, swapused2390,56→2382,56MiB (wholehost, не расход модели). Independentcleanup/locks/81pins/inputsPASS |
+| Recovery / подготовка | Сохранённые realRESUME2+6, multipart5+2, ERROR/retry/publicationidempotency сверены, не повторены.33currentwaiting/lifecycletestsPASS. RealMLcrashrecovery остаётсяUNKNOWN.20preflight4metadata/12refusals/8countcases; query2metadata/6refusals/4countcases безSDK |
+| Качество | Q5OK/20SQLCP/30regions/90vectors/216guardOK; RSTOPPEDRESOURCE_STOP,31samples29OK2STOP/TELEMETRY_READ OBSERVATION_FAILED OTHER/sample_currentfalse.121,873с/owncleanupPASS.20подтверждённых Qpayload восстановлены поidentity/SHA/jobrefs; лишнийfinalmanifestRнепринятзаCP. Ранниеextractorasserts выявилиorphan/saltedrefs и исправлены безML |
+| Offline |5запросов:1presentproductquery/4absentqueries2products.7combos/100coreparitypairs/1,529с/noML. Positive rank16в6combos,15уDINOv2; query4vsreference3regions, structuralceiling0,75/score0,65857/top0,84112. Полные7query/qualityacceptance/absencerejectionUNKNOWN.10existing scorer testsPASS |
+| Исправление / TDD | Реальныйos.replaceмеждуopen/fstat воспроизвёлnlink0:2RED2PASS→135релевантныхPASS/0FAIL/0ERROR/1knownwarning. Толькоtelemetryopt-inatomic_snapshot; immutablecontrols/hardlinks/PID/nonce/freshness сохранены. Изменены2productfiles, новыйMLпослеfixнепроводился. ТочнаяпричинаименноисторическогоSTOPUNKNOWN |
+| Проверка / ограничения | Первыйexpanded135sandboxrun:3socketFAIL/2DBsetupERROR, после корректногодоступа и короткогоbasetemp тотженаборPASS бездальнейшихproductchanges; 2boundedB1DBfixturescleanup0. Ruff/format/links/markers/fences/diffchecked. Fullsuiteнеповторялся.50–100не запускались: partialquality/badpositive/unverifiedpostfixruntime. Нетworkingcutover/install/limitraise/commit/push/merge |
+| Книги / evidence | APoSDmini/source893a88a6: режим mutable descriptor локализован вreader, domainнеизменён; Ponytail standardlib/безretryloop. Executing-plans/systematic-debugging/TDD/verification. Причинныйэффекткнигнеизмерялся; reviewнепроводилось. Privateignoredarchive1128files27914752bytes/manifest9cbd2777…verified; pre-fix/postfix раздельно. [Статус](../specs/001-corpus-replenishment/verification-followup-status.md) |
+
+### Сводка записей156–160
+
+Исходный800прошёл отдельноефото, затем полныйцикл1+5+5 и20фото четырьмяпартиями
+прошли с сохранениемданных и безguardWARNING/STOP. Это конечныепробы, не доказательство
+ёмкости на сотнях. Восстановление по контролируемомуcheckpoint и ошибки уже проверялись,
+но внезапныйrealMLcrash не выдаётся за пройденныйсценарий. Качество впервые частично
+рассчитано на новыхзапросах: одинположительный имеетранг16/15, ещёдванерассчитаны
+послеtelemetrySTOP. Обнаружена и поTDDисправлена raceatomicreplace/nlink0;135тестов
+прошли, runtimeпослеfixещёнепроверен, историческийrootcauseUNKNOWN.50–100не запускались,
+модели/лимиты/рабочийкорпуснеизменны. Доказательств причинноговлияниянавыков/книг нет;
+независимоеreview в этихSTANDARDзадачах не проводилось.
+
+
+### 2026-10-15 — Коммиты и отправка текущей ветки
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись161; прямой запрос владельца «Мы можем сделать комит и пуш?» трактуется как разрешение выполнить commit/push codex/upload-optimiz в её origin, без merge |
+| Состав | Код/тесты диагностикиSTOP, monitor/watchdog и atomictelemetry в b94d569 (7файлов); затем22документных файла с контекстом, планами/отчётами ограниченных проб и текущими ограничениями. Другие изменения не добавляются |
+| Проверка | Fresh174testsPASS/0FAIL/0ERROR/0SKIP,1knownStarlettewarning; включает2bounded syntheticDB fixtures/owned sockets/watchdog, безML и рабочейБД.7файлов Ruff/formatPASS, PythonAST/diff/relative links/markers/fences проверены; fullsuite/runtimeпослеfix не запускались |
+| Git / источники | Проверены branch/HEAD/status/originHTTPS и ls-remote: удалённой ветки пока не было. Аудит428новых исторических blobs перед codecommit не выявил binary/largeblob/credential patterns,995snapshot paths без исходныхCSV/XLSX/photos/weights. Кандидаты29paths проверены отдельно. ghCLI отсутствует; обычныйGit transport доступен, установка не потребовалась |
+| Данные / границы | Исключены outputs/, PORTFOLIO_RESEARCH.md, ignored artifacts/models/data/runtime/env. Приватные фото/crops/vector dumps/секреты не добавлялись. Одна история сохраняет ограничения qualityPARTIAL и отсутствие post-fixML, без объявленияприёмки |
+| Порядок / review | Эта запись фиксирует результаты перед документнымкоммитом; затем non-force push точного ref и независимая сверка remoteSHA с localHEAD. Финальный исход сетевой операции подтверждается Git, не предполагается по разрешению. Review не проводилось; новых инженерных решений/книжных правил нет; verification-before-completion применён |
