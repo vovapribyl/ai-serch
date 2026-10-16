@@ -1,5 +1,8 @@
 # Семь запросов: частичный результат и STOP телеметрии
 
+> Исторический частичный результат. Два недостающих запроса позднее обработаны;
+> [итог всех семи](remaining-quality-report.md). Прежний STOP и provenance здесь сохранены.
+
 2026-10-15. **EXECUTED / PARTIAL_5_OF_7_STOPPED_TELEMETRY**.
 [План](staged-quality-seven-plan.md), [успешный каталог20](../001-corpus-replenishment/four-batches-runtime-report.md).
 Общий контур query staging121,873с. Query-технические записи существовали

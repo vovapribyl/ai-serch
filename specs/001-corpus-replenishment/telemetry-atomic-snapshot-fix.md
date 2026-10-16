@@ -1,5 +1,8 @@
 # Чтение телеметрии при атомарной замене файла
 
+> Последующая runtime-проверка: [два запроса прошли после исправления](../corpus-optimization/remaining-quality-report.md).
+> Указания «ML не выполнялся» ниже описывают этап подготовки самого исправления.
+
 2026-10-15. STANDARD. Найдено при [семи запросах качества](../corpus-optimization/staged-quality-seven-report.md).
 Runtime остановился с TELEMETRY_READ/OBSERVATION_FAILED/OTHER, sample_current=false.
 Последний успешный pressure1 нельзя считать измерением в момент отказа.
