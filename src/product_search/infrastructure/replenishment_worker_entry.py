@@ -21,6 +21,13 @@ from product_search.search.replenishment_contracts import (
 )
 
 
+def _region_diagnostics_enabled(binding):
+    value = binding.get("save_localization_diagnostics", False)
+    if type(value) is not bool:
+        raise ReplenishmentError("RUNTIME_MISMATCH")
+    return value
+
+
 def validate_control(control):
     """Consume this exact child invocation before importing a native SDK."""
     try:
@@ -65,6 +72,7 @@ def validate_control(control):
 
         cache_cleanup_enabled(binding)
         diagnostic_interval(binding)
+        _region_diagnostics_enabled(binding)
         verify_code_inventory(control["code_inventory_path"], package.code_sha)
         if (
             hashlib.sha256(canonical(private_json(control["profile_path"]))).hexdigest()
@@ -296,6 +304,7 @@ def _serve_localization(
 ):
     if cache_cleanup is not None and diagnostics is None:
         raise ReplenishmentError("RUNTIME_MISMATCH")
+    capture_regions = _region_diagnostics_enabled(binding)
     import socket
 
     import uvicorn
@@ -308,12 +317,18 @@ def _serve_localization(
         for key, value in binding["i_files"].items()
     }
     guard.check_owner(owner, package)
+    diagnostic_options = {}
+    if capture_regions:
+        diagnostic_root = Path(control["control_root"]) / "localized-regions"
+        diagnostic_root.mkdir(mode=0o700)
+        diagnostic_options["diagnostic_root"] = diagnostic_root
     app = assemble_service(
         binding["i_manifest"],
         files,
         runtime_root=Path(control["shared_runtime_root"]),
         gdino_snapshot_path=files["model/gdino/config.json"].parent,
         sam_checkpoint_path=files["model/sam"],
+        **diagnostic_options,
     )
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))

@@ -183,3 +183,45 @@ def test_batch_records_safe_progress_and_final_summary(tmp_path):
     log.wrap("photo_outcome", lambda *a: None)(photo, PhotoOutcome.OK, None)
     assert rows(log)[-1]["outcome"] == "OK"
     log.close()
+
+
+@pytest.mark.parametrize(
+    "code",
+    [
+        "INVALID_IMAGE",
+        "INVALID_OUTPUT",
+        "MODEL_ERROR",
+        "RESOURCE_LIMIT",
+        "INVALID_EMBEDDING",
+        "RESOURCE_ERROR",
+        "REGION_COUNT_LIMIT",
+        "RESPONSE_SIZE_LIMIT",
+        "SEGMENTER_EMPTY",
+    ],
+)
+def test_photo_error_preserves_safe_processing_code(tmp_path, code):
+    from product_search.search.replenishment_contracts import PhotoProcessingError
+
+    tmp_path.chmod(0o700)
+    log = OperationLog(tmp_path)
+    error = PhotoProcessingError(code)
+
+    def fail():
+        raise error
+
+    with pytest.raises(PhotoProcessingError) as caught:
+        log.wrap("photo", fail)()
+    assert caught.value is error
+    assert rows(log)[-1]["error_code"] == code
+    log.close()
+
+
+def test_photo_error_does_not_log_arbitrary_message(tmp_path):
+    from product_search.search.replenishment_contracts import PhotoProcessingError
+
+    tmp_path.chmod(0o700)
+    journal = OperationLog(tmp_path)
+    journal.error("photo", PhotoProcessingError("secret path or response body"))
+    assert rows(journal)[-1]["error_code"] == "UNKNOWN"
+    assert "secret path" not in (journal.root / "events.jsonl").read_text()
+    journal.close()

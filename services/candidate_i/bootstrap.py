@@ -66,6 +66,7 @@ def assemble_service(
     runtime_root,
     gdino_snapshot_path,
     sam_checkpoint_path,
+    diagnostic_root=None,
     observe_inventory=installed_inventory,
     observe_vcs=installed_vcs,
 ):
@@ -74,6 +75,9 @@ def assemble_service(
         files = dict(files)
         root = Path(__file__).resolve().parents[2]
         required = {"code/" + relative: root / relative for relative in CODE_FILES}
+        if diagnostic_root is not None:
+            relative = "services/candidate_i/region_diagnostics.py"
+            required["code/" + relative] = root / relative
         required.update({"model/gdino/" + name: gdino_snapshot_path / name for name in GDINO_FILES})
         required["model/sam"] = sam_checkpoint_path
         if any(files.get(name) != path for name, path in required.items()):
@@ -123,6 +127,14 @@ def assemble_service(
             sam_checkpoint_path=sam_checkpoint_path,
             gdino_allowed_files=GDINO_FILES,
         )
-        return create_app(settings, binding, ready_check=ready)
+        recorder = None
+        if diagnostic_root is not None:
+            from services.candidate_i.region_diagnostics import ObservedBinding, RegionDiagnostics
+
+            recorder = RegionDiagnostics(diagnostic_root)
+            binding = ObservedBinding(binding, recorder)
+        app = create_app(settings, binding, ready_check=ready)
+        app.state.localization_diagnostics = recorder
+        return app
     except Exception:  # noqa: BLE001 - bootstrap errors cannot expose private state.
         raise NailProcessingError("MODEL_NOT_READY") from None

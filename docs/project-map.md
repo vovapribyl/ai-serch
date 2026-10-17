@@ -47,7 +47,7 @@
 | Разобраться в локализаторе и поиске | [HLD поиска](architecture/nail-search-hld.md) | [LLD](architecture/nail-search-lld.md), [HTTP-контракт](architecture/candidate-i-http-contract.md); статусы частей читать в самих документах |
 | Диагностировать ресурсы или STOP | [Статус проверок](../specs/001-corpus-replenishment/verification-followup-status.md) | [STOP observability](../specs/001-corpus-replenishment/stop-observability-report.md), [atomic telemetry fix](../specs/001-corpus-replenishment/telemetry-atomic-snapshot-fix.md) |
 | Оценить модели | [Семь запросов полностью](../specs/corpus-optimization/remaining-quality-report.md) | [Разбор локализации](../specs/corpus-optimization/localization-review.md), [исключение областей](../specs/corpus-optimization/region-exclusion-report.md), [лидеры выдачи](../specs/corpus-optimization/top-candidates-review.md), [среднее по парам](../specs/corpus-optimization/matched-pairs-mean-report.md), [раннее сравнение](../specs/corpus-optimization/model-ablation-report.md), [гипотезы](../specs/corpus-optimization/hypotheses.md) |
-| Подготовить проверку | [Quickstart](../specs/001-corpus-replenishment/quickstart.md) | [Метод разработки: TDD и виды проверок](development-method.md); конкретный runtime-пакет и допуск определяются отдельно |
+| Подготовить проверку | [План качества на растущем корпусе](../specs/corpus-optimization/corpus-scale-quality-test-plan.md) (DRAFT), [Quickstart](../specs/001-corpus-replenishment/quickstart.md) | [Метод разработки: TDD и виды проверок](development-method.md); конкретный runtime-пакет и допуск определяются отдельно |
 
 ## От требования к коду и доказательству
 

@@ -201,6 +201,22 @@ def run_native_host(config):
     if hashlib.sha256(canonical(profile)).hexdigest() != package.semantic_profile_sha:
         raise ReplenishmentError("PROFILE_MISMATCH")
     verify_frozen_inputs(config["input_inventory_path"], binding, package)
+    defer = binding.get("defer_region_limit", False)
+    if type(defer) is not bool:
+        raise ReplenishmentError("RUNTIME_MISMATCH")
+    if (
+        defer
+        and "src/product_search/infrastructure/replenishment_deferred_photos.py"
+        not in private_json(config["code_inventory_path"])
+    ):
+        raise ReplenishmentError("RUNTIME_MISMATCH")
+    deferred_inventory = None
+    if defer:
+        deferred_inventory = private_json(config["input_inventory_path"])
+        if hashlib.sha256(canonical(deferred_inventory)).hexdigest() != binding.get(
+            "deferred_inventory_sha256"
+        ):
+            raise ReplenishmentError("RUNTIME_MISMATCH")
     root = Path(binding["shared_runtime_root"])
     private_root = Path(config["private_root"])
     end = time.monotonic() + package.overall_seconds
@@ -319,6 +335,12 @@ def run_native_host(config):
 
         files = CheckpointFiles(config["checkpoint_root"])
 
+        deferred = None
+        if defer:
+            from product_search.infrastructure.replenishment_deferred_photos import DeferredPhotos
+
+            deferred = DeferredPhotos(private_root, deferred_inventory)
+
         def worker_factory(repo, owner, pkg, limit):
             driver = NativeStageDriver(
                 private_root,
@@ -341,6 +363,8 @@ def run_native_host(config):
                 poll_seconds=binding["policy"]["poll_seconds"],
                 operation_log=operation_log,
             )
+            if deferred is not None:
+                deferred.attach(state.workers, repo)
             state.workers.process = operation_log.wrap("photo", state.workers.process)
             state.workers.open_stage = operation_log.wrap("stage", state.workers.open_stage)
             return state.workers

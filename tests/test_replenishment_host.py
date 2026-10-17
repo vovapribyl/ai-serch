@@ -152,8 +152,9 @@ def test_runtime_target_verifies_owned_container_and_sql_identity(tmp_path):
 
 
 @pytest.mark.parametrize("diagnostics", [False, True])
+@pytest.mark.parametrize("defer", [False, True, "bad-pin"])
 def test_host_records_resources_after_driver_creation_before_first_stage(
-    tmp_path, monkeypatch, diagnostics
+    tmp_path, monkeypatch, diagnostics, defer
 ):
     """Actual host wiring must admit the idle driver before it has control data."""
     import hashlib
@@ -170,12 +171,24 @@ def test_host_records_resources_after_driver_creation_before_first_stage(
     log_root.mkdir(mode=0o700)
     binding = {
         "load_diagnostics": diagnostics,
+        "defer_region_limit": bool(defer),
         "shared_runtime_root": str(tmp_path),
         "operation_log_root": str(log_root),
         "target_policy": {},
         "policy": {"poll_seconds": 0.5},
         "resource_limits": {"i_rss_bytes": 100, "encoder_rss_bytes": 100},
     }
+    if defer:
+        publish_private_json(tmp_path / "inputs.json", {"products": []})
+        binding["deferred_inventory_sha256"] = (
+            hashlib.sha256(binding_module.canonical({"products": []})).hexdigest()
+            if defer is True
+            else "wrong"
+        )
+        publish_private_json(
+            tmp_path / "code.json",
+            {"src/product_search/infrastructure/replenishment_deferred_photos.py": "pinned"},
+        )
     profile = {}
     pkg = replace(
         package(),
@@ -247,23 +260,30 @@ def test_host_records_resources_after_driver_creation_before_first_stage(
 
     monkeypatch.setattr(application, "LocalReplenishmentApplication", App)
     monkeypatch.setattr(host, "serve_owner", lambda app, *a, **k: app._start())
-    host.run_native_host(
-        {
-            "package": asdict(pkg),
-            "grant_path": str(tmp_path / "grant.json"),
-            "binding_path": str(tmp_path / "binding.json"),
-            "profile_path": str(tmp_path / "profile.json"),
-            "code_inventory_path": str(tmp_path / "code.json"),
-            "input_inventory_path": str(tmp_path / "inputs.json"),
-            "target_descriptor_path": str(tmp_path / "target.json"),
-            "private_root": str(tmp_path),
-            "checkpoint_root": str(tmp_path),
-            "max_commands": 1,
-            "timeout_seconds": 2,
-            "max_bytes": 65536,
-        }
-    )
+    config = {
+        "package": asdict(pkg),
+        "grant_path": str(tmp_path / "grant.json"),
+        "binding_path": str(tmp_path / "binding.json"),
+        "profile_path": str(tmp_path / "profile.json"),
+        "code_inventory_path": str(tmp_path / "code.json"),
+        "input_inventory_path": str(tmp_path / "inputs.json"),
+        "target_descriptor_path": str(tmp_path / "target.json"),
+        "private_root": str(tmp_path),
+        "checkpoint_root": str(tmp_path),
+        "max_commands": 1,
+        "timeout_seconds": 2,
+        "max_bytes": 65536,
+    }
+    if defer == "bad-pin":
+        from product_search.search.replenishment_contracts import ReplenishmentError
+
+        with pytest.raises(ReplenishmentError, match="RUNTIME_MISMATCH"):
+            host.run_native_host(config)
+        assert not (tmp_path / "deferred-photos.json").exists()
+        return
+    host.run_native_host(config)
     assert observations == ["OK"]
+    assert (tmp_path / "deferred-photos.json").exists() is defer
     import json
 
     journals = list(log_root.glob("operations-*/events.jsonl"))

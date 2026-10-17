@@ -353,3 +353,47 @@ def test_input_identity_is_verified_before_mode_or_database_mutation(flow, db):
     with db.connect() as conn:
         assert conn.execute("SELECT count(*) FROM replenishment_runs").fetchone()[0] == 1
         assert conn.execute("SELECT count(*) FROM processing_profiles").fetchone()[0] == 0
+
+
+def test_region_limit_deferral_survives_real_sql_export_before_cleanup(flow, db, tmp_path):
+    from product_search.infrastructure.replenishment_deferred_photos import (
+        DeferredPhotos,
+        export_deferred_batch,
+    )
+
+    app, pkg, products, _, _, _ = flow
+    deferred = DeferredPhotos(tmp_path, {"products": command(pkg, products)["inventory"]})
+    original_factory = app.worker_factory
+
+    def workers_with_limit(repo, owner, package, end):
+        worker = original_factory(repo, owner, package, end)
+        original = worker.process
+
+        def process(photo, attempt, owner, end):
+            if photo == app.queue[0] and attempt.stage_key == "localization":
+                raise PhotoProcessingError("REGION_COUNT_LIMIT")
+            return original(photo, attempt, owner, end)
+
+        worker.process = process
+        deferred.attach(worker, repo)
+        return worker
+
+    app.worker_factory = workers_with_limit
+    answer = OwnerDispatcher(app, role="OWNER").handle(command(pkg, products))
+    assert answer["status"] == "OK"
+    assert [o for _, o in answer["summary"]["outcomes"]] == ["ERROR", "OK"]
+    with db.connect() as connection:
+        summary = export_deferred_batch(connection, tmp_path / "export.json", {}, deferred.path)
+    assert summary == {
+        "ready": 1,
+        "deferred": 1,
+        "no_nails": 0,
+        "other_errors": 0,
+        "pending": 0,
+        "total": 2,
+    }
+    record = json.loads(deferred.path.read_text())["photos"][0]
+    assert record["product_record_id"] == products[0].product_record_id
+    assert record["source_ref"] == products[0].photos[0].source_ref
+    assert record["input_sha"] == products[0].photos[0].input_sha
+    assert record["photo_ref"] == answer["summary"]["outcomes"][0][0]

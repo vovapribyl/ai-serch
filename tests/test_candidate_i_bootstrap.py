@@ -142,3 +142,45 @@ def test_assembly_rejects_model_path_unrelated_to_manifest(tmp_path):
             observe_inventory=lambda: manifest["packages"],
             observe_vcs=lambda: manifest["vcs"],
         )
+
+
+def test_diagnostic_opt_in_requires_verified_extra_source(tmp_path):
+    manifest, files, gdino, sam = bootstrap_inputs(tmp_path)
+    diagnostics = tmp_path / "region-diagnostics"
+    diagnostics.mkdir(mode=0o700)
+    with pytest.raises(NailProcessingError, match="MODEL_NOT_READY"):
+        assemble_service(
+            manifest,
+            files,
+            runtime_root=tmp_path,
+            gdino_snapshot_path=gdino,
+            sam_checkpoint_path=sam,
+            diagnostic_root=diagnostics,
+            observe_inventory=lambda: manifest["packages"],
+            observe_vcs=lambda: manifest["vcs"],
+        )
+
+
+def test_verified_assembly_enables_diagnostics_without_loading_model(tmp_path):
+    manifest, files, gdino, sam = bootstrap_inputs(tmp_path)
+    diagnostics = tmp_path / "region-diagnostics"
+    diagnostics.mkdir(mode=0o700)
+    path = Path(__file__).parents[1] / "services/candidate_i/region_diagnostics.py"
+    name = "code/services/candidate_i/region_diagnostics.py"
+    files[name] = path
+    manifest["files"][name] = {
+        "size": path.stat().st_size,
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+    }
+    application = assemble_service(
+        manifest,
+        files,
+        runtime_root=tmp_path,
+        gdino_snapshot_path=gdino,
+        sam_checkpoint_path=sam,
+        diagnostic_root=diagnostics,
+        observe_inventory=lambda: manifest["packages"],
+        observe_vcs=lambda: manifest["vcs"],
+    )
+    assert application.state.localization_diagnostics.last_status == {"status": "NOT_RECORDED"}
+    assert list(diagnostics.iterdir()) == []

@@ -352,3 +352,54 @@ def test_native_records_import_boundary_before_sdk_failure(tmp_path, monkeypatch
     assert caught.value is original
     if enabled:
         assert (tmp_path / "load-events.status.json").exists()
+
+
+def test_opt_in_region_capture_is_bound_to_owned_worker_directory(tmp_path, monkeypatch):
+    from product_search.infrastructure.replenishment_worker_entry import _serve_localization
+    from services.candidate_i import bootstrap
+
+    tmp_path.chmod(0o700)
+    control = {"shared_runtime_root": str(tmp_path), "control_root": str(tmp_path)}
+    binding = {
+        "i_files": {
+            "model/gdino/config.json": str(tmp_path / "config.json"),
+            "model/sam": str(tmp_path / "sam.pt"),
+        },
+        "i_manifest": {},
+        "save_localization_diagnostics": True,
+    }
+
+    class AssemblyReached(Exception):
+        pass
+
+    def assemble(manifest, files, **kwargs):
+        assert kwargs["diagnostic_root"] == tmp_path / "localized-regions"
+        assert kwargs["diagnostic_root"].stat().st_mode & 0o777 == 0o700
+        raise AssemblyReached
+
+    monkeypatch.setattr(bootstrap, "assemble_service", assemble)
+    with pytest.raises(AssemblyReached):
+        _serve_localization(
+            control, object(), binding, SimpleNamespace(check_owner=lambda *a: True), object()
+        )
+
+
+@pytest.mark.parametrize("flag", ["true", 1, None])
+def test_invalid_region_capture_flag_is_refused_before_service_creation(
+    tmp_path, monkeypatch, flag
+):
+    from product_search.infrastructure.replenishment_worker_entry import _serve_localization
+    from services.candidate_i import bootstrap
+
+    def must_not_assemble(*a, **kw):
+        pytest.fail("Invalid flag must not assemble service")
+
+    monkeypatch.setattr(bootstrap, "assemble_service", must_not_assemble)
+    with pytest.raises(ReplenishmentError, match="RUNTIME_MISMATCH"):
+        _serve_localization(
+            {"shared_runtime_root": str(tmp_path)},
+            object(),
+            {"i_files": {}, "save_localization_diagnostics": flag},
+            SimpleNamespace(check_owner=lambda *a: True),
+            object(),
+        )

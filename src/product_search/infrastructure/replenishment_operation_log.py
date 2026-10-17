@@ -11,6 +11,7 @@ from pathlib import Path
 from threading import RLock
 
 from product_search.infrastructure.nail_runtime import validate_runtime_root
+from product_search.infrastructure.nail_wire import PROBLEM_CODES
 from product_search.search.replenishment_contracts import ReplenishmentError
 
 STOP_CODES = {
@@ -31,6 +32,17 @@ STOP_CODES = {
     "INVALID_SCOPE",
     "BUSY",
 }
+ERROR_CODES = (
+    STOP_CODES
+    | {code for codes in PROBLEM_CODES.values() for code in codes}
+    | {
+        "INVALID_IMAGE",
+        "INVALID_OUTPUT",
+        "MODEL_ERROR",
+        "RESOURCE_LIMIT",
+        "INVALID_EMBEDDING",
+    }
+)
 
 
 class OperationLog:
@@ -120,7 +132,7 @@ class OperationLog:
                         and isinstance(value, str)
                         and value in {"OK", "NO_NAILS", "ERROR", "PENDING", "RUNNING"}
                         or key == "error_code"
-                        and value in STOP_CODES
+                        and value in ERROR_CODES
                         or (
                             key in {"pid", "returncode", "signal", "errno"}
                             and type(value) is int
@@ -156,7 +168,7 @@ class OperationLog:
             "error",
             **fields,
             error_type=type(error).__name__,
-            error_code=code if code in STOP_CODES else "UNKNOWN",
+            error_code=code if code in ERROR_CODES else "UNKNOWN",
             errno=error.errno if isinstance(error, OSError) else None,
         )
 

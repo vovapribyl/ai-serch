@@ -3022,3 +3022,271 @@ START, 8 checkpoints / 48 vectors / 116 guard OK; собственный кон�
 | Исключения | PORTFOLIO_RESEARCH.md, outputs/, ignored artifacts, исходные фото/crops/векторы/веса/секреты не добавляются |
 | Проверка | Перед staging повторяются локальные ссылки/якоря, таблицы/fences/markers и git diff --check; затем проверяются точный состав staged files и staged diff. Новый ML/БД/full suite не запускаются |
 | Границы / review | Текущая продуктовая формула и статусы приёмки не меняются; гипотеза двух выдач на тестировании не объявлена реализованной. Независимое review не проводилось, verification-before-completion применён. Коммит подтверждается Git; push/merge/main не выполняются |
+
+### 2026-10-16 — Исследование более простых архитектур поиска ногтей
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись 174; запрос владельца на интернет-исследование альтернатив текущему поиску, включая ChatGPT; отдельно разрешено рассматривать новую архитектуру в рамках исследования |
+| Результат | Сравнены текущий per-nail, один локальный/облачный encoder, Google Product Search, GPT-описания, прямое сравнение GPT и retrieval + GPT reranking. Подготовлено предложение сравнительной проверки, без нормативного выбора |
+| Основания | Текущий checkout codex/upload-optimiz, HEAD 5f012a3; match_photos, ML adapters, project-context и matched-pairs-mean-report; открытые официальные документы Google/Cohere/OpenAI и первичная публикация Amazon. Память использована для навигации, состояние перепроверено по checkout |
+| Вывод / предел | Облачный encoder и готовый поиск могут упростить эксплуатацию; превосходство по точности, задержке и бюджету UNKNOWN. GPT может сравнивать переданные фото и вызывать инструменты; File Search не принят за готовый image-similarity индекс. Старые 1/1/1 не названы независимой проверкой качества |
+| Проверка | Самопроверка источников и различения фактов/предложений; локальные ссылки/якоря, Markdown-таблицы, конфликтные маркеры и git diff --check. Независимое review не проводилось; runtime/API-проверки с фотографиями не выполнялись |
+| Границы / навыки | Добавлен исследовательский отчёт и эта запись. Код, формулы, требования и gates не менялись; модели/БД/корпус не запускались и не передавались поставщикам. Commit/push не выполнялись. Применены brainstorming, openai-docs, verification-before-completion |
+
+[Исследование альтернатив](../specs/corpus-optimization/alternative-search-research.md).
+
+Дополнение 2026-10-16 к записи 174: владелец указал, что whole-image encoder
+уже пробовали в Gate 3. Предложение одного локального encoder в последующем
+объяснении ошибочно подано как новое направление; историческая архитектура
+не была должным образом учтена в рекомендации. Проверены docs/gate-3.md (§6.4,
+§11) в e727 и docs/gate-4.md в 1eaf: whole-image search/RRF реализован,
+последующий пилот закрыт с отрицательной оценкой качества. Отчёт уточнён:
+сокращение числа моделей и перенос в облако сами по себе не обосновывают
+новое качество или повтор эксперимента. Это исправление дефекта исследования,
+а не новая задача или разрешение на запуск.
+
+### 2026-10-16 — План тестирования качества на растущем корпусе
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись 175; запрос владельца составить план тестирования после обсуждения 20→100→300→674 фото и двух формул. Подготовка исследовательского DRAFT, без нормативного выбора критериев или фактического перехода gate |
+| Уточнение | Владелец ответил, что дополнительные фото сначала нужно подобрать. Это отражено как первый prerequisite; доступность контрольного набора не выдумана |
+| Результат | План corpus-scale-quality-test-plan: факты/цели, подбор и разметка, пилотные 10 и контрольные 50 как предложения, вложенные корпуса, фиксированные запросы, top-k и coverage, отсутствующие товары, равный бюджет карточек 5+5 против 10, пользовательский опыт и ресурсные пакеты отдельно |
+| Ограничения методики | Старые 7 — регрессия, не независимая проверка. Контрольные товары не используются для выбора формулы; позитивные anchors присутствуют с начального этапа, negatives проверяются против всего 674. Ошибки обработки не улучшают метрику через исключение входов. После просмотра контрольных результатов настройка создаёт новый опыт |
+| Реалистичность исполнения | Дополнения 80/200/374 фото, до 16/40/75 партий по пять. Временная прежняя БД удалена: переиспользование exports не объявлено готовым SQL RESUME. Способ накопления, finite time/admissions/ресурсы и cleanup определяются отдельным execution package перед разрешением конечной ступени |
+| Статус / границы | DRAFT на согласовании. Объём выборки, пороги достаточности, время и пользовательский протокол — предложения/UNKNOWN, не требования или SLA. Нет запуска ML/БД/кода/внешних API/нового UI/рабочего cutover/commit/push |
+| Проверки / review | Самопроверка источников, 223 Markdown-файлов / 1687 локальных ссылок, якорей/таблиц/fences/markers, арифметики ступеней и git diff --check прошла. Независимое review не проводилось; новых архитектурных решений/книжных правил нет, sa-infostyle не применялся |
+| Сохранность | Прежние локальные изменения журнала и alternative-search-research.md сохранены; чужие файлы не переписывались. Для навигации добавлены короткие ссылки в текущие маршрутизаторы, новый план — канонический |
+
+[План масштабирования проверки качества](../specs/corpus-optimization/corpus-scale-quality-test-plan.md).
+
+### Сводка записей 171–175
+
+Пять задач: диагностическая нормировка по назначенным парам, фиксация трёх
+гипотез выдачи, коммит документации, исследование альтернативных архитектур
+и текущий план проверки масштаба. В задаче 173 создан 5f012a3; push не выполнялся.
+Исследование 174 и текущий план остаются предложениями, не выбором новой архитектуры.
+
+Доступные данные: в задаче 171 три положительных ранга стали 1/1/1 у трёх моделей,
+но однообластный кандидат занял первые места двух отсутствующих запросов.
+Это фиксированные данные без нового ML, не подтверждение качества на 674 фото.
+Гипотеза двух раздельных выдач на тестировании по выбору владельца; её интерфейс
+и польза человеку не проверены. Новый набор фото ещё не подобран.
+
+В исследовании 174 позднее исправлено представление whole-image encoder как
+нового направления: его уже проверяли ранее с отрицательной оценкой владельца.
+Исправление сохранено в исходной записи, не посчитано новой задачей. В этих пяти
+задачах full suite, независимое review, новая ML-обработка и пользовательский
+тест не проводились. Журнал не доказывает причинный эффект правил; численные
+пороги качества и статистическая достаточность новой выборки UNKNOWN.
+
+### 2026-10-16 — Предстартовая подготовка пилота качества
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись 176; после плана владелец разрешил запуск. Подготовка доступных входов и проверка prerequisites; никакая готовность зависимого runtime gate не объявлена |
+| Факт / блокирующий вход | Владелец ранее сообщил, что новые фото нужно подобрать. Готового нового пилотного набора не обнаружено, выбрано 0 из 10 фото; прежние 7 не подставлялись вместо независимой выборки |
+| Выполнено | Проверены два сохранённых archive manifest SHA, 20 каталожных изображений против inventory/export SHA и 81 code pin последнего runtime. Доступны 20 фото / 336 vectors и результаты 7 запросов; три interpreter paths и model root существуют, без объявления runtime readiness |
+| Подготовлено | Приватный коллаж 20 товаров с номерами позиций набора (не строками Excel), таблица соответствий и незаполненный pilot-input-template.json. Коллаж визуально просмотрен. Файлы только в ignored artifacts, не в Git |
+| Статус / границы | INPUTS_REQUIRED: нужны новые фото и owner labels. ML/БД/scoring/claims не создавались и не запускались. Разрешение не запрашивается повторно; причина ожидания — данные. Продуктовый код/main/корпус/модели не менялись; commit/push не выполнялись |
+| Проверка / review | Проверка 223 Markdown-файлов / 1687 локальных ссылок, якорей/таблиц/fences/markers и git diff --check прошла; полный suite/новый ML/независимое review не проводились. Предыдущие локальные изменения и исходные материалы сохранены |
+
+### 2026-10-16 — Подготовка пополнения до подбора запросов
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись 177; владелец не может подобрать пять новых запросов для текущих 20 и просит сначала добавить фото. Подготовка конечного тестового пакета; новый нормативный результат или runtime gate не объявлялись |
+| Проверенные входы | Найдена прежняя выборка 100; все текущие 20 совпали по SHA и исходным product IDs. Для всех 100 проверены чтение/SHA/декодирование и принадлежность полному source inventory. Оставшиеся 80 — 80 разных SHA и исходных записей, без совпадений с текущими 20 |
+| Пакет | 16 START по пять, frozen inputs, 81 code pin на пакет, profiles/identity, отдельный DB-id crosswalk, reused runner и накопительные экспорты после каждой успешной партии. Подготовлена offline-сборка 20+80; фактически не выполнялась. Предложен предел 60 минут + 30 секунд cleanup, партия до 20 минут, 384 admissions, прежние RSS/MPS guards |
+| Проверка | DTO/hash проверки всех 16 пакетов прошли; semantic profile совпал с сохранённым20. В фактическом окружении локализатора metadata identity и model-free assembly PASS, без torch/transformers. Проверены синтаксис runner/merge, 224 Markdown / 1692 локальные ссылки, fences/tables/markers, git diff --check. Живые DB/MPS readiness, ML и полный suite не проводились; независимое review не проводилось |
+| Методика | Новый порядок: подготовить100 → подобрать новые запросы → пилот → заморозить control → кривая100→300→конечный набор. Прежние20 с другими запросами остаются отдельным опытом. В полном674 inventory обнаружены667 различных SHA, окончательный учёт повторов ещё не выбран |
+| Статус / разрешение | PREPARED_NOT_EXECUTED. SHA нового пакета предъявлен владельцу одним вопросом на всю серию: runtime-binding требует owner_approval_of_this_package_sha. ML/БД/fresh claims не создавались. Прежние grants не переиспользованы; runtime/production/search formula/model subset не менялись |
+| Подготовительные ошибки | Первый генератор остановлен на assert количества замен в старом runner (ожидалось3, фактически2); это до DB/claims/ML. После исправления создан новый пакет; ML-повтора не было. Прежние входы, dirty research/outputs и чужие файлы сохранены |
+| Артефакты / навыки | Пакет запуска, актуализированный план и маршрутизаторы; приватные четыре contact sheets планируемых100. Использованы using-superpowers, ponytail и verification-before-completion. Новых зависимостей, продуктового кода, commit/push нет |
+
+[Подготовленный пакет 80 фото](../specs/corpus-optimization/scale80-execution-package.md).
+
+### 2026-10-16 — Разрешённая серия пополнения80: остановка B01
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись178; владелец «Разрешаю весь пакет из 80 фото» для кампании9dd87ec2b978… на16 партий. Исполнение ограниченного диагностического пакета, без нормативной приёмки или cutover |
+| Предстартовая проверка | Повторён model-free preflight16 packages. Живая проверка: pressure1, нет ML/search/probe-контейнеров, закреплённый Docker image доступен. Sandbox не разрешил первый read-only доступ к Docker/sysctl; scoped escalation одобрен, автоматического rejection не было |
+| Исполнение | Один START B01. Ответ команды OK/COMPLETED со статусами фото: три OK, один NO_NAILS и один ERROR локализации. 13 checkpoints,18 регионов,54 vectors, три тестовые публикации. Следующие75 не запускались; повторов/изменения пакета нет |
+| Остановка | Outer runner AssertionError: ожидает20 checkpoints при фактических13; operation log REVIEW_REQUIRED из-за photo.error/неполного числа публикаций. Это не ML/system resource STOP. Потеря причины PhotoProcessingError до UNKNOWN связана с allowlist STOP_CODES; исходная ошибка локализатора UNKNOWN |
+| Ресурсы | 162 guard OK,0 WARNING/STOP; peakRSS1 310 064 640 bytes, MPS3 963 125 760 bytes (не складывать). Длительность82,717с вместе с собственной очисткой |
+| Сохранность / дефект runner | Старый каталог20 SHA неизменён. Сохранены13 checkpoints, все45 файлов проверены по SHA/bytes,54 checkpoint vectors. SQL-export после проверок полной успешности не выполнен до очистки БД; готовность каталога23/100 не заявляется. Частичный экспорт и привязка ошибки требуют исправления перед новым пакетом |
+| Cleanup | Read-only повторная проверка: собственного контейнера/ML/monitor-процессов нет, locks свободны, credentials/targets удалены, pressure1. Приватный архив со всеми входами/сценарием/журналами/checkpoints сохранён внеGit |
+| Визуальная проверка / ограничения | Просмотрены первые два frozen input: на фото с NO_NAILS ногти видны; второе — рука с короткими типсами, причина ERROR не установлена. Это наблюдение исполнителя, не owner ground truth; тест качества не проводился |
+| Проверка / review | Финальная проверка224 Markdown /1693 links, tables/fences/markers и git diff --check. Product code не менялся, TDD-исправление ещё не начато; full suite/независимое review не проводились. Применены systematic-debugging, verification-before-completion; executing-plans прочитан, но не применён к операционному прогону |
+| Следующий шаг | По TDD исправить сохранение причины фотоошибки и частичного экспорта; подготовить новый конечный пакет с учётом сохранённых стадий и NO_NAILS/ERROR. Не повышать limits, не повторять ML без нового разрешения. Commit/push/main/рабочая БД/формулы не менялись |
+
+[Результат серии и граница продолжения](../specs/corpus-optimization/scale80-execution-package.md#фактический-результат-разрешённой-серии).
+
+### 2026-10-16 — Исправление диагностики и частичного экспорта B01
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись179; «Приступай» после предложения исправить сохранение причин и частичных результатов. Продуктовые правила/формулы/guards не менялись; новый ML-прогон не разрешался и не выполнялся |
+| TDD журнала | Пять параметров safe photo code сначала FAIL: UNKNOWN вместо INVALID_IMAGE/INVALID_OUTPUT/MODEL_ERROR/RESOURCE_LIMIT/INVALID_EMBEDDING. После минимального расширения allowlist PASS. Произвольный текст по-прежнему UNKNOWN, оригинальное исключение не подменяется |
+| TDD экспорта | После извлечения старого порядка callback→export воспроизведены два FAIL: нет файла перед отказом и verification вызывается при невозможном экспорте. После export→callback PASS; проверены outcomes/связь фото-product-SHA, permissions600, атомарное сохранение старого файла при ошибке записи |
+| SQL / итог | 18 целевых PASS, включая новую собственную PostgreSQL-БД с синтетическим ERROR-состоянием; реальных моделей нет. Первая новая SQL-фикстура нарушила CHECK, так как ERROR требует error_code; исправлена фикстура, production schema не менялась. SQLite/replay не объявлены PostgreSQL/ML доказательством |
+| Полный suite | make test выполнен:956 PASS,10 FAIL,36 SKIP,1 ERROR,1warning. Десять socket FAIL отдельно прошли с коротким basetemp (исходный пример135bytes), без изменения кода. ERROR: test_candidate_i_http_loopback.py::test_real_http_round_trip_with_fake_model_and_repeated_owned_client — отсутствует tests/support/candidate_i_fake_server.py. Полный зелёный suite не заявляется |
+| Точные socket FAIL → PASS | test_replenishment_cli.py::{test_private_unix_socket_uses_existing_lease_and_removes_only_owned_socket,test_existing_socket_and_foreign_replacement_are_never_unlinked,test_client_timeout_is_unknown_and_never_repeats_sent_command}; test_replenishment_flow.py::test_private_socket_routes_cli_start_and_saved_status; test_replenishment_review_fixes.py::test_crash_socket и test_socket_foreign[file/socket/symlink/live_pid/lease] |
+| Lint / docs | Изменённые файлы ruff PASS. Полный lint: существующий I001 test_replenishment_postgres_integration.py:688; не исправлялся в этой задаче. Ссылки/таблицы/fences/markers и git diff --check проверены. Независимое review не проводилось |
+| Следующий пакет | Прежнее ERROR-фото (позиция22, не Excel row), один START/8admissions, прежние limits, новая own DB;82 source pins и hashes/DTO проверены, runner использует новый export helper. PREPARED_NOT_AUTHORIZED, no claims/ML/DB; новый SHA не подменяет исторический пакет80 |
+| Сохранность / навыки | Старые frozen packages/архив/B01 checkpoints не изменены, исходная причина ERROR всё ещё UNKNOWN. Приватный архив кода/проверок/нового предложения сохранён. Использованы test-driven-development, systematic-debugging, ponytail, verification-before-completion, book-guidance: Clean Code mini, commit893a88a6… — явная ошибка и экспорт до проверки, без новых архитектурных слоёв. Commit/push не выполнялись |
+
+[Исправления и подготовленный диагностический пакет](../specs/corpus-optimization/scale80-execution-package.md#исправление-диагностики-после-остановки--2026-10-16).
+
+Дополнение к записи179, самопроверка до завершения: позитивный replay нового
+verifier поймал ошибку подготовительного draft — photo_outcomes содержит
+(outcome,count), ошибочно сравнивался count с OK. Проверка сначала дала
+PHOTO_NOT_OK на успешном примере, затем после сравнения агрегата с ожидаемым
+числом OK прошла. Отрицательный replay по прежнему B01 сохранил экспорт и
+отказал ожидаемо. Создан новый однофотографический draft с новыми SHA; предыдущий
+сохранён как superseded, claims/ML обоих не создавались. Это не новая задача,
+не продуктовый runtime-тест и не основание для автоматического запуска.
+
+### 2026-10-16 — Одна диагностическая проба и дополнение logger
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись180; «Приступай» после предъявления одного ERROR-входа. Один START пакета2464c4a7, без других фото или автоматического повтора |
+| Live preflight | Новые hashes/82pins/DTO и metadata identity PASS, pressure1, ML/search/probe-контейнеров нет, pinned local DB image доступен. Fresh scoped approval/grant; старые разрешения не переиспользованы |
+| Runtime | 25,548с, фото ERROR локализации; команда OK/COMPLETED с per-photo ERROR, внешний verifier PHOTO_NOT_OK. 0 checkpoints/regions/vectors/publications. Ошибка произошла до encoder stages |
+| Ресурсы / cleanup | 33 guard OK,0 WARNING/STOP, peakRSS1 515 339 776 bytes и MPS3 833 921 536 bytes (не складывать). Own container/processes absent, locks free, secrets/targets removed, pressure1 |
+| Реальная проверка fix | Частичный экспорт сохранился до отказа и очистки: photo/product/input SHA и ERROR, пустые regions/vectors. Logger снова UNKNOWN: предыдущее исправление179 было неполным; исторический/current внутренний код UNKNOWN, одинаковая причина не доказана |
+| Дополнение по TDD | Четыре wire-кода RESOURCE_ERROR/REGION_COUNT_LIMIT/RESPONSE_SIZE_LIMIT/SEGMENTER_EMPTY сначала FAIL=UNKNOWN. Allowlist теперь использует PROBLEM_CODES из контракта плюс прежние коды. 21 целевой model-free PASS, arbitrary-message protection сохранена. ML SDK не импортируется |
+| Полный suite | 971 passed, 36 skipped, 1 warning, 1 error in 222.24s (0:03:42). Известный ERROR — test_candidate_i_http_loopback.py::test_real_http_round_trip_with_fake_model_and_repeated_owned_client: отсутствует tests/support/candidate_i_fake_server.py. Полный PASS не заявляется. Changed-file lint/docs links/diff PASS; ранее существующий full-lint I001 не менялся |
+| Evidence / границы | Архив frozen82source до нового fix, partial export и cleanup сохранён; прежние20/checkpoints/чужиеdirty не изменены. Подготовлен новый однофотографический SHA, approval/claims/DB/ML отсутствуют. Три успешных фото/NO_NAILS/75remaining не повторялись,100 не готовы, новых quality метрик нет |
+| Review / навыки | Независимое review не проводилось. Применены systematic-debugging, test-driven-development, verification-before-completion; прежний Clean Code mini использован для сохранения безопасной причины без дополнительных слоёв. Commit/push нет |
+
+### Сводка записей176–180
+
+Пять задач: подготовка независимого пилота, подготовка80 дополнительных входов,
+первый запуск B01, исправление диагностики и однофотографическая проба. Новые
+query-фото не подобраны; порядок изменён на расширение корпуса перед подбором.
+
+В первой реальной партии из5 три фото OK, одно NO_NAILS, одно ERROR; следующие75
+не запускались. На отдельной пробе повторился ERROR того же фото. Это два
+ограниченных запуска, а не шесть разных фото или готовый100. В обоих resource
+guard без WARNING/STOP; точная ошибка локализатора всё ещё UNKNOWN.
+
+Дефекты диагностического runner и неполного error-code allowlist выявлены
+практически: partial export исправлен и прошёл реальный путь, allowlist
+дополнен после неудачной первой поправки. Новая поправка проверена model-free,
+не ML. SQL-контуры очищены, checkpoints/экспорты сохранены; новый пакет требует
+отдельного разрешения. Полный suite ограничен отсутствующим HTTP test fixture.
+Независимое review/оценка качества/commit/push в этих пяти задачах не проводились;
+журнал не доказывает причинный эффект книжных правил.
+
+### 2026-10-16 — Повторная проба: установлен REGION_COUNT_LIMIT
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись181; владелец «Разрешаю» на одно повторное ERROR-фото, пакет3de0aae8. Один START, без других фото/повторов/изменения limits |
+| Preflight | Активны текущий checkout/codex/upload-optimiz, hashes82source/input/package/DTO PASS. Live pressure1, нет ML/search/probe-процессов, image БД и metadata identity проверены. Fresh approval для exact campaign SHA |
+| Runtime / факт |22,467с; ERROR локализации с кодом REGION_COUNT_LIMIT. HTTP-profile max_region_count=10 и package max_regions=10. В encode_result превышение len(regions)>10 даёт этот код, HTTP503. Точное число/маски отвергнутого результата UNKNOWN, дубли/ложные области пока гипотезы |
+| Итоги / логирование | Код причины сохранён и partial export до PHOTO_NOT_OK записан.0 checkpoints/regions/vectors/publications, encoder stages не стартовали. Это фактическая проверка нового allowlist и export helper, не исправление локализации или тест качества |
+| Ресурсы / cleanup |32 guard OK,0 WARNING/STOP; peakRSS 1111064576 bytes, MPS 3842457600 bytes (не складывать). Own container/processes absent, locks free, secrets/target removed, pressure1 |
+| Сохранность | Старые20, первая партия checkpoints и75remaining не изменены. Frozen82source/hash archive сохранён. Ранее UNKNOWN не заменены новым кодом без доказательства.100 не готовы, рабочий cutover отсутствует |
+| Проверки / review | Входы/DTO/pins/live readiness, журнал/исход/guards/partial export, архив и cleanup проверены; Markdown links/tables/fences/markers и git diff --check. Код/tests не менялись, full suite не повторялся; последний971PASS/36SKIP/1ERROR остаётся с известным missing HTTP fixture. Независимое review не проводилось |
+| Следующий шаг / границы | Подготовить ограниченную диагностику числа/областей для проверки дублей и ложных срабатываний, затем решение об обработке/контракте. Лимит10 не повышать автоматически, старые grants не переиспользовать,75 не продолжать. Применены verification-before-completion и systematic-debugging (чтение точной ветки отказа); новых книжных правил/кода/commit/push нет |
+
+[Первичный результат и точка продолжения](../specs/corpus-optimization/scale80-execution-package.md#повторная-проба-с-полным-списком-wire-кодов--2026-10-16).
+
+### 2026-10-16 — Коллажи20: анализ границ и дизайн диагностики
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись182; владелец сообщил о коллажах с двумя парами рук/20 ногтей и согласился продолжить анализ. Подготовка bounded diagnostic design, без нормативного выбора max_regions или смены gate |
+| Факт / источник | STAKEHOLDER_STATEMENT владельца о составе корпуса; конкретное ERROR-фото ещё не размечено. Проверены HTTP10 и текущий matching admission/runtime solver budget16384 |
+| Model-free evidence | Фактический _admit:10×10/11264 ADMITTED;10×20/21504 и20×20/22020096 RESOURCE_LIMIT. Это формула допуска, не измерение памяти/времени и не запуск полного matching |
+| Дизайн | Private opt-in сохранение binding result перед HTTP encode/reject, actual_count/confidences/boxes/masks/обзор; максимум32 сохранённых областей/16MiB, маркировка truncation. Один localizer-only probe после TDD, без encoder/поиска/75/рабочей БД. Эти caps — предложение для artifact, не изменение search output |
+| Статус / границы | PROPOSED, короткий дизайн предъявлен до реализации по brainstorming. Код/лимиты/solver/формулы не изменялись; ML/claims/DB/новый runtime package не создавались. Одно повышение HTTP cap не объявлено поддержкой20 |
+| Проверка / review | Проверены прямо относящиеся source/profile, Markdown links/tables/fences/markers и git diff --check; независимое review/full suite не проводились, новых тестируемых функций не добавлено. Применены brainstorming (bounded design), verification-before-completion; дополнительных книжных правил не загружалось |
+| Сохранность | Текущий checkout/branch и dirty state сверены; чужие outputs/research/PORTFOLIO_RESEARCH сохранены. Commit/push нет; memory только read-only guidance, не источник runtime-результатов |
+
+[Анализ и предложенный дизайн](../specs/corpus-optimization/scale80-execution-package.md#коллажи-и-проект-диагностической-пробы--2026-10-16).
+
+
+### 2026-10-16 — Сохранение областей и сбой runner до ML
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись183; дизайн утверждён «Да», одна localization-only проба423ecdfe явно разрешена владельцем. Без изменения HTTP/matching caps и нормативных артефактов |
+| Реализация | Private default-off снимок до HTTP encode/reject,32regions/16MiB, actual count/truncation, маски/boxes/confidence/обзор. Ошибка диагностики не заменяет inference outcome. Bootstrap pinning/worker flag связаны с approved code inventory |
+| TDD / проверки | RED→GREEN,57 целевых PASS. Full985PASS/36SKIP/1FAIL/1ERROR: FAIL нового test monkeypatch исправлен и целевой набор повторён; ERROR отсутствующего fake-server fixture остаётся. Full повторно не запускался. Ruff изменённых source/tests и diff check PASS; независимое review не проводилось |
+| Реальный запуск / дефект | Claim выдан; scratch runner использовал FileLease.fd/close вместо _fd/release. Finally скрыл первую AttributeError. ML/worker/HTTP не стартовали:0 запросов,0 новых масок/векторов, без БД. Это дефект исполнителя; не новая ошибка модели |
+| Cleanup / evidence | Нет stage directory/operation log; один guard OK. Процессы absent, coordinator/mode FREE, device ABSENT; cleanup подтверждён. Private frozen83source/claims/approval/recovered-result сохранены, inputs вне Git |
+| Исправление / границы | Исходный423 не менялся/не повторялся. Новый runner исправлен по model-free RED→GREEN; две синтетические ветки PASS, metadata-only PASS, без approval отказ до grant. Пакетd2e2d753 подготовлен, но не разрешён; старый claim не переиспользуется,75 фото не запускаются |
+| Метод / сохранность | systematic-debugging, TDD, verification-before-completion; минимальная реализация без зависимостей, инженерная граница диагностики сохранена. Ранее прочитанные книжные правила не источник runtime-фактов. Branch codex/upload-optimiz, чужие dirty/untracked сохранены; commit/push нет |
+
+[Результат и подготовленный пакет](../specs/corpus-optimization/scale80-execution-package.md#сохранение-областей-реализовано-проба-не-дошла-до-ml--2026-10-16).
+
+
+### 2026-10-16 — Реальная проба сохранения областей
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись184; владелец «Разрешаю» на исправленныйd2e2d753. Один HTTP localization запрос, до600с с cleanup30, прежние guards, без БД/encoder/matching/повторов |
+| Факт |18,569с, REGION_COUNT_LIMIT при HTTP max10; диагностический снимок COMPLETE11/11,22264bytes. RGB/hash/bytes mask/overview проверены. Output count не трактуется как число настоящих ногтей |
+| Разбор | Визуально1–5 на руке,8–11 отдельные типсы сверху,6 составная и7 сплошная верхняя область. Mask7 покрывает100% каждой8–11;6 покрывает71,2/54,9/99,7/100%. Ground truth владельца отсутствует; фильтрация только предложение |
+| Ресурсы / cleanup |29OK/0WARNING/0STOP. RSS1161576448bytes, MPS-driver3965321216bytes отдельно. Процессы absent, все3locks FREE, pressure1. Отдельная стоимость записи не измерена |
+| Проверки / сохранность | Live preflight/83pins, результат/guards/hash/overlap/postflight/archive и релевантные Markdown links/markers/diff check. Source/tests не менялись, full suite не повторялся; независимое review не проводилось. Frozen runtime/photos private ignored, старые20/75 без изменений |
+| Следующий шаг | Проверить гипотезу фильтрации на сохранённых масках с разметкой владельца, учесть настоящие коллажи20; top10/cap/solver не менять автоматически. Пакет израсходован, новых ML/DB допусков нет. verification-before-completion; память использована только для границ no-retry. Commit/push нет |
+
+[Итог пробы](../specs/corpus-optimization/scale80-execution-package.md#проба-областей-11-областей-и-перекрытия--2026-10-16).
+
+
+### 2026-10-16 — Бэклог фильтрации и временный пропуск сложных фото
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись185; фиксация поручения владельца и подготовка bounded design, без изменения нормативных требований/кода/gate |
+| Результат | Фильтрация составных/посторонних масок сохранена как BACKLOG; отдельно предложен пропуск только REGION_COUNT_LIMIT с приватной устойчивой связью товар/исходное фото/SHA/причина/операция, экспорт до cleanup, продолжение партии и отдельный счёт готовых |
+| Факт / неизвестное | Ядро уже продолжает после PhotoProcessingError; внешний runner ранее остановился на all-OK. Точный код не сохраняется обработчиком ядра вместе с исходом. Конкретный контракт файла отложенных фото/реализация ещё не готовы |
+| Границы / проверки | Новых ML/БД/лимитов/повторов/публикации нет. Resource STOP и невозможность сохранить список не обходятся. Релевантные ссылки/markers/diff check проверены; tests/review не проводились, код не менялся |
+| Метод / сохранность | brainstorming: bounded дизайн предъявлен до реализации. Новые книжные правила не требовались, сырые идентификаторы не записаны в Git. Чужие dirty/untracked сохранены; commit/push нет |
+
+[Бэклог](../specs/corpus-optimization/backlog.md).
+
+### Сводка задач181–185
+
+Уточнена причина ERROR одного фото — REGION_COUNT_LIMIT. После согласования
+bounded диагностики добавлено сохранение масок до HTTP-отказа. Первая проба
+остановилась до ML из-за дефекта scratch runner; исправленная проба сохранила
+11 областей, включая перекрывающиеся крупные маски.29 guard OK и cleanup
+подтверждены; это не приёмка качества локализации или готовность100 фото.
+Фильтрация отложена в бэклог, временный пропуск по лимиту предложен до кода.
+Целевой набор57PASS; полный suite имеет описанные ограничения. Независимое
+review и публикация в этих задачах не проводились; причинный эффект книжных
+правил не измерялся.
+
+
+### 2026-10-16 — Пропуск REGION_COUNT_LIMIT с сохранением исходных ID
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись186; владелец утвердил bounded дизайн и путь списка «Хорошо, приступай». Реализация в native host и helper внешнего verifier, без новой нормативной модели состояний/изменения caps |
+| План / результат | TDD → private list → opt-in host → export/report → synthetic SQL → документация. Список600/root700, атомарная запись/fsync до ERROR, накопление между партиями, исходные ID из mapping вместо номеров временной БД;2MiB cap, без ротации. Сбой записи/другой photo error/ресурсный STOP прекращают кампанию |
+| Pins / подключение | defer_region_limit строгий bool; новый source pin и hash полного input inventory в runtime-binding. Старые grants/frozen runner не правились. export_deferred_batch заменяет all-OK только для учтённых ERROR, не отменяет защитные проверки нового пакета |
+| TDD / evidence | Поведенческий RED: список пуст после ошибки, другие photo errors не останавливают, неверный pin допускается; затем GREEN.136 unit/regression PASS,5 export/synthetic PostgreSQL PASS (3 общих), без ML. Первая sandbox SQL-попытка не получила Docker доступ, повтор с sandbox escalation PASS, не изменение тестовой логики. Ruff/format/diff check и ссылки проверены |
+| Реальные данные | Один известный источник ретроспективно записан из frozen d2e2d753 mapping/result, SHA сверены; private ignored файл. SQL photo/attempt IDs неизвестны и null, не выдаются за receipt новой партии.75/80 не обрабатывались, рабочая БД не затронута |
+| Review / ограничения | Самопроверка; независимое review не проводилось. Full suite не повторялся, missing fake-server fixture вне scope. Native ML-путь нового wrapper ещё не проверен; следующий пакет должен включить helper в runner и архивировать список перед cleanup |
+| Книжные правила / сохранность | Clean Code mini, source893a88a6fce3a80c565bf39ac65021b43a8b2990: IO/errors изолированы в инфраструктуре, ошибки сохранения не маскируются как разрешённый пропуск. TDD/Ponytail/verification-before-completion применены, без новых dependencies. Чужие dirty/untracked сохранены, commit/push нет |
+
+[Реализация и инструкция](../specs/corpus-optimization/backlog.md#реализация-и-доступ-к-списку).
+
+
+### 2026-10-16 — Checkpoint и передача новой сессии
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись187; владелец просит локальный commit и сохранение контекста перед новой сессией. Push не запрошен |
+| Результат | В начало project-context/README/статуса добавлена единая точка продолжения: текущие20, первая партия3OK/1NO_NAILS/1ERROR,75 не начаты,11 масок, deferred opt-in, локальные private evidence, следующий новый пакет и запрет повторного использования grants |
+| Состав commit | Код/тесты диагностики, safe error codes, partial export, deferred list/report, связанная документация и DRAFT scale-quality plan. Отдельные PORTFOLIO_RESEARCH/outputs/alternative research исключены; фото/маски/сырые ID/веса/credentials не добавляются |
+| Свежая проверка |178 выбранных model-free PASS,2 отдельных synthetic PostgreSQL PASS; известное Starlette/httpx warning. Ruff выбранных Python, relevant links/fences/markers и staged diff check. Полный suite не повторялся; missing fake-server fixture остаётся. Новых ML/рабочей БД нет |
+| Review / метод | Самопроверка, независимое review не проводилось (STANDARD). verification-before-completion; книжные правила не применялись к фиксации Git/контекста. Состояние коммита проверяется через git show/status после записи |
