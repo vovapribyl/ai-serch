@@ -46,7 +46,7 @@ class LoadDiagnostics:
         self._lock, self._calls = RLock(), Counter()
         self.incomplete = False
 
-    def emit(self, step, phase, call):
+    def emit(self, step, phase, call, *, sam_input=None):
         with self._lock:
             try:
                 if (
@@ -92,6 +92,7 @@ class LoadDiagnostics:
                             "sample_seconds": time.monotonic() - sampling_started,
                             "measurement_ok": okay,
                             "metrics": metrics,
+                            **({"sam_input": sam_input} if sam_input is not None else {}),
                         },
                         allow_nan=False,
                         sort_keys=True,
@@ -166,6 +167,29 @@ class LoadDiagnostics:
                 raise
             self.emit(step, "after", call)
             return result
+
+        return measured
+
+    def wrap_sam(self, function, *, before_sam=None):
+        predict = self.wrap("sam.predict", function)
+        cleanup = self.wrap("mps.pre_sam_cache", before_sam) if before_sam else None
+
+        @wraps(function)
+        def measured(instance, *args, **kwargs):
+            with self._lock:
+                self._calls["sam.input"] += 1
+                call = self._calls["sam.input"]
+            try:
+                images = args[0] if args else kwargs["images_rgb"]
+                boxes = args[1] if len(args) > 1 else kwargs["xyxy"]
+                summary = sam_input_summary(images, boxes)
+            except Exception:  # noqa: BLE001 -- observations must not replace prediction errors.
+                self.incomplete = True
+                summary = {"known": False}
+            self.emit("sam.input", "before", call, sam_input=summary)
+            if cleanup is not None:
+                cleanup()
+            return predict(instance, *args, **kwargs)
 
         return measured
 
@@ -269,7 +293,9 @@ def worker_sample(torch):
 
 
 @contextmanager
-def instrument_localizer(recorder, gdino, sam, client, binding, *, after_photo=None):
+def instrument_localizer(
+    recorder, gdino, sam, client, binding, *, after_photo=None, before_sam=None
+):
     originals = []
     try:
         for cls, method, step in [
@@ -285,7 +311,12 @@ def instrument_localizer(recorder, gdino, sam, client, binding, *, after_photo=N
             function = original
             if cls is binding and method == "__call__" and after_photo is not None:
                 function = after_success(original, recorder.wrap("mps.empty_cache", after_photo))
-            setattr(cls, method, recorder.wrap(step, function))
+            measured = (
+                recorder.wrap_sam(function, before_sam=before_sam)
+                if cls is sam and method == "predict_batch"
+                else recorder.wrap(step, function)
+            )
+            setattr(cls, method, measured)
         yield
     finally:
         for cls, method, original in reversed(originals):
@@ -368,13 +399,47 @@ def after_success(function, callback):
     return run
 
 
-def cache_cleanup_enabled(binding):
+def sam_input_summary(images, boxes):
+    """Only bounded array shapes/counts; never iterate pixels or box coordinates."""
+    if not isinstance(images, (list, tuple)) or not isinstance(boxes, (list, tuple)):
+        raise TypeError("unknown SAM batch")
+    if not 1 <= len(images) == len(boxes) <= 16:
+        raise ValueError("unknown SAM batch")
+    rows = []
+    for image, prompts in zip(images, boxes):
+        height, width, channels = image.shape
+        count, coordinates = prompts.shape
+        if (
+            any(type(v) is not int for v in (height, width, channels, count, coordinates))
+            or not 1 <= height <= 65536
+            or not 1 <= width <= 65536
+            or channels != 3
+            or not 0 <= count <= 65536
+            or coordinates != 4
+        ):
+            raise ValueError("unknown SAM shape")
+        rows.append({"height": height, "width": width, "channels": channels, "boxes": count})
+    return {
+        "known": True,
+        "image_count": len(rows),
+        "box_count": sum(row["boxes"] for row in rows),
+        "images": rows,
+    }
+
+
+def cache_cleanup_enabled(binding, *, before_sam=False):
     from product_search.search.replenishment_contracts import ReplenishmentError
 
     enabled = binding.get("empty_cache_after_photo", False)
-    if type(enabled) is not bool or (enabled and binding.get("load_diagnostics") is not True):
+    before = binding.get("empty_cache_before_sam", False)
+    if (
+        type(enabled) is not bool
+        or type(before) is not bool
+        or (enabled and binding.get("load_diagnostics") is not True)
+        or (before and not enabled)
+    ):
         raise ReplenishmentError("RUNTIME_MISMATCH")
-    return enabled
+    return before if before_sam else enabled
 
 
 def diagnostic_interval(binding):

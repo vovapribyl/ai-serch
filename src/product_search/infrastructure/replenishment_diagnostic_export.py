@@ -6,6 +6,15 @@ from pathlib import Path
 from product_search.infrastructure.nail_build_composition import publish_private_json
 from product_search.infrastructure.nail_runtime import validate_runtime_root
 
+CATALOG_EXPORT_MAX_BYTES = 40 * 1024**2
+
+
+def read_catalog_export(path):
+    """Read a private vector export, with a 40 MiB file budget separate from IPC."""
+    from product_search.infrastructure.replenishment_cli import private_json
+
+    return private_json(path, max_bytes=CATALOG_EXPORT_MAX_BYTES)
+
 
 def export_before_verification(connection, destination, profile, verify):
     """Preserve partial outcomes/vectors even when the batch verification raises."""

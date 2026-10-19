@@ -9,10 +9,12 @@ from product_search.infrastructure.nail_build_composition import publish_private
 from product_search.infrastructure.nail_runtime import validate_runtime_root
 from product_search.search.replenishment_contracts import PhotoProcessingError, ReplenishmentError
 
+DEFERRED_LIST_MAX_BYTES = 2 * 1024**2
+
 
 def _publish(path, payload):
     # One bounded owner writes; no automatic queue, rotation or loss of old rows.
-    if len(json.dumps(payload).encode()) > 2 * 1024**2:
+    if len(json.dumps(payload).encode()) > DEFERRED_LIST_MAX_BYTES:
         raise ValueError("Deferred list size limit")
     publish_private_json(path, payload)
     directory = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
@@ -154,13 +156,17 @@ def export_deferred_batch(connection, destination, profile, deferred_path):
     from product_search.infrastructure.replenishment_cli import private_json
     from product_search.infrastructure.replenishment_diagnostic_export import (
         export_before_verification,
+        read_catalog_export,
     )
 
     return export_before_verification(
         connection,
         destination,
         profile,
-        lambda: batch_summary(private_json(destination), private_json(deferred_path)),
+        lambda: batch_summary(
+            read_catalog_export(destination),
+            private_json(deferred_path, max_bytes=DEFERRED_LIST_MAX_BYTES),
+        ),
     )
 
 
@@ -169,13 +175,17 @@ def main(argv=None):
     import argparse
 
     from product_search.infrastructure.replenishment_cli import private_json
+    from product_search.infrastructure.replenishment_diagnostic_export import read_catalog_export
 
     parser = argparse.ArgumentParser(description="Сводка готовых и отложенных фото")
     parser.add_argument("--catalog", required=True, type=Path)
     parser.add_argument("--deferred", required=True, type=Path)
     args = parser.parse_args(argv)
     try:
-        summary = batch_summary(private_json(args.catalog), private_json(args.deferred))
+        summary = batch_summary(
+            read_catalog_export(args.catalog),
+            private_json(args.deferred, max_bytes=DEFERRED_LIST_MAX_BYTES),
+        )
     except (OSError, ValueError, TypeError):
         print(json.dumps({"status": "REFUSED"}))
         return 1

@@ -304,6 +304,11 @@ def _serve_localization(
 ):
     if cache_cleanup is not None and diagnostics is None:
         raise ReplenishmentError("RUNTIME_MISMATCH")
+    from product_search.infrastructure.replenishment_load_diagnostics import cache_cleanup_enabled
+
+    pre_sam_cleanup = cache_cleanup_enabled(binding, before_sam=True)
+    if pre_sam_cleanup and (cache_cleanup is None or diagnostics is None):
+        raise ReplenishmentError("RUNTIME_MISMATCH")
     capture_regions = _region_diagnostics_enabled(binding)
     import socket
 
@@ -375,6 +380,7 @@ def _serve_localization(
                 LazyLangSAMClient,
                 CandidateIBinding,
                 after_photo=cache_cleanup,
+                before_sam=cache_cleanup if pre_sam_cleanup else None,
             ):
                 server.run(sockets=[sock])
 

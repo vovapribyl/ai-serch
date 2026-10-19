@@ -14,7 +14,7 @@ def spy_recorder():
     recorder._calls = Counter()
     recorder._lock = RLock()
     events = []
-    recorder.emit = lambda step, phase, call: events.append((step, phase, call))
+    recorder.emit = lambda step, phase, call, **metadata: events.append((step, phase, call))
     return recorder, events
 
 
@@ -157,6 +157,7 @@ def test_instrumentation_restores_methods_even_after_failure():
     assert events == [
         ("gdino.predict", "before", 1),
         ("gdino.predict", "after", 1),
+        ("sam.input", "before", 1),
         ("sam.predict", "before", 1),
         ("sam.predict", "after", 1),
     ]
@@ -194,9 +195,9 @@ def test_resource_diagnostics_preserve_guard_and_throttle_extra_sampling():
     ]
 
 
-@pytest.mark.parametrize("empty_cache", [False, True])
+@pytest.mark.parametrize("empty_cache,before_sam", [(False, False), (True, False), (True, True)])
 def test_native_localizer_wires_measurements_without_sdk_or_socket(
-    tmp_path, monkeypatch, empty_cache
+    tmp_path, monkeypatch, empty_cache, before_sam
 ):
     import socket
     import sys
@@ -269,6 +270,9 @@ def test_native_localizer_wires_measurements_without_sdk_or_socket(
         SimpleNamespace(stop_grace_seconds=1),
         {
             "i_manifest": {},
+            "load_diagnostics": True,
+            "empty_cache_after_photo": empty_cache,
+            "empty_cache_before_sam": before_sam,
             "i_files": {
                 "model/gdino/config.json": str(tmp_path / "gdino/config.json"),
                 "model/sam": str(tmp_path / "sam.pt"),
@@ -285,14 +289,18 @@ def test_native_localizer_wires_measurements_without_sdk_or_socket(
         ("localizer.photo", "before"),
         ("gdino.predict", "before"),
         ("gdino.predict", "after"),
+        ("sam.input", "before"),
         ("sam.predict", "before"),
         ("sam.predict", "after"),
     ]
+    if before_sam:
+        position = expected.index(("sam.predict", "before"))
+        expected[position:position] = [("mps.pre_sam_cache", "before"), ("mps.pre_sam_cache", "after")]
     if empty_cache:
         expected.extend([("mps.empty_cache", "before"), ("mps.empty_cache", "after")])
     expected.append(("localizer.photo", "after"))
     assert [e[:2] for e in events] == expected
-    assert cache_calls == (["cache"] if empty_cache else [])
+    assert cache_calls == ["cache"] * (int(empty_cache) + int(before_sam))
     assert Binding.__call__.__name__ == "__call__"
     assert "torch" not in sys.modules
 

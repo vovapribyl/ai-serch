@@ -82,14 +82,16 @@ def _parser():
     return parser
 
 
-def private_json(path, *, atomic_snapshot=False):
-    """Read one private descriptor; only mutable telemetry opts into atomic replacement.
+def private_json(path, *, atomic_snapshot=False, max_bytes=JSON_LIMIT):
+    """Read bounded private JSON; control descriptors retain the default 64 KiB cap.
 
     An opened inode can lose its final link during os.replace. Its bytes remain
     readable; the telemetry caller still validates worker identity and freshness.
     Immutable control/grant files retain the single-link requirement.
     """
     try:
+        if type(max_bytes) is not int or max_bytes <= 0:
+            raise CliError()
         path = Path(path)
         parent = path.parent.lstat()
         if (
@@ -106,10 +108,13 @@ def private_json(path, *, atomic_snapshot=False):
                 or info.st_uid != os.getuid()
                 or info.st_nlink not in ((0, 1) if atomic_snapshot else (1,))
                 or stat.S_IMODE(info.st_mode) != 0o600
-                or info.st_size > JSON_LIMIT
+                or info.st_size > max_bytes
             ):
                 raise CliError()
-            return _json(stream.read(JSON_LIMIT + 1))
+            raw = stream.read(max_bytes + 1)
+            if len(raw) > max_bytes:
+                raise CliError()
+            return _json(raw)
     except (OSError, TypeError, ValueError):
         raise CliError() from None
 

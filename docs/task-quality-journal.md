@@ -3281,6 +3281,13 @@ review и публикация в этих задачах не проводил�
 [Реализация и инструкция](../specs/corpus-optimization/backlog.md#реализация-и-доступ-к-списку).
 
 
+Дополнение к записи186 — 2026-10-17, основание: реальная проба и TDD/replay
+[исправления](../specs/corpus-optimization/export-reader-fix-report.md).
+В export_deferred_batch первоначально использован CLI parser с cap65536 для
+каталожного экспорта; реальные209337 bytes дали отказ после сохранения. Большие
+exports/deferred list не покрывались исходными маленькими fixtures. Дефект
+исправлен задачей190; исходные результаты136/5 не означают его отсутствия.
+
 ### 2026-10-16 — Checkpoint и передача новой сессии
 
 | Поле | Наблюдение |
@@ -3290,3 +3297,576 @@ review и публикация в этих задачах не проводил�
 | Состав commit | Код/тесты диагностики, safe error codes, partial export, deferred list/report, связанная документация и DRAFT scale-quality plan. Отдельные PORTFOLIO_RESEARCH/outputs/alternative research исключены; фото/маски/сырые ID/веса/credentials не добавляются |
 | Свежая проверка |178 выбранных model-free PASS,2 отдельных synthetic PostgreSQL PASS; известное Starlette/httpx warning. Ruff выбранных Python, relevant links/fences/markers и staged diff check. Полный suite не повторялся; missing fake-server fixture остаётся. Новых ML/рабочей БД нет |
 | Review / метод | Самопроверка, независимое review не проводилось (STANDARD). verification-before-completion; книжные правила не применялись к фиксации Git/контекста. Состояние коммита проверяется через git show/status после записи |
+
+
+### 2026-10-17 — Подготовка двух фото для проверки REGION_COUNT_LIMIT
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись188; «Приступай» после предложения подготовить новый небольшой пакет. Подготовка без запуска, новой нормативной семантики и изменения продуктового кода |
+| Результат | Один новый пакет: известное limit-фото и следующее ранее OK; один START/12 admissions/1230с outer, прежние caps/guards. Новый binding с opt-in и полным inventory hash; partial export, source IDs, полнота vectors/checkpoints, архив до DB cleanup, pin старого экспорта20 и58 файлов. PREPARED_NOT_AUTHORIZED |
+| Диагностика подготовки | Старый pin bootstrap.py дал MODEL_NOT_READY. Для нового пакета закреплены текущие файлы/пути; модели и профиль прежние. Отдельно исправлена подготовка metadata diagnostic directory. Старые grants/runner/пакеты не менялись |
+| Проверки | Поведенческий RED прежнего all-OK, GREEN и6 отказных replay;81 выбранная model-free PASS. DTO/hashes,88 code pins,3 encoder manifests/files, metadata-only identity/assembly PASS без torch/transformers/server. Runner без approval отказал до credentials/grants/DB;58 файлов и экспорт20 сохранили SHA |
+| Ограничения | Live readiness NOT_RUN; native ML wrapper NOT_VERIFIED; новый ML/SQL-контур и grants не создавались. Полный suite не повторялся, известный missing fake-server fixture вне scope. Исходные ID/фото/evidence остаются ignored/private |
+| Review / метод | Самопроверка; независимое review не проводилось. Ponytail/TDD/systematic-debugging/verification-before-completion; отдельного вопроса проектирования модулей/API нет, книжные правила не выбирались. Commit/push не выполнялись |
+
+[Пакет и SHA](../specs/corpus-optimization/deferred-photo-probe-package.md).
+
+
+Дополнение к записи188 — 2026-10-17, основание: реальный разрешённый пакет.
+В подготовке пропущен дефект размера: export_deferred_batch и runner читают
+векторный каталог через CLI private_json с cap65536; реальный файл209337 bytes
+дал CliError. Малые synthetic fixtures не покрывали этот случай. Это дефект
+подготовленной проверки, а не новое пожелание; исходный PASS81 не доказывал
+работу с реальным размером экспорта. [Результат](../specs/corpus-optimization/deferred-photo-probe-package.md#фактический-результат-разрешённого-запуска).
+
+### 2026-10-17 — Исполнение разрешённого двухфотографического пакета
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись189; владелец ответил «Разрешаю» на campaign31df4647. Один START, без повторов, новых требований или допуска к оставшимся75 |
+| Фактический результат | Известное сложное фото ERROR/REGION_COUNT_LIMIT записано с исходными ID/SHA; следующее OK,8 областей/24 вектора/4 checkpoint/1 тестовая публикация. Новый grant; команда OK/COMPLETED, но runner FAILED/CliError после сохранения экспорта209337 bytes |
+| Причина / диагностика | Воспроизведён cap CLI private_json65536, используемого export_deferred_batch и runner. Продуктовый код/подписанный runner не менялись; исходный FAILED сохранён. Малый parser также используется report CLI |
+| Проверка сохранённых результатов | Отдельная offline PASS: frozen verifier, исходные ID, полный набор моделей, dim/finite/unit norm,4 manifests/payload/SHA, совпадение архивных копий. SQL-сводка получена до cleanup, восстановление БД не заявляется |
+| Ресурсы / cleanup | 67,922с,91 guard OK,0 WARNING/STOP; RSS1256079360 bytes, MPS3923378176 bytes, не складывать. Экспорт/list/checkpoints архивированы до удаления БД; собственные контейнер/процессы отсутствуют, locks свободны, credentials/target удалены, pressure1. Экспорт20 и58 прежних файлов сохранили SHA |
+| Ограничения / следующая работа | Пакет израсходован;75 не запускались,100 не готовы, качество не измерялось, cutover/commit/push нет. Следующий шаг — TDD/model-free исправление чтения каталога с учётом всех потребителей; новый ML требует нового пакета |
+| Review / метод | Самопроверка; независимое review не проводилось (STANDARD). Systematic-debugging и verification-before-completion; отдельного проектирования модулей/API нет. Первая read-only sandbox-проверка sysctl отказала; та же с разрешённым доступом PASS до START |
+
+
+### 2026-10-17 — Чтение большого экспорта без расширения CLI cap
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись190; «Приступай» после предложения исправить чтение без нового ML. Локальная правка parser/exporter/report и тестов; старый подписанный runner не редактировался |
+| Результат | private_json принимает явный max_bytes с default65536, сохраняет private-file/strict-JSON проверки и отказывает при росте после stat. read_catalog_export скрывает конечный предел40MiB; exporter/report используют его и прежний writer cap2MiB для deferred list |
+| TDD / регрессия | Два поведенческих RED на больших каталоге/списке, затем GREEN.19 новых проверок;101 и64 непересекающихся model-free PASS, итого165. Права/symlink/hardlink/дубликаты ключей/NaN/oversize/invalid cap/growth, дефолт дескрипторов не повышен. Ruff/format/diff и ссылки/таблицы проверены |
+| Реальные сохранённые данные | Исходный экспорт209337 bytes: reader PASS; настоящий exporter через SQLite в памяти дал1 deferred/1 ready,8 областей/24 вектора, photos/outcomes/regions/vectors/profile совпали. Report CLI exit0/PASS, frozen verifier PASS. Это не новый PostgreSQL/ML-прогон |
+| Сохранность / ограничения | Новый ML/PostgreSQL/START/grants не создавались. Исторические source export/list/runner/manifest, экспорт20 и58 файлов сохранили SHA; первоначальный FAILED не менялся. Полный suite и missing fake-server fixture вне проверки; конечный cap40MiB не доказывает готовность674 |
+| Попытки проверки | Первая выборка ошибочно включила2 SQL-fixture, sandbox отказал до создания БД;3 Unix-socket tests также отказали в sandbox. После исключения SQL-fixtures выборка с разрешёнными сокетами PASS101. Известный Starlette/httpx warning остаётся |
+| Review / книжные правила | Самопроверка; независимое review не проводилось (STANDARD). APoSD mini, source893a88a6fce3a80c565bf39ac65021b43a8b2990: пределы артефактов скрыты в профильном reader, проверки безопасности общие. TDD/Ponytail/systematic-debugging/verification-before-completion; без dependencies, commit/push |
+
+[Исправление и ограничения](../specs/corpus-optimization/export-reader-fix-report.md).
+
+### Краткая сводка записей186–190
+
+Пять задач: реализация пропуска, checkpoint, подготовка пакета, его исполнение
+и исправление чтения экспорта. По всем пяти доступна самопроверка; независимое
+review не проводилось. Model-free PASS приведены для своих выборок, их нельзя
+складывать между задачами как число уникальных тестов проекта.
+
+Единственный реальный START в этом наборе задач:1 deferred/1 ready,91 guard OK,
+cleanup подтверждён; общий runner FAILED на размере экспорта. Пропущенный размерный
+сценарий дополнен в исходных записях186/188 и исправлен в190 по TDD/replay без ML.
+Книжные правила применялись выборочно; сравнения с выполнением без правил нет,
+причинный эффект не измерялся. Приёмка качества/готовность100 и допуск к75
+не подтверждены; время работы задач в сопоставимом формате UNKNOWN.
+
+
+### 2026-10-17 — Подготовка следующей необработанной пятёрки
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись191; «Приступай» после предложения подготовить следующие5 из75, предъявить SHA и отдельно утвердить запуск. Новый ML/PostgreSQL/START/grants не создавались |
+| Состав / результат | Только старые frozen inputs B02, новая фаза N01 с новыми binding/pins и исправленным reader. SHA/размеры/decode/headers/original mapping проверены; точных повторов с20/B01 нет. Один START/24 admissions/1230с outer, прежние caps, остальные70 вне scope. PREPARED_NOT_AUTHORIZED |
+| Verifier / export | Фактические OK/NO_NAILS/accounted REGION_COUNT_LIMIT, исходные ID/SHA, полный набор моделей/областей; cp=4×ready+no_nails. Экспорт раньше log/checkpoint assertions, fallback partial export при раннем отказе, архив/fsync до удаления SQL. Не считать пять входов пятью готовыми |
+| Проверки | TDD RED прежнего двухфотографического verifier, GREEN10 проверок.95 выбранных model-free PASS,1 PostgreSQL deselected; metadata identity/assembly и3 encoder manifests/files PASS без SDK/server. DTO/hashes и88 code pins сверены; self-check исправил прежнее имя B01 в draft preflight на N01 до предъявления |
+| Защита / сохранность | Runner без approval отказал до runtime/credentials/grants. Настоящие fallback-export/archive statements прошли SQLite-in-memory rehearsal:3 ready/1 no_nails/1 deferred, export больше64KiB, reader/verifier и archive SHA PASS.84 прежних файла сохранили SHA; это не восстановление старой БД и не новый ML |
+| Ограничения / review | Live readiness NOT_RUN; реальное исполнение новой пятёрки не проверено; полный suite не запускался, missing fake-server fixture вне scope. Самопроверка; независимое review не проводилось (STANDARD). Старые подписанные пакеты сохранены; commit/push нет |
+| Книжные правила / метод | Отдельного решения о границах модулей/API нет, новые книжные правила не выбирались. Ponytail/TDD/verification-before-completion; продуктовый код в этой задаче не менялся |
+
+[Пакет и точный SHA](../specs/corpus-optimization/next-five-execution-package.md).
+
+
+### 2026-10-17 — Исполнение следующей необработанной пятёрки
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись192; владелец ответил «Да» на campaign290a77a0. Один START для5 из старой B02, новая N01; остальные70, повтор и cutover не разрешены |
+| Результат | Все5 OK:28 областей,84 вектора (по28 трёх моделей),20 checkpoints/91 файл;5 участников временного каталога/5 публикаций. Команда OK/COMPLETED, runner OK, postflight PASS |
+| Reader / проверки | Реальный экспорт728629 bytes принят read_catalog_export и report CLI exit0/PASS. Frozen verifier повторно проверил mapping/source SHA/ordinal, полноту областей/моделей, dim/finite/unit norm; manifests/payload/SHA проверены. Operation log PASS, один batch.before |
+| Ресурсы / время | 95,094с,199 guard OK,0 WARNING/STOP. Peak RSS1527939072 bytes (~1,42GiB), MPS3976773632 bytes (~3,70GiB), не складывать; pressure после1 |
+| Архив / cleanup | Экспорт/list/checkpoints/logs с fsync до удаления БД;84 прежних файла и экспорт20 сохранили SHA. Postflight: собственных контейнера/процессов нет, locks свободны, credentials/target удалены; архивные SHA совпали. Старые grants не использовались, подписанный runner не менялся |
+| Границы результата | Осталось70 необработанных входов. Экспорты20 и5 отдельные, объединённый25 не строился;100 не готовы, качество поиска не измерено, рабочей активации/commit/push нет. Полный suite не повторялся — продуктовый код не менялся |
+| Review / метод | Самопроверка; независимое review не проводилось (STANDARD). Verification-before-completion; новый инженерный вопрос о модулях/API отсутствует, книжные правила не применялись. Live preflight с разрешённым доступом PASS до START |
+
+[Разрешённый пакет и результат](../specs/corpus-optimization/next-five-execution-package.md#фактический-результат--2026-10-17).
+
+
+### 2026-10-17 — Подготовка конечной серии на оставшиеся70
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись193; «Приступай» после предложения14×5 с одним approval SHA всей серии, прежними caps и остановкой при ошибке/STOP. Подготовка без нового ML/PostgreSQL/grants/START |
+| Состав / результат | Только старые B03–B16, новые N01–N14;70 уникальных SHA без повторов с20/B01/B02, size/decode/headers/private identity сверены.14 DTO/packages,88 code pins, до336 admissions, общий предел3630с/внутренний1200с; PREPARED_NOT_AUTHORIZED |
+| Накопление / сохранность | Одна собственная временная SQL-БД по будущему пакету. Prefix export после каждой фазы, единый deferred list с сохранением прежних receipts; current phase logs отдельно от cumulative SQL. Старые checkpoints/members/vector hashes/files/export SHA сверяются до следующего START и после фазы.177 прежних файлов сохранили SHA |
+| TDD / проверки | RED старого verifier на префиксе10, GREEN8 проверок; всего93 выбранных model-free PASS,1 PostgreSQL deselected.14 synthetic SQLite-prefix exports PASS (42 ready/14 no_nails/14 deferred — только fixture). Реальное условие журналов прошло mixed/all-ready/no-ready и отказные replay при разных current/cumulative counts |
+| Preflight / authority | Metadata-only identity/assembly и3 encoder manifests/files, bindings/inputs/pins всех14 PASS без SDK/server. Runner без campaign approval отказал до runtime. Финальные hashes/syntax/links/tables/diff проверены; требуется одно утверждение конкретного SHA, старые grants/пакеты не переиспользуются |
+| Ограничения / review | Live readiness NOT_RUN, реальная серия70 не выполнялась. Полный suite/missing fake-server fixture вне проверки. Самопроверка; независимое review не проводилось (STANDARD). Общий каталог100/качество/рабочая активация вне пакета; commit/push нет |
+| Метод / книжные правила | TDD/Ponytail/verification-before-completion; продуктовый код не менялся. Отдельного вопроса границ модулей/API нет, новые книжные правила не выбирались. Нормативные статусы Gate не менялись |
+
+[Конечный пакет и SHA](../specs/corpus-optimization/remaining70-execution-package.md).
+
+Позднее замечание к записи193 — 2026-10-17, по фактическому запуску194:
+внешний `all(status == OK)` отклоняет восстановившийся WARNING, хотя описание
+пакета предусматривает resource wait/STOP. Этот сценарий при подготовке не
+проверялся; общий error code скрывает RESOURCE_GUARD. Это дефект согласованности
+критерия и диагностики, а не новое пожелание о повышении лимитов. Signed runner
+исторического пакета не изменён; причина давления памяти UNKNOWN.
+
+### 2026-10-17 — Исполнение конечной серии70 до отказа после N05
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись194; владелец «Разрешаю» на e2dc5c90 всей серии14×5. Один запуск runner; пять START, без повторов и изменения лимитов |
+| Фактические исходы | N01:4 ready/1 deferred; N02–N04 по5 ready; N05:3 ready/2 deferred. Всего25 фото:22 OK,3 ERROR только REGION_COUNT_LIMIT,0 NO_NAILS/other errors/PENDING; N06–N14 и45 входов не запускались |
+| Данные |97 областей/291 вектор, по97 каждой модели;88 checkpoints/348 файлов;22 временных участника каталога/22 публикации. Экспорт N05:2524950 bytes. Все5 prefix exports повторно проверены с cumulative lists/source mapping/SHA/моделями; сохранность прежних префиксов PASS |
+| Отказ | Runner FAILED/AssertionError/UNCLASSIFIED_RUNNER_ERROR; completed_phases N01–N04. N05 native OK/COMPLETED, но внешний all-OK assertion отказал на4 WARNING pressure2. AST replay точного условия воспроизвёл RESOURCE_GUARD без START. После последнего WARNING100 OK;0 resource STOP; причина давления UNKNOWN, OOM не доказан |
+| Ресурсы / время |458,874с;956 OK/4 WARNING/0 STOP. Peak RSS1569652736 bytes, MPS5323145216 bytes, не складывать; caps не превышены, pressure после1 |
+| Сохранность / cleanup | Экспорты/lists/checkpoints/logs fsync до удаления своей БД. Read-only postflight PASS: собственных containers/processes нет, locks свободны, credentials/targets удалены;177 прежних файлов и архивные SHA совпали |
+| Границы / следующий шаг | Пакет израсходован,45 не продолжать автоматически. Разобрать и согласовать восстановившийся WARNING, model-free проверить критерий до нового runner/SHA. Общий каталог, качество, активация, commit/push не выполнялись; прежние20/5 и новые22 готовы отдельными экспортами |
+| Проверка / метод | Самопроверка фактических exports, сохранности и cleanup; независимое review не проводилось (STANDARD). Verification-before-completion/systematic-debugging. Продуктовый код/signed runner не менялись, полный suite не повторялся; нового вопроса модулей/API и новых книжных правил нет |
+
+[Исполнение и причина отказа](../specs/corpus-optimization/remaining70-execution-package.md#фактический-результат--2026-10-17).
+
+### 2026-10-17 — Исправление внешнего WARNING и подготовка оставшихся45
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись195; «Приступай» после предложения исправить расхождение WARNING и проверить без ML перед новым пакетом45. Критерий приведён к native wait/STOP; caps и продуктовый код не менялись |
+| Причина / исправление | Старый all-OK отвергает recovered WARNING. Только новый private runner принимает непустой ряд OK/WARNING с последним OK при native OK/COMPLETED; отдельные exits/log/data checks и boundary pressure1 обязательны. RESOURCE_GUARD/CAMPAIGN_DEADLINE сохраняются точно; исторический FAILED и signed70 runner неизменны |
+| TDD / проверки | RED7 FAIL/8 PASS на старом условии и error mapping; GREEN15 guard cases, включая сохранённую N05. Всего89 выбранных model-free PASS: guard/verifier/waiting/runtime-binding/export-reader. Девять SQLite prefixes и реальные journal predicates для mixed/all-ready/no-ready/refusal PASS; синтетические27/9/9 не объявлены результатом45 |
+| Новый пакет |45 unique frozen B08–B16, без повторов ранее обработанных SHA; headers/decode/size/source mapping проверены.9 START/216 admissions, прежние3630с overall и1200с phase, новая собственная временная БД только после approval. PREPARED_NOT_AUTHORIZED; SHA по ссылке |
+| Сохранность / metadata |542 прежних файла закреплены SHA, включая результаты серии70;88 code pins/9 DTO/bindings и все входы сверены. Metadata identity/assembly и3 encoder manifests/files PASS без SDK/server; live NOT_RUN. Runner без approval отказал до runtime/credentials/grants/START |
+| Границы / review | ML/PostgreSQL/grants/START отсутствуют. Полный suite не запускался: изменена private-обвязка, продуктовый код прежний; известный missing fake-server fixture не исправлялся. Самопроверка; независимое review не проводилось (STANDARD). Общий каталог/качество/cutover/commit/push вне scope |
+| Метод | Systematic-debugging/TDD/Ponytail/verification-before-completion. Новый вопрос границ модулей/API не возник, книжные правила не применялись. Замечание193 исправлено новым runner, не переписыванием consumed evidence |
+
+[Конкретный пакет45 и критерий](../specs/corpus-optimization/remaining45-execution-package.md).
+
+### Сводка записей191–195
+
+Подготовлена и выполнена одна пятёрка:5 ready,28 областей/84 вектора,
+runner/postflight PASS. Затем подготовлена серия70; после25 фото сохранились
+22 ready/3 deferred,97 областей/291 вектор, cleanup PASS, но runner FAILED
+на восстановившихся WARNING. Остальные45 не запускались. Ошибка внешнего
+критерия воспроизведена и исправлена в новом пакете45 с model-free проверками;
+новый пакет пока не разрешён. Продуктовый код, native wait/STOP и caps в этих
+пяти задачах не менялись. Качество поиска/owner acceptance и причинный эффект
+книжных правил не измерены; независимое review в STANDARD не проводилось.
+
+Уточнение к записи195 — 2026-10-17, evidence исполнения196: новая классификация
+сохраняет RESOURCE_GUARD для AssertionError, но не сохраняет ReplenishmentError
+PHOTO_NOT_DEFERRED, возникающий после partial export с PENDING. Native answer и
+первый resource-stop сохраняют точную причину MPS_LIMIT; outer error остаётся
+общим. Это ограничение диагностики, не обход STOP и не новое повышение caps.
+
+### 2026-10-17 — Исполнение оставшихся45 до native MPS STOP
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись196; владелец «Разрешаю» на b08f7398 всей серии9×5. Один запуск runner,5 START; N06–N09 не запускались, retries/caps/код не менялись |
+| Итоги фаз | N01:4 ready/1 deferred; N02:3/2; N03:4/1; N04:5/0 — проверки PASS. N05:0 ready/2 deferred/3 PENDING, native STOPPED RESOURCE_STOP. Всего16 OK/6 ERROR только REGION_COUNT_LIMIT/3 PENDING;20 в не начатых фазах,23 незавершённых |
+| Сохранённые данные | Частичный экспорт25 записей/2732564 bytes;22 терминальных исхода,105 областей/315 векторов (по105 моделей),64 checkpoints/322 файла. Все5 exports/source identities и сохранность старого префикса проверены; N05 terminal subset22 отдельно, у PENDING нет regions/vectors/checkpoints |
+| Причина STOP | Первый resource-stop: localization/RESOURCE_LIMITS/MPS_LIMIT/sample_current. MPS6487310336 bytes > cap6442450944 (6GiB) на44859392 bytes; pressure2, RSS sample878755840. OOM/причина роста/ошибка модели UNKNOWN.736 OK/2 STOP/0 WARNING; recovered WARNING в runtime не наблюдался |
+| Outer отказ | FAILED/ReplenishmentError/UNCLASSIFIED_RUNNER_ERROR: export записан до terminal summary; batch_summary отказал PHOTO_NOT_DEFERRED из-за3 PENDING, read-only replay воспроизведён. Исторический код не заменён; native RESOURCE_STOP и первый MPS_LIMIT сохранены |
+| Ресурсы / время |358,397с; peak RSS1523204096 bytes, peak MPS6487310336 bytes, не складывать; после pressure1 |
+| Архив / cleanup | Архив с fsync до удаления собственной БД, postflight PASS: своих containers/processes нет, locks свободны, credentials/targets удалены.542 прежних файла и архивные export SHA совпали; новые grants/START не выдавались |
+| Следующий шаг / границы | Диагностика MPS по сохранённым данным и outer error для partial export; новый пакет23 отдельно. Пакет израсходован, лимиты не повышены. Экспорты20/5/22/новых16 отдельные, общий каталог/качество/cutover/commit/push не выполнялись |
+| Проверка / метод | Самопроверка данных/первой причины STOP/cleanup; независимое review не проводилось (STANDARD). Verification-before-completion, bounded systematic-debugging. Продуктовый код/signed runner не менялись, полный suite не повторялся; новых книжных правил нет |
+
+[Фактический результат и evidence](../specs/corpus-optimization/remaining45-execution-package.md#фактический-результат--2026-10-17).
+
+### 2026-10-17 — Диагностика MPS STOP по сохранённым traces
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись197; «Приступай» после предложения диагностики MPS по сохранённым данным. Только bounded logs/source inspection и локальные агрегаты, без SDK/ML/БД/START или изменения кода |
+| Наблюдения |5 отдельных localization workers,22 photo.before/after и22 empty_cache.before/after. N05:2 фото/2 очистки, STOP около второго SAM до cleanup; гипотеза пропуска очистки REGION_COUNT_LIMIT опровергнута source order и traces |
+| Числа / порядок | SAM2.before driver3930341376/live1245861120; SAM2.after6440075264/1244603392. Guard6487310336 > cap6442450944; STOP по меткам через0,116с после SAM.after и за2,025с до cache.before. Cleanup6440075264→3013296128, live1244598016→1244598016; порядок измерений не равен GPU profiler trace |
+| Вывод / UNKNOWN | Временный driver peak около SAM, существенное позднее освобождение; утечка/OOM/размер box batch/точный механизм UNKNOWN. Driver включает cache/framework, live их полностью не отражает; метрики не складывались, guard не ослаблялся |
+| Источники / проверка | Private analyze.py/analysis.json/evidence-pins.json: bounded traces5 фаз, source pins и asserts counts/timing/cleanup PASS. API definitions проверены в установленном torch2.13 без импорта; official2.14 docs только для смысла API (2.13 web недоступен). Signed campaign/runner и542 preserved hashes проверены повторно |
+| Следующий шаг | Model-free диагностика числа images/box prompts/эффективных размеров SAM и проверка гипотезы pre-SAM empty_cache, с сохранением post-photo cleanup. Эффект неизвестен до отдельного конкретного runtime package;23 не продолжались, caps/profile прежние |
+| Ограничения / review | Продуктовый код не менялся, тесты продукта/live probes не запускались; самопроверка, независимое review не проводилось (STANDARD). Нет commit/push/cutover/качества. Systematic-debugging/verification-before-completion; инженерного изменения модулей/API не делалось, книжные правила не выбирались |
+
+[Отчёт и границы выводов](../specs/corpus-optimization/mps-stop-diagnostics.md).
+
+### 2026-10-17 — Model-free SAM input diagnostics и pre-SAM cleanup
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись198; «Приступай» после предложения замеров числа боксов/размеров SAM и model-free проверки гипотезы очистки перед SAM. Реальная проба отдельно |
+| Код / контракт | Существующий LoadDiagnostics получил bounded sam.input summary из shapes/counts без пикселей/координат/ID и wrap_sam. Новый bool empty_cache_before_sam default-off требует diagnostics+post-photo cleanup; native wiring передаёт callback только при opt-in, отсутствующий callback/диагностика отказывают |
+| Семантика / границы | Аргументы/kwargs/result/error identity сохранены, неизвестная metadata known=false/incomplete без подмены SAM. Cleanup failure не вызывает SAM, SAM failure сохраняется. Post-photo after_success, guards/wait/caps/HTTP cap/profile прежние; внутренние SAM tensors не измерены |
+| TDD / проверки | RED14 до реализации. Native wiring RED2 PASS/1 FAIL при отключённой связи, GREEN после подключения. Итог145 PASS/0 errors/skips, JUnit сохранён; load/SAM/runtime-binding/wait/export-reader/worker-binding/monitor. Ruff/diff/ссылки/таблицы PASS |
+| Evidence / ограничения | ignored pre-sam-model-free-20261017: tests.xml, verification.json, source SHA/snapshots. Подписанные исторические packages/runner и542 preserved files неизменны; текущий код требует новых pins. Полный suite не запускался (DB/runtime fixtures вне scope, known missing fake-server); ML/DB/grants/START/окружения/commit/push не запускались |
+| Следующая точка | Подготовить конечную пробу двух известных фото N05 с новой опцией/замерами и прежними caps; повтор этих ранее deferred inputs должен быть явно разрешён новым SHA. Реальный эффект и способность пройти23 UNKNOWN |
+| Метод / review | TDD/Ponytail/verification-before-completion. Book-guidance: APoSD mini, commit893a88a6fce3a80c565bf39ac65021b43a8b2990 — скрыть формы/порядок callback внутри текущего модуля, не вводить слой. Самопроверка; независимое review не проводилось (STANDARD); причинный эффект книжных правил не измерен |
+
+[Изменение и проверка](../specs/corpus-optimization/pre-sam-model-free-report.md).
+
+### 2026-10-17 — Подготовка конечной пробы pre-SAM cleanup на двух фото
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись199; «Приступай» после предложения подготовить пробу двух известных фото N05. Подготовка без ML/БД/grants/START; намеренный диагностический повтор ранее deferred inputs,23 вне scope |
+| Пакет |2 frozen inputs в прежнем порядке, source mapping/SHA/size/headers/decode PASS,671146 bytes. Один START/12 admissions/1200с native с30с reserve,1230с outer. Новые code/runtime pins, pre-SAM+post-photo cleanup и diagnostics true, прежние caps/models/profile |
+| Диагностика / TDD | Новый bounded verifier:2 photo calls, SAM metadata/counts и pre-cache→predict→post-photo порядок, без пропусков/UNKNOWN/rotation/incomplete. RED11→GREEN11; всего56 выбранных tests PASS. Настоящий journal predicate для2 inputs проверен4 mixed/ready/deferred/no_nails и4 отказами счётчика |
+| Проверки пакета |88 source pins/frozen snapshot, input/runtime/profile/claims/model hashes/DTO PASS. Metadata identity/assembly+3 encoder manifests/files PASS без SDK/server. Live NOT_RUN. Unsigned runner отказал до runtime/credentials/grants/START;903 preserved file hashes и старый signed campaign/runner неизменны |
+| Предлагаемый runtime scope | Ожидаются2 REGION_COUNT_LIMIT без embeddings; при OK штатный полный путь3 encoders в собственной временной БД, NO_NAILS без embeddings. Любой STOP/иной error/PENDING/неполные замеры прекращают пробу, retries нет. Историческое сравнение peak — наблюдение, не доказанный causal effect |
+| Evidence / ограничения | Private pre-sam-probe-preparation-20261017: prepared/source/tests.xml/verification.json. Продуктовый код не менялся; полный suite не повторялся, предыдущие145 относятся к реализации. Partial export outer code может быть общим, native first STOP сохраняется. Общий каталог/качество/cutover/commit/push отсутствуют |
+| Метод / review | TDD/Ponytail/verification-before-completion для private verifier и bounded подготовки. Нового вопроса модулей/API нет, новые книжные правила не выбирались. Самопроверка, независимое review не проводилось (STANDARD); требуется утверждение конкретного нового SHA |
+
+[Пакет и SHA](../specs/corpus-optimization/pre-sam-probe-execution-package.md).
+
+Позднее замечание к записи199 — 2026-10-17, фактический запуск200: verifier
+обязательно читал worker load-events.status.json, но нормальный teardown
+завершает worker SIGTERM/−15 и footer не гарантирован. Fixtures всегда
+предоставляли status, тест composition заменял server; существующий тест
+controller_records_exit_even_without_worker_footer не был связан с новым verifier.
+Это дефект подготовки проверки lifecycle, не новый запрос владельца и не MPS STOP.
+Исторические package/runner/verifier и FAILED не изменены.
+
+### 2026-10-17 — Реальная pre-SAM проба двух известных фото N05
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись200; владелец «Разрешаю» на c6d38648, один START/2 намеренно повторённых ранее deferred фото. Live preflight PASS/pressure1, no competing ML/probe; подписанный runner/caps/code не менялись |
+| Native исход | OK/COMPLETED,2 ERROR только REGION_COUNT_LIMIT/source-linked deferred;0 OK/NO_NAILS/PENDING/regions/vectors/checkpoints. Host/monitor0; operation log PASS, expected worker SIGTERM/−15. Два фото не прибавили готовых и не сократили23 |
+| Новые данные | SAM inputs known=true:15 боксов/466×468×3 и37/574×556×3.2 pre-SAM+2 post-photo cleanup pairs, оба photo.after. Записанный порядок input→pre-cache→SAM→post-cache→photo.after проверен read-only; measurement_ok=true |
+| Ресурсы / наблюдение |34,655с;46 guard OK/0 WARNING/STOP. Peak RSS1522745344 bytes/MPS5415075840 bytes, не складывать. Исторический guard peak6487310336, разница1072234496 (~16,528%); единичное наблюдение при иной host state, причинный эффект UNPROVEN |
+| Outer отказ | FAILED/FileNotFoundError/UNCLASSIFIED_RUNNER_ERROR, completed_phases пуст: отсутствует load-events.status.json после штатного SIGTERM. Final diagnostic status UNKNOWN; footer не фабриковался, вся проба не объявлена PASS. Причина lifecycle подтверждена controller events/source/existing no-footer test |
+| Сохранность / cleanup | Экспорт1343 bytes, deferred list/diagnostics/logs/mapping fsync-архивированы до удаления своей БД. Postflight PASS: своих процессов/контейнеров нет, locks свободны, credentials/targets удалены, pressure1.903 прежних файла/архивные export/list/load-event SHA совпали |
+| Evidence / следующий шаг | Private postflight-summary.json/runtime-audit.json/runtime-result; native и записанные данные проверены отдельно от отсутствующего footer. Model-free исправление lifecycle verifier с controller-owned evidence и тестом нормального teardown; ML-повтор не нужен. Пакет consumed,23 не запускались, runtime-допуска нет |
+| Метод / review | Самопроверка; независимое review не проводилось (STANDARD). Verification-before-completion/systematic-debugging для exact failure. Продуктовый код не менялся, suite не повторялся; новых книжных правил нет. Качество/общий каталог/cutover/commit/push не выполнялись |
+
+[Фактический результат и ограничение verifier](../specs/corpus-optimization/pre-sam-probe-execution-package.md#фактический-результат--2026-10-17).
+
+### Сводка записей196–200
+
+Серия45 остановлена native MPS_LIMIT:16 готовых/6 deferred/3 PENDING,20 входов
+не запускались. По сохранённой диагностике очистка не пропускалась, пик был
+около SAM до неё; утечка/OOM не доказаны. Добавлены bounded shape/count logs
+и default-off pre-SAM cleanup (145 model-free PASS), затем подготовлена
+одна двухфотографическая проба (56 выбранных PASS). В реальной пробе native
+OK/2 deferred/0 STOP, записаны15/37 боксов, MPS peak ниже исторического;
+причинный эффект не доказан. Outer runner FAILED из-за неверного ожидания
+worker footer при SIGTERM: дефект подготовки записан в199, нужен model-free
+lifecycle fix. Все собственные runtime-контуры очищены, прежние файлы сохранены;
+23 незавершённых и общий каталог/качество не закрыты. Независимое review
+в STANDARD не проводилось; причинный эффект книжных правил не измерен.
+
+Уточнение к замечанию199/исполнению200 — 2026-10-17: дефект обязательного
+worker footer исправлен отдельной версией verifier в задаче201. Настоящий
+SIGTERM lifecycle и offline replay PASS; status footer не фабриковался,
+исторический FAILED и подписанные evidence не переписывались.
+
+### 2026-10-17 — Model-free исправление lifecycle verifier без worker footer
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись201; «Приступай» после предложения исправить проверку завершения по controller-owned evidence и протестировать без ML. Новый private verifier, signed historical files и продуктовый код не менялись |
+| Исправление | verify_probe_files связывает ready/control nonce/PID, заголовок worker и единственный localization exit, complete controller sequence/status/batch/host closure. Missing footer допустим только expected−15/signal15; completion источник controller, worker_footer MISSING/final status UNKNOWN |
+| Сохранённые отказы | Не отменены known SAM metadata/count/order,2 полных photo calls/pre-cache/SAM/post-cache pairs. Unexpected/SIGKILL, PID/nonce mismatch, duplicate exit, broken sequence/status/rotation/truncation, недостающие события/head/footer incomplete, exit0 без footer и unsafe files отказывают |
+| TDD / проверки | RED15 FAIL/1 PASS на старой обязательной загрузке, включая реальный owned SIGTERM без footer. GREEN, итог94 PASS/0 FAIL/ERROR/SKIP; tests.xml. Настоящие ProcessStageWorkers/Supervisor/OperationLog/LoadDiagnostics с shape-only callback, без SDK/ML/БД/сети; физический выход подтверждён |
+| Saved replay | Реальные сохранённые inputs15/37 boxes,2 pre-SAM/2 post-photo boundaries приняты с controller completion; footer MISSING/final status UNKNOWN. Новый offline PASS не заменяет consumed runner FAILED и не доказывает causal effect/готовность23 |
+| Evidence / границы | Private diagnostic-lifecycle-fix-20261017: verifier/tests/JUnit/verification/replay. Signed c6d38648/runner/старый verifier и903 preserved files неизменны. Нового START/grant/DB/ML/install/commit/push нет; полный suite не запускался, продуктовый код не менялся |
+| Следующий шаг / review | Отдельный конкретный пакет23 с новым verifier API, числом входов и свежими pins; текущая проверка строго на2 фото не расширена молча. Самопроверка, независимое review не проводилось (STANDARD). Systematic-debugging/TDD/Ponytail/verification-before-completion; новых книжных правил нет |
+
+[Исправление и пределы проверки](../specs/corpus-optimization/diagnostic-lifecycle-fix-report.md).
+
+### 2026-10-17 — Подготовка конечной серии23 с variable lifecycle verifier
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись202; «Приступай» после предложения пакета23. Подготовка без ML/БД/grants/START; новые scoped private scripts/verifier, продуктовый код не менялся |
+| Состав |3 PENDING N05 серии45 без regions/vectors, затем20 входов N06–N09 без grant/target/answer/resource logs.23 unique SHA, source mapping/size/decode/headers PASS,17182561 bytes; ранее обработанные/deferred и двухфото-проба исключены |
+| Пакет |5 фаз3+5+5+5+5, prefix totals3/8/13/18/23;5 START/112 admissions (16+4×24),3630с overall/1200с phase с прежними reserve/caps/models/profile. Pre-SAM+post-photo cleanup/diagnostics true. PREPARED_NOT_AUTHORIZED |
+| Verifier / TDD | RED7→GREEN для3/5 и explicit outcomes; NO_NAILS может не иметь SAM, OK/deferred не могут. Mixed сохраняет SAM call IDs. Controller/PID/nonce/expected−15 fallback и UNKNOWN footer status сохранены, неполные/неверные события отказывают |
+| Проверки исполнения без ML |91 выбранный test PASS, включая настоящий owned SIGTERM с shape-only callbacks. Из actual runner AST выполнены discovery по control.json и file-verifier вызов3/5/all-NO_NAILS. Настоящий journal predicate:8 positive cases+8 counter refusals.5 SQLite exports PASS, fixture13 ready/5 NO_NAILS/5 deferred не является результатом23 |
+| Pins / preservation |88 code pins/frozen source,5 DTO/input/runtime/claims/model/profile SHA PASS. Metadata helper проверен на новом root, I identity/assembly+3 encoder manifests/files PASS без SDK/server; live NOT_RUN.941 прежний файл и signed consumed packages/runner/verifier сохранили SHA |
+| Authority / границы | Unsigned runner отказал до runtime/credentials/grants/START. Один approval SHA нужен на всю серию, no per-phase approval/retry. Partial-export outer generic error известен, native first STOP сохраняется. Общий каталог/качество/cutover/install/commit/push вне scope; полный suite не повторялся |
+| Метод / review | TDD/Ponytail/verification-before-completion для bounded подготовки/private verifier; нового инженерного вопроса модулей/API нет, новые книжные правила не выбирались. Самопроверка; независимое review не проводилось (STANDARD) |
+
+[Конкретный пакет23 и SHA](../specs/corpus-optimization/remaining23-execution-package.md).
+
+### 2026-10-17 — Исполнение конечной серии23 до полного технического результата
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись203; владелец «Разрешаю» на642b9472 всей серии3+5+5+5+5. Live preflight PASS, один runner/5 START, signed source/caps/grants не переиспользовались и не менялись |
+| Фазы / исходы | N01:2 ready/1 deferred; N02:5/0; N03:3/2; N04:3/2; N05:4/1.23 terminal outcomes:17 OK/6 ERROR только REGION_COUNT_LIMIT,0 NO_NAILS/other errors/PENDING/не начатых. Runner OK/все5 checks_passed, native OK/COMPLETED |
+| Данные |121 область/363 вектора (по121 моделей),68 checkpoints/361 файл,17 временных участников/публикаций. Final export3146875 bytes. Все5 prefixes/source identity/receipts/region/model completeness/checkpoint manifests и payload SHA проверены, previous prefix сохранён |
+| Lifecycle |3/6/5/6/5 SAM calls, всего25 pre-SAM/23 post-photo pairs; mandatory metadata/order PASS.5 matching controller expected SIGTERM−15, worker footer MISSING/final status UNKNOWN не фабриковались. Old FAILED packages сохранены; all-NO_NAILS путь в реальной серии не встретился |
+| Ресурсы |440,418с,849 OK/2 WARNING в N02/0 STOP; восстановившиеся WARNING приняты при native completion/final OK. Peak RSS1965604864/MPS5465554944 bytes, не складывать; после pressure1. Длительность native wait и causal effect cleanup из этих counts не выводятся |
+| Сохранность / cleanup |941 прежний файл и signed runner/verifier сохранили SHA. Archive fsync до удаления своей БД; postflight PASS: своих процессов/контейнера нет, locks свободны, credentials/targets удалены. Terminal-audit отдельно повторил все5 prefixes и23 исхода |
+| Следующая точка / границы | Инвентаризация раздельных exports20/5/22/16/новых17 и ранних probes, единый оценочный каталог/source uniqueness/deferred/ранние пробелы. Общего unique-ready счёта/качества/cutover не объявлено;6 deferred не ready. Пакет consumed, ML retries/нового runtime/commit/push нет |
+| Evidence / review | Private remaining23-preparation-20261017: postflight-summary.json/terminal-audit.json/runtime-result. Продуктовый код/signed package не менялись, suite не повторялся; фактические data/lifecycle/cleanup проверены. Verification-before-completion, самопроверка; независимое review не проводилось (STANDARD), новых книжных правил нет |
+
+[Полный результат серии23](../specs/corpus-optimization/remaining23-execution-package.md#фактический-результат--2026-10-17).
+
+### 2026-10-17 — Инвентаризация экспортов и единый оценочный каталог исходной сотни
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись204; «Приступай» после объяснения пользы инвентаризации/сборки. Только offline чтение, восстановление сохранённых stage payloads и отдельный private каталог; новых требований/переходов gate нет |
+| Полнота исходов |100 исходных фото/товаров:83 OK,16 ERROR только REGION_COUNT_LIMIT,1 NO_NAILS;0 PENDING/отсутствующих исходов. SHA/source identity связывают все100; временные SQL ID не используются для межсерийной идентичности |
+| Готовая часть |83 фото/товара,481 область/1 443 вектора, по481 openclip_b32/dinov2_b14/siglip2_b16_224.1–10 последовательных областей/полные model keys/размерности/конечные значения/profile PASS; это техническая полнота, не качество локализации или поиска |
+| Ранний пробел |13 ранних checkpoints проверены штатным CheckpointFiles, attempt identity связывает input/source/profile/localization SHA. Два готовых фото восстановлены без ML; третье уже было в probe export и учтено один раз. Нулевой localization подтверждает1 NO_NAILS; ранних пробелов не осталось |
+| Повторы / deferred |19 экспортов содержат244 строки; плюс4 ранних исхода=248 наблюдений на100 фото,148 повторных наблюдений исключены из счёта. Три PENDING серии45 разрешены терминальными исходами23.16 уникальных deferred имеют original-mapped receipts; повторные пробы не добавляют новые фото |
+| Числовое представление | Повторное раннее фото: маски/кропы совпадают, max decimal delta около3,84×10⁻⁸, float32 bytes совпали. Нормализация только для сравнения fingerprint, существующий SQL-export сохранён; реальные конфликты отказывают. Source/profile/representation conflicts0 |
+| Полная инвентаризация | Все26 quality-catalog-vectors.json классифицированы:19 реальных включены,4 synthetic rehearsals/1 query export/2 diagnostic repeats without vectors исключены. Private полный index с path/SHA/size/count/classification, исходные файлы не переписаны |
+| TDD / проверка | Наблюдаемый RED→GREEN,6 тестов PASS, включая9 отрицательных случаев полноты/идентичности и float32 regression. Отдельный read-back заново проверил100 identities/83 ready/481×3 vectors/962 PNG: формат/режим/binary nonempty masks/crop SHA PASS.1 165 использованных source files сохранили SHA; private files600/directories700 |
+| Evidence / следующий этап | Private unified-evaluation-20261017/catalog-v1: JSON/самостоятельные assets/source ledger/early recovery/полный index/pins/summary/readback. Следующая работа — отдельная оценка качества на83 с явными запросами/критериями; текущая задача не выполняла поиск/ML/live SQL/activation/commit/push |
+| Метод / review | Ponytail/TDD/verification-before-completion; продуктовый код не менялся, полный suite не запускался, новых инженерных вопросов модулей/API и книжных правил нет. Самопроверка; независимое review не проводилось (STANDARD). Исторические FAILED/STOP/consumed grants не переписаны |
+
+[Результат, состав и ограничения оценочного каталога](../specs/corpus-optimization/unified-evaluation-catalog-report.md).
+
+### 2026-10-17 — Повтор семи запросов на83 готовых кандидатах по двум формулам
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись205; прямое поручение «Давай для начала сделаем повтор». Сохранённые7 запросов против frozen83, обе прежние формулы/7 комбинаций; без ML/SDK/новой БД/активации и без изменения продукта |
+| Результат | Три положительных запроса двух товаров: ранги трёх моделей67/53/53 по полноте и1/1/1 по сходству пар; top-1/5/10 0/3 против3/3. Ранги на20 были16/10/10 и1/1/1.63 новых кандидата добавили51/43/43 конкурента выше ожидаемых по первой формуле, scores ожидаемых не изменились |
+| Другие модели / просмотр | Все7 комбинаций дают top-10 0/3 по полноте и top-5 3/3 по сходству пар; SigLIP2 отдельно top-1 2/3, product-macro0,5. Объединение top5+top5 находит3/3 с6/8/10 уникальными карточками; отдельная вторая формула уже даёт top1, дополнительная польза двух списков человеку не доказана |
+| Разметка / ограничение | Все3 expected source product IDs присутствуют в83; query/catalog exact SHA duplicates0. Для1–4 исторический NOT_IN_CORPUS с expected ID null сохранён, membership расширенного83 UNKNOWN. Нет ложной переоценки как подтверждённых отрицательных, порог/FPR/корректные отказы не заявлены |
+| Воспроизводимость / TDD | Контракт/pins/labels/deadline600/max_solver_states16384 зафиксированы до расчёта.3 RED→3 PASS для двух знаменателей на общих scorer/assignment;21 выбранный core test PASS, conftest/plugins отключены. Reconstruct переиспользован из прежнего private scorer без его top-level исполнения |
+| Фактические проверки |581 query×candidate baseline совпали с core по score/pairs.4 067 назначений для7 комбинаций сохранены между формулами.98 полных старых20 rankings (7×7×2) воспроизведены со scores/pairs/order/прежним tie-break. Отдельный read-back проверил rankings/ordinals/denominators/ranks/union/агрегаты;28 input/code pins неизменны |
+| Evidence / время | Private repeat-seven-83-20261017: contract-before-scoring/result/summary/audit/scripts/tests; files600/directories700.9,842с offline с проверками, не latency полного запроса; result SHA bf5a4247. Исходные каталоги/queries/labels не перезаписаны |
+| Следующий этап / review | Просмотр лидеров1–4 и уточнение membership; затем новые фото/замороженная разметка для независимой оценки. Выборка уже использована для диагностики; приёмки качества/моделей/двух выдач нет. Самопроверка, независимое review не проводилось (STANDARD), полный suite не запускался; новых книжных правил/инженерных вопросов API нет. Commit/push не выполнялись |
+
+[Повтор, точные ранги и ограничения](../specs/corpus-optimization/repeat-seven-83-report.md).
+
+### Сводка записей201–205
+
+Исправлен model-free lifecycle verifier:94 теста и сохранённый replay PASS,
+исторический FAILED и UNKNOWN footer не переписаны. Подготовлена конечная
+серия23 (91 выбранный test PASS), затем разрешённый запуск дал17 ready/6 deferred,
+5 START, runner/postflight/cleanup PASS. После офлайн-инвентаризации исходной100
+собран каталог83 ready/16 REGION_COUNT_LIMIT/1 NO_NAILS,0 пробелов;481 область/
+1 443 вектора, два ранних фото восстановлены без ML, повторы исключены.
+Повтор7 запросов на83 воспроизвёл98 прежних рейтингов; у трёх моделей ранги
+67/53/53 по полноте и1/1/1 по сходству пар. Это3 запроса двух товаров,
+не holdout; membership четырёх прежних отрицательных на83 UNKNOWN.
+Польза двух выдач человеку и независимое качество остаются непроверенными.
+Независимое review в STANDARD не проводилось; причинный эффект книжных правил
+не измерялся. Новых runtime-допусков, рабочей активации, commit/push не было.
+
+### 2026-10-17 — Поиск локальной папки изображений и исходных семи запросов
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись206; владелец сообщил, что забыл путь к отдельной папке фото. Read-only поиск по сохранённым refs и metadata файлов в Documents/Downloads/Desktop/Pictures; исходные изображения не менялись |
+| Найдено | В Downloads/test-images-20 есть20 изображений/20 разных SHA; все20 точно совпадают с готовым каталогом83, это не новые независимые запросы. Все7 прежних query SHA найдены среди файлов Desktop. Дополнительный video_stills содержит10 изображений без точного совпадения с queries/catalog, назначение не устанавливалось |
+| Проверка / evidence | SHA-сопоставление с сохранёнными query export и source100/ready83; исходные7 найдены без неоднозначного предположения по имени. Private image-location-20261017/locations-private.json хранит номера запросов, SHA и реальные пути, файлы600/root700. Photos Library закрыта macOS; это не помешало подтвердить указанные места |
+| Границы / review | Новых фото/разметки/ML/scoring/БД/commit/push нет. Самопроверка, независимое review не проводилось (STANDARD); код/тесты/книжные правила не требовались. Папка с20 подтверждена как каталог; считать её искомой владельцем папкой без уточнения нельзя |
+
+### 2026-10-17 — Уточнение папки с60 фото и проверка доступности Finder
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись207; владелец уточнил «папка с60 фото в закладках Finder», затем открыл окно по просьбе исполнителя. Read-only поиск, без изменения изображений/закладок |
+| Результат поиска | В evaluation-review найдена папка images ровно с60 PNG:30 original и30 overlay, это не60 независимых исходных фотографий. В calibration-review60 изображений суммарно по вложенным папкам. Ни один путь не объявлен подтверждённой искомой закладкой |
+| Блокер UI / metadata | CUA getApp Finder по display name/bundle ID возвращает cgWindowNotFound, включая после сообщения владельца «Открыл». Inventory видит running Finder, доступного окна нет; optional launch_app отсутствует. Чтение sharedfilelist запрещено macOS и после escalated read. Защиты не обходились; содержимое закладок не прочитано |
+| Граница / следующий шаг | Для точного определения нужен путь из выбранной владельцем закладки (Finder: Option+Command+C). Поиск по метаданным home не подтвердил отдельную папку60 новых исходников; Photos Library и часть Library закрыты. Никакого вывода об отсутствии папки на всём Mac не делалось |
+| Проверка / review | Количество/расширения/category filenames проверены локально. Самопроверка, независимое review не проводилось (STANDARD); новых тестов/ML/scoring/БД/изменений продукта/commit/push нет |
+
+### 2026-10-18 — Исследование практик фильтрации масок по первичным интернет-источникам
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись208; владелец попросил подумать над задачей и поискать best practices в интернете. Исследование и сравнение вариантов без утверждения требований/дизайна/порогов и без перехода gate |
+| Источники | Первичные Meta SAM/SAM2/SAM3, исходник LangSAM, CVPR Mask Scoring R-CNN/RegionCLIP, ICCV Soft-NMS, документация SAHI/OpenCV. Ссылки и дата в отдельном обзоре; публичные main не выданы за точную установленную версию. Часть HTML/PDF была недоступна, опора на доступные официальные abstracts/code/docs, не на пересказы |
+| Главное различие | Confidence детектора не равен качеству границы и соответствию «один ноготь». SAM quality/NMS/cleanup не являются готовой nail-specific проверкой. IoS/направленное покрытие помогают описать вложенность; коробочная IoS из SAHI не выдана за mask filter, само перекрытие не доказывает дубль/ошибку |
+| Факты проекта | Проба11 содержит крупные6/7 и малые8–11, confidence крупных выше; визуальный разбор исполнителя отделён от owner ground truth. В текущем адаптере Detection получает scores, mask_scores не сохраняется, стабильность/logits отсутствуют. Source inspection не назван runtime-проверкой |
+| Историческая проверка | Память использована для поиска Candidate J; прочитан сохранённый handoff20261004 в owning checkout1eaf read-only. Семантический verifier уже исследовался: исходные пороги теряли целевые, conservative proposal удалил1/5 посторонних. Это история, не новая оценка; J и поиск папки фото не возобновлялись |
+| Варианты / рекомендация | Сравнены геометрия+отношения, геометрия+семантика спорных случаев, изменение локализатора. Первый предлагаемый опыт — разметить сохранённые маски, проверить дубли/составные и помечать сомнения без удаления. Достаточность геометрии UNKNOWN; новая модель и пороги не выбраны |
+| Проверка будущего опыта | Главная метрика — сохранение физических ногтей с хотя бы одной правильной маской; отдельно bad masks/duplicates/uncertain/ресурсы и исходные пропуски локализатора. Разделять tuning/control по фото/товарам, не подгонять под max10 и один пример. Фильтр не создаёт пропущенные ногти и не исправляет автоматически границы |
+| Артефакты / границы | mask-filtering-research.md + ссылка в backlog + актуальный исследовательский статус current-context. Продуктовый код/параметры/корпус не менялись, вычисления масок/ML/новая БД/installs/commit/push не выполнялись. Дефектов исполнения не исправляли, выбор дизайна следующий |
+| Метод / review | Brainstorming применён для исследования и разделения фактов/предложений; книжный skill прочитан для выбора, отдельного вопроса границ модулей/API нет, mini/full не применялись. Самопроверка ссылок/таблиц/маркеров/diff; независимое review не проводилось (STANDARD), программные тесты не требовались |
+
+### 2026-10-18 — Гексагональные границы фильтра и вводные для HLD
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись209; владелец попросил архитектурный анализ решения и вводные для HLD. Pre-HLD с вариантами/открытыми решениями; нормативный HLD/API/требования/gates не менялись |
+| AS-IS | Сверены application-owned NailLocalizationPort, HttpNailLocalizationAdapter, CandidateIBinding/LangSAM mapping, app→encode_result, общий NailImageProcessor, DTO invariants и bootstrap. HTTP cap проверяется до доставки областей поиску; core processor имеет свою проверку. Это static evidence, не runtime readiness |
+| Архитектурный вывод | Исполнение в текущем процессе допустимо, но политика не должна жить в HTTP/SDK binding. Предложены независимая политика и use case локализации, порт кандидатов, условный порт модельных свидетельств; plain data/адаптеры/composition root. Не предлагаются отдельный микросервис, БД или порт на каждую геометрическую функцию |
+| Уточнение прошлого ответа | «Ядро не меняется» сужено до matching/формул: возможность локализации получает новые правила и identity. Сохранение существующих API условно, зависит от uncertain/всех отвергнутых/ошибки модели. Старые данные не объявлены автоматически совместимыми, пересборка/activation не разрешены |
+| Вводные / риски | Отделены code dependencies от runtime flow, лимит сырых candidates от выходного max10, отбор от исправления масок. Даны plain-data роли, lineage/ordinals, query/catalog consistency, версия политики и отдельные решения по fallback/diagnostics/полноте. Вопросы оформлены как вопрос→влияние→предложение модели, не owner decisions |
+| Метод / источники | Brainstorming pre-design; book-guidance Clean Architecture mini основной (dependency rule/port ownership/adapters), APoSD mini дополнительно (границы/не вводить thin ports). agent-rules-books commit893a88a6fce3a80c565bf39ac65021b43a8b2990 из source-manifest. Cockburn2005 и Martin2012 проверены по первичным страницам; не смешивались как тождественные архитектуры |
+| Схема / проверки | diagram-design: минимальная Mermaid-схема7 ролей с направлением code dependencies и условным verifier. Отдельно описан порядок вызовов. Проверены локальные ссылки/таблицы/fences/ID/маркеры и diff; визуальный рендер Mermaid не проверен. Будущие architecture/contract/quality tests перечислены, не объявлены выполненными |
+| Артефакты / review | mask-filter-hld-inputs.md, ссылки backlog/current-context. Самопроверка; независимое review не проводилось (STANDARD). Продуктовый код/установки/ML/scoring/SQL/migrations/commit/push отсутствуют; готовность реализации не заявлена |
+
+### 2026-10-19 — Выделение кандидатов правил отбора масок для обсуждения
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись210; «Давай попробуем выделить правила» в продолжение pre-HLD. Аналитическое выделение гипотез, не создание/утверждение нормативных правил или требований; gate/API/реализация не менялись |
+| Предметные понятия | Разделены физический ноготь, маска-кандидат, пригодная маска, дубль, составная и спорная область. Сохранность измеряется наличием хотя бы одной пригодной маски уже найденного ногтя, а не числом масок; допустимый уровень потерь не задан |
+| Кандидаты решений | KEEP пригодного отдельного ногтя/разных соседних ногтей, REJECT подтверждённого избыточного дубля/группы/постороннего, UNCERTAIN при недостатке свидетельств. Сохранение неопределённости не объявлено готовым production-режимом и не перенесено в HTTP DTO |
+| Предохранители / эвристики | Не подгонять под10, не предпочитать площадь/confidence автоматически, не считать IoU/вложенность доказательством тождественного объекта, не менять геометрию первым вариантом. Повреждённый input/отказ модели отделены от предметных решений; все REJECT не переопределяют NO_NAILS. Численные пороги UNKNOWN |
+| Примеры / вопрос |9 объясняющих ситуаций, не исполненные тесты и не ground truth. Владелец получил один вопрос о коже/кольце вместе с ногтем, с влиянием и предварительным ответом «спорная, не удалять автоматически». Ответ на момент записи не поступил; выбор не сделан за владельца |
+| Артефакты | mask-filter-rule-candidates.md + ссылки pre-HLD/current-context. Подбор новой папки/ML/calibration J/вычисления масок/изменение корпуса не возобновлялись. После согласования нужно отдельно оформить нормативный результат по действующему маршруту |
+| Метод / проверка | Brainstorming: обсуждаемые кандидаты без реализации. Book-guidance DDD mini: разделение предметных понятий и язык решений, без введения aggregates/repositories; источник agent-rules-books commit893a88a6fce3a80c565bf39ac65021b43a8b2990. Самопроверка релевантных ссылок/таблиц/маркеров/fences/diff; программные тесты не требовались, независимое review не проводилось (STANDARD) |
+
+### Сводка записей206–210
+
+Поиск локальных фото подтвердил папку20 уже каталожных изображений и все7
+прежних запросов на Desktop. Искомая владельцем закладка с60 фото не подтверждена:
+доступный каталог60 PNG содержал30 originals+30 overlays, Finder UI/sharedfilelist
+были недоступны. Владелец отложил поиск; его не возобновляли.
+По запросу изучены первичные практики фильтрации, затем подготовлены pre-HLD
+и кандидаты правил. Разделены качество маски/содержимое/гранулярность, дубли/
+вложенность, правила/SDK/HTTP, отбор/исправление и смысл маски/итога фото.
+Рекомендации остаются предложениями, пороги и production-исходы открыты;
+новых ML/calibration/scoring/изменений продукта/активации/commit/push не было.
+Независимое review не проводилось (STANDARD); документные проверки не доказывают
+качество фильтра или причинный эффект книжных правил. Первый предметный вопрос
+владельцу — допустимость кожи/кольца в маске ногтя — пока без ответа.
+
+### 2026-10-19 — Сценарий и функциональные требования отбора масок
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | FULL, запись211; прямое поручение «Теперь давай соберем функциональные требования». Подготовлен отдельный ART-06 capability DRAFT, не утверждённый контракт реализации; короткий план-контракт/self-check/read-only review выполнены |
+| Каноническое место / IDs | mask-filter-functional-requirements.md v0.1:UC-011,18 требований FR-072–FR-089. Индекс ART-06 содержит отдельную строку DRAFT; базовые утверждённые UC/FR и требования пополнения не изменены. SRC-094 фиксирует только поручение подготовки; ID выбран с учётом источников до093 в сохранённых worktrees |
+| Функциональная граница | Вход и отказ в оценке, положительные решения/дубли/составные/посторонние/различимые соседи/uncertain, один результат на кандидата, основания, различимые наборы, неизменность геометрии, ссылка дубля на сохраняемую маску, причины пустого результата, технический неуспех, выходной лимит и версия политики |
+| Сценарий / связи | CHECK через UC-001 и владелец через UC-007; цель/триггер/предусловия/поток/альтернативы/постусловия. Связи с FR-020/027/032/034/035/036/037 без переписывания их формулировок. Нет нового UI/endpoint, ML-модели, численных порогов, схемы данных, NFR или готовых тест-кейсов |
+| Authority / незакрытые входы | ART-04/ART-05 фильтра не утверждены; кандидаты правил остаются предложениями. Пригодность кожи/кольца, дубли/группы/постороннее, uncertain, все отвергнуты, known partial coverage, отказ внешней оценки и совместимость версий перечислены как открытые решения. Подготовка SRC-094 не закрывает upstream gates |
+| Независимое review | Один отдельный read-only reviewer:PASS для DRAFT,0 Critical/0 Major/1 Minor. Замечание: не перенесена известная частичная потеря покрытия при наличии других KEEP. Добавлены альтернатива и открытый вопрос, без нового статуса/автоматического обнаружения неизвестных пропусков. Minor исправлен и self-check повторён; повторное review не требовалось по AGENTS |
+| Самопроверка |18 уникальных FR/1 UC, локальные ссылки/anchors/таблицы/источники/статусы/конфликтные маркеры/fences/diff проверены. Подробные BR и архитектура оставлены в своих входных черновиках; functional DRAFT не объявлен полным готовым нормативным контрактом |
+| Метод / границы | Пропорциональная подготовка ART-06 по governance; отдельного инженерного вопроса модулей/API нет, новые книжные правила не выбирались, sa-infostyle не применялся. Request-assessor прочитан для выбора маршрута, не применялся как интервью: запрос на черновик ясен, решения владельца оставлены открытыми. Программные тесты не требовались; код/ML/scoring/БД/активация/commit/push отсутствуют |
+
+[Черновик сценария и функциональных требований](../specs/corpus-optimization/mask-filter-functional-requirements.md).
+
+### 2026-10-19 — Сохранение десяти входов пилотной оценки поиска
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись212; владелец передал две пятёрки фото и сообщил наличие/отсутствие в корпусе. Подготовка входов, без запуска оценки и новых нормативных решений |
+| Результат |10 PNG доступны и декодируются; приватные копии, SHA и owner labels сохранены отдельно. Оригиналы не изменены; директории700, файлы600, артефакты исключены из Git |
+| Проверка повторов |10 уникальных файловых и decoded RGB SHA; побайтных совпадений с прежними7 запросами и ready83 нет. Визуальная независимость NOT_DONE; hash не доказывает отсутствие другого скриншота того же снимка |
+| Открытые данные | Связь пяти положительных запросов с конкретными ожидаемыми товарами PENDING. Номера строк не приняты за product ID; отсутствие отрицательных основано на сообщении владельца, технически не подтверждено |
+| Проверка / границы | Повторное чтение inventory/копий и сверка SHA/прав/исходников; документные ссылки и diff проверены. Независимое review не проводилось (STANDARD); ML/scoring/SQL/изменения каталога/commit/push отсутствуют. Статус INPUTS_FROZEN_NOT_READY_FOR_EXECUTION |
+
+### 2026-10-19 — Подготовка и выполнение пилота10 пакетом
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись213; владелец явно разрешил составить список действий, план и выполнить их пакетом. Один конечный пилот10 переданных фото, без нового нормативного решения или рабочей активации |
+| Подготовка входов | SHA Excel совпал с SRC-054;10 строк связаны по product_id и source_row с импортом.5 positive ready83/5 negative exact records absent83/100. Метки предметного соответствия owner-stated; семантические альтернативы отдельно не перечислены |
+| Независимость | Побайтных/decoded повторов внутри10 нет, точных пересечений с old7/ready83 нет. Пять положительных пар просмотрены; первый запрос повторяет каталожный снимок с оформлением. Полный visual duplicate scan NOT_DONE, holdout не заявлен; входы/метки заморожены до результатов |
+| План / исполнение | quality-pilot10-execution-plan.md;2 START по5, до48 admissions/2520с, прежние I800/1333/float32/три sequential encoder/caps. Две фазы OK/COMPLETED:10 OK/0 ERROR/0 NO_NAILS/0 PENDING;62 области/186 векторов. Runtime200,311с, offline13,536с |
+| Подготовительные дефекты | До ML выявлены устаревший временный baseline-pointer и manifest старого bootstrap; использован сохранённый baseline/последний diagnostic runtime с metadata-dir. Semantic profile каталога не изменён. При postflight исправлено разрешение пути refs на checkpoints/final. Отказы подготовки не выданы за inference; ML retries отсутствуют |
+| Качество по разметке | Основные три модели: ranks1/57/80/67/43 против1/40/7/15/4, top-1 1/5 vs1/5, top-5 1/5 vs2/5, top-10 1/5 vs3/5; MRR0,2136 vs0,2969. Единственный top-1 — повтор исходного снимка. Результаты7 комбинаций сохранены без выбора production-модели |
+| Отрицательные / границы | Scores/margins сохранены, порог отсутствия NOT_DEFINED; FPR/корректность отказа не заявлены. Score не probability, качество масок и причины промахов UNKNOWN; фильтр не внедрён |
+| Проверки |88 code pins/model metadata,3 отказа entrypoints/отказ runner без допуска,6 resource cases;48 export/diagnostics+21 matching+3 formula tests PASS.830 core parity/5810 assignments; исходные SHA после расчёта сохранены.398 OK/28 WARNING/0 STOP, final OK; WARNING не выдан за OOM |
+| Архив / cleanup |242 private files, credential/target/grant/IPC исключены. Export/checkpoints/crops readback и prefix preservation PASS; контейнера/собственных процессов нет, locks свободны, secrets удалены. Каталог83/исходники/продуктовый код не менялись, commit/push отсутствуют |
+| Review / результат | Самопроверка; независимое review не проводилось (STANDARD). Технический пилот завершён10/10, качество не принято. Канонический итог quality-pilot10-report.md; следующий аналитический шаг — причины промахов, отдельная контрольная выборка |
+
+### 2026-10-19 — Offline-разбор четырёх промахов пилота10
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись214; «Давай попробуем» в ответ на предложение разобрать маски и назначенные пары. Диагностика сохранённых результатов, без новых требований/фильтра/нормировки/ML/SQL |
+| Coverage / evidence |14 разных фото,84 области,28 просмотренных диагностических листов,10 сравнений/47 назначенных пар. Expected/оба лидера замороженного рейтинга, исходники/маски/кропы/перекрытия;188 input SHA сохранены. Визуальные выводы исполнителя, не owner ground truth |
+| Локализация | Розовый запрос:5 ногтей+2 вложенные маски кольца; expected:4 ногтя+флакон клея. Бордовый лидер содержит кольцо9, реально назначенное боковому ногтю. Нюд: единственная маска expected при других видимых ногтях; query7/8 overlap со смешанной областью пальца, у лидера дубль3/5 |
+| Matching | При прежних scores конкурентов потолки min(n,m)/n не позволяют ожидаемым фото подняться выше42/80/62/33 мест даже с идеальными парами. Парные ранги40/7/15/4 сохраняют ошибки. Число разных видимых ногтей и пропуски/дубли не смешаны |
+| Различимость / модели | Вишни: нет очевидного мусора запроса, низкое разрешение expected и все3 модели предпочитают другой похожий дизайн на общем assignment. Бордовый: SigLIP2 предпочитает expected, OpenCLIP/DINOv2 лидера. Это конкретные наблюдения, не причина отключить модель или доказательство эффекта разрешения |
+| Артефакты / следующий опыт | quality-pilot10-error-analysis.md, ссылка из исходного отчёта/current-context; private contract/analysis/mask stats/observations/numeric findings/28 JPG. Предложена отдельная абляция заранее размеченного мусора; не исполнена. Фильтр не восстанавливает пропущенные ногти; holdout не создан |
+| Проверка / границы | Восстановление сохранённых pairs/scores/core для10 сравнений, тождество двух нормировок, SHA и разрешения масок/кропов, ссылки/таблицы/diff. В проектном venv нет numpy: использован существующий bundled Python, без installs. Код продукта/исходники/labels/каталог/формулы не менялись; ML/SQL/commit/push отсутствуют. Самопроверка, независимое review не проводилось (STANDARD) |
+
+### 2026-10-19 — Исключение подтверждённых посторонних масок и пересчёт пилота
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись215; прямое поручение исключить подтверждённые посторонние маски и пересчитать выдачу. Конечная offline-абляция, без нового нормативного фильтра или формулы |
+| Замороженный выбор | До scoring зафиксированы query5 ring6/7, expected5 glue5 и ring9 бордового каталожного конкурента. Дубли/смешанные/частичные ногти не удалялись.5 вариантов:baseline,query-ring,glue,catalog-ring,all-foreign; все10 запросов×83/обе формулы/7 комбинаций |
+| Результат трёх моделей | Совместная очистка: paired ranks1/41/7/15/1 против1/40/7/15/4; top-1 1/5→2/5, top-5 2/5/top-10 3/5 без изменений, MRR0,2969→0,4468. Current ranks1/57/80/67/51 против1/57/80/67/43, top-k1/5 прежние. Розовый пример paired4→1/current43→51 |
+| Изолированные эффекты | Только query ring:розовый43→8/current и4→8/paired. Только glue:52/current,1/paired. Только catalog ring не меняет положительные ранги primary. Очистка ожидаемого розового товара смещает вишни40→41; отрицательные лидеры/scores primary прежние |
+| Остальные модели | Полные7 комбинаций сохранены. После all-foreign top-1 у DINOv2/OC+DINO/DINO+SigLIP/трёх2/5, у SigLIP2 2/5 прежние, OC/OC+SigLIP1/5. Ни у одной5/5. У отдельных комбинаций top-5/top-10 ухудшились из-за сдвига конкурентов; production winner не выбран |
+| Проверки | Baseline exact10×7×2;4150 core parity/29050 assignments. Независимая проверка через срез исходных matrices, без subset DTO helper, воспроизводит29050 назначений и оба scores.3 invalid subset refusals PASS; untouched pairs/remaining vectors/input hashes сохранены, current-score monotonicity при catalog-only исключении проверена |
+| Артефакты / границы | quality-pilot10-foreign-exclusion-report.md, ссылки из error-analysis/current-context. Private selection-before-scoring,5 полных результатов/summary/run/verifier.65,235с/deadline600с. Данные DTO временные, рабочий каталог/экспорт/формулы/labels/код продукта не менялись; ML/SQL/installs/cutover/commit/push отсутствуют |
+| Review / качество | Самопроверка, независимое review не проводилось (STANDARD). Улучшение одного известного случая не является независимой оценкой автоматического фильтра; пропуски ногтей/различимость дизайнов остаются. FPR/корректный отказ UNKNOWN без порога |
+
+### Сводка записей211–215
+
+Подготовлен DRAFT функциональных требований фильтра:18 FR/1 UC,
+независимое review PASS для DRAFT с исправленным Minor; owner approval
+нормативного результата и входов правил не подменён этой проверкой.
+Получены10 фото, проверены строки Excel и выполнен пилот10/10 на ready83.
+Техническая обработка успешна, но primary top-10 составил1/5 по текущей
+формуле и3/5 по парам; набор содержит повтор снимка и не является holdout.
+Разбор84 областей выявил посторонние маски, дубли, пропуски и влияние нормировки.
+Адресная offline-очистка поставила розовый пример первым по парам:
+primary top-1 вырос1/5→2/5, top-10 остался3/5; текущая формула не улучшилась.
+Это наблюдаемый эффект ручного выбора на известных ошибках, не качество
+автоматического фильтра или причинный эффект книжных правил. Для212–215
+проведены самопроверки; независимое review не проводилось (STANDARD).
+
+### 2026-10-19 — Проверка гипотезы о качестве каталожных фото
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись216; владелец спросил об улучшении поиска и предположил, что низкое качество корпуса вызывает пропуски ногтей. Ограниченный read-only анализ метаданных/кода и предложение различающего опыта, без исполнения новых ML |
+| Метаданные | У83 ready исходников короткая сторона min140/median590/max1536;18 фото короче250px. У481 сохранённого region crop короткая сторона median86,147 короче64px; эти области не объявлены все ногтями. Четыре ожидаемых фото пилота246×328, первое760×629, все запросы852×1162 |
+| Интерпретация | У четырёх малых ожидаемых фото разный результат локализации:4/1/3/4 ногтевых маски по визуальному разбору, плюс ранее удалённый клей в последнем. Низкое разрешение — обоснованная гипотеза, причинность и её доля UNKNOWN; весь корпус не объявлен низкокачественным. Различены локализация, информативность кропа и агрегация |
+| Предложение | Небольшой диагностический2×2: нынешние/лучшие исходники × автоматические/проверенные ручные маски; неизменные queries/models/scoring, контроль top-k и найденных физических ногтей. Лучше тот же исходный кадр, иначе качество смешивается с ракурсом/оформлением. Начать с ручного эталона на нынешних фото для проверки вклада локализации; это предложение, не готовый пакет/новый ML-допуск |
+| Источники / проверка | Актуальные размеры прочитаны из83 headers и481 crops; сохранённый config и LangSAMAdapter/TwoPassRoiLocalizer просмотрены static. Первичный GroundingDINO inference.py подтверждает resize и отдельный threshold отбора рамок, публичный main не выдан за установленный runtime. SAM supplementary недоступен для полного чтения; его пересказ не использован как доказательство причины наших пропусков |
+| Метод / границы | Brainstorming для исследовательских вариантов, без реализации/нового нормативного решения; продуктовый код/профиль/корпус/маски не менялись, ML/SQL/installs/commit/push отсутствуют. Самопроверка записи и diff; независимое review не проводилось (STANDARD). Качество входа, число масок и поиск не сведены к одной метрике |
+
+### 2026-10-19 — Подготовка исправленных масок для проверки владельцем
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись217; владелец разрешил эксперимент после обсуждения проверки ручной разметки человеком. Выполнена подготовка первого этапа, не объявлен завершённый ML-опыт |
+| Метод | Ручная коррекция сохранённых автоконтуров, не независимая разметка с нуля:5 query/expected пар,44 предлагаемые маски —41 retain,1 union частей одного ногтя,2 вручную заданных polygon для пропусков.5 спорных кандидатов отдельно и не выбраны. Пользователь должен проверить содержание, модельная разметка не принята за ground truth |
+| Изменения | У чёрных сердечек catalog4/5 объединены; у нюда query8 убрана как смешанная/повторная, catalog2 пропуска обведены; кольцо query5/клей expected5 исключены как раньше. Частичные/фоновые/перекрытые области не приняты автоматически. Сохранённые контуры не объявлены pixel-perfect |
+| Самопроверка геометрии | Подготовлены10 наборов masks/crops/lineage и5 review JPG; полные binary dimensions/bounds/source SHA.41 retained RGB crops совпали с исходными;49 masks/crops воспроизведены через NailImageProcessor с точным RGB parity. На увеличенном фрагменте исправлены первоначально неполные границы новых полигонов; draft-v1 сохранён, ML на нём не запускался |
+| Артефакты / следующий этап | manual-mask-experiment-plan.md + current-context, private review-manifest/polygon-proposal и изображения. Статус PENDING_OWNER_MASK_REVIEW. После ответа фиксируется версия, затем encoder-only пакет для изменённых crops и три диагностических варианта относительно all-foreign; точный ML-пакет пока не сформирован |
+| Границы / review | Исходные фото/экспорт83/labels/продуктовый код не изменены; ML/embeddings/scoring/SQL/installs/commit/push отсутствуют. Технические проверки и просмотр пяти листов — самопроверка, не семантическая приёмка; независимое review не проводилось (STANDARD). Ручная коррекция expected после ошибок label-aware, не holdout |
+
+### 2026-10-19 — Опыт с принятой исправленной разметкой
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись218; владелец подтвердил оранжевые маски после разрешения опыта. Выполнен конечный encoder-only пакет и4 диагностических варианта, без новых требований/формулы продукта |
+| Принятая версия |49 областей пяти положительных пар:26 query/23 expected catalog.41 retained RGB crop совпал с export по размерам/байтам,8 новых crops дали24 vectors трёх прежних моделей; выбор/SHA зафиксированы до scoring. Сохранены исторические draft/review, никакого выбора по рангу |
+| Исполнение | Первая попытка остановлена до SDK на runtime-inventory mismatch: отсутствовала только регистрация editable product-search-mvp, все версии зависимостей совпали. Отказ сохранён; V2 с актуальной описью и прежним frozen source выполнен за12,483с.26 ресурсных наблюдений OK,0 WARNING/STOP;3 собственных workers отсутствуют после завершения, coordinator/device leases свободны. Локализатор/SQL не запускались |
+| Coverage / проверка |4 варианта ×10 queries ×83 исходные товарные identity ×7 combinations ×2 formulas.3320 core parity,23240 assignments; отдельная сборка матриц из raw vectors повторила23240 назначений/46480 значений формул, ranks/top-k/MRR. SHA/неизменённые пары/baseline сохранены. Всего59 query regions/485 catalog regions в совместном варианте. Техническая проверка PASS, независимое review не проводилось |
+| Результат | На трёх моделях all-foreign→joint: первая1/57/80/67/51→1/37/38/68/52; вторая1/41/7/15/1→1/46/35/15/1. Top-1 остался1/5 и2/5; top-10 второй снизился3/5→2/5. У нюда одна пара заменена шестью, покрытие выросло, среднее сходство снизилось. Ни одна комбинация не дала5/5 top-1 |
+| Отрицательные / ограничения | У трёх моделей первые кандидаты/scores всех5 negatives неизменны. В общем наборе70 сочетаний один лидер Sig/paired изменился; порог отсутствует, FPR не оценён. Label-aware ручная коррекция expected, не holdout и не независимый pixel GT; разрешение исходников не изменялось, причинность низкого разрешения не проверена |
+| Артефакты / границы | manual-mask-experiment-report.md, обновлены план/current-context; приватные accepted contract/vectors/full ratings/verification/runtime archive. Фото/исходный catalog83/пилот/продуктовый код/модельный набор/активная формула сохранены. Commit/push/активация отсутствуют. Предложение проверить зависимость от числа пар — новая гипотеза, не исправление дефекта и не разрешение менять продукт |
+
+### 2026-10-19 — Сводка исследования и тестов для отбора масок
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись219; по поручению владельца объединены существующие исследования, пилот, ручное исключение постороннего и опыт исправленных масок. Новых нормативных решений, ML/SQL/пересчётов нет |
+| Результат | mask-filter-research-and-tests-summary.md: подтверждённые ошибки,3 этапа с сопоставимыми top-k основной комбинации, границы отбора/локализации/сходства/скоринга, предложения для HLD и отдельной оценки фильтра |
+| Ключевые выводы | Ручная очистка улучшила парный top-1 с1/5 до2/5, дальнейшая коррекция сохранила2/5 и снизила парный top-10 с3/5 до2/5. Автоматический фильтр не оценён; ручной опыт включал дорисовку/union вне простого отбора. Низкое разрешение и необходимость семантической модели не объявлены доказанными причинами/решениями |
+| Проверка / ограничения | Сверены отчёты и приватные summary исходного/foreign/manual; локальные ссылки, таблицы, conflict markers, git diff --check. Источники обзора использованы как ранее датированное исследование, без новой интернет-проверки. Независимое review не проводилось (STANDARD). Критерии смешанных масок/UNCERTAIN/численные пороги остаются открытыми; одобрение оранжевых областей не обобщено в новую policy |
+| Границы | Код, API, канонические FR/правила, модели и каталог не менялись. Новый контрольный опыт и новая модель не запускались, commit/push нет |
+
+### 2026-10-19 — Сохранение и публикация checkpoint проекта
+
+| Поле | Наблюдение |
+|---|---|
+| Тип / scope | STANDARD, запись220; прямое поручение владельца сделать commit/push и обновить контекст. Синхронизация существующих результатов и подтверждённого выбора двух выдач, без нового нормативного контракта/API |
+| Контекст | current-context, project-context и verification-followup-status актуализированы до пилота10/ручной коррекции/сводки фильтра. Две формулы сохраняются раздельно; в тестах рассчитаны обе, внедрение второй в рабочий поиск/UI не выполнено. Уточнение области применения остаётся открытым, не подменено разрешением активации |
+| Состав | Накопленные исправления bounded JSON reader/export, SAM/load diagnostics и их тесты; безопасные планы/отчёты83/pilot10/foreign/manual и DRAFT исследования/требования фильтра. Отдельные PORTFOLIO_RESEARCH.md, outputs/, alternative-search-research.md и ignored private artifacts не включаются |
+| Проверка кода |107 релевантных тестов поиска/диагностики PASS;97 дополнительных model-free проверок reader/deferred/CLI/runtime/worker PASS; ruff выбранных файлов PASS. Первоначальные3 socket failures воспроизведены как AF_UNIX path too long, короткий basetemp исправил условия запуска без изменения кода.3 PostgreSQL/Docker cases не завершены из-за недоступного окружения и исключены из model-free результата; полный suite не заявлен |
+| Проверка публикации | Явный список stage, ограничение приватных файлов/credentials, релевантные Markdown-ссылки/таблицы/ID/conflict markers и git diff --check; commit/push разрешены владельцем в текущей беседе. Фактические SHA и remote проверяются через Git, не выводятся из результата тестов |
+| Метод / границы | verification-before-completion; новых инженерных решений нет, книжные наборы для этой задачи не применялись. Независимое review не проводилось (STANDARD). Исторический FULL-review DRAFT требований не заменён утверждением. Новые ML/SQL, смена формулы продукта, активация, merge и PR не входят в эту задачу |
+
+### Сводка записей216–220
+
+Подтверждены пропуски/посторонние маски, подготовлена и проверена владельцем
+исправленная разметка, выполнен конечный опыт и сведены результаты для фильтра.
+Ручная очистка улучшила один положительный top-1; дополнительная коррекция
+не улучшила общий top-1 и снизила парный top-10. Причинность разрешения фото,
+качество автоматического фильтра и польза двух списков человеку остаются UNKNOWN.
+Для216–219 использовались технические самопроверки; в220 перед публикацией
+прошли204 выбранных model-free теста и ruff, три DB cases не завершены.
+Независимое review в этих пяти задачах не проводилось. Данные не устанавливают
+причинный эффект книжных правил. Владелец подтвердил сохранение двух выдач;
+реализация рабочего интерфейса не объявлена выполненной.
